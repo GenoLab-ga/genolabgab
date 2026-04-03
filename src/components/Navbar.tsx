@@ -4,11 +4,11 @@ import { Menu, X, Dna } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const navLinks = [
-  { label: "Accueil", href: "#accueil" },
-  { label: "Services", href: "#services" },
-  { label: "À propos", href: "#apropos" },
-  { label: "Blog", href: "#blog" },
-  { label: "Contact", href: "#contact" },
+  { label: "Accueil", href: "/#accueil" },
+  { label: "Services", href: "/#services" },
+  { label: "À propos", href: "/#apropos" },
+  { label: "Blog", href: "/#blog" },
+  { label: "Contact", href: "/#contact" },
 ];
 
 const Navbar = () => {
@@ -28,7 +28,7 @@ const Navbar = () => {
       }`}
     >
       <nav className="container mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16 md:h-20">
-        <a href="#accueil" className="flex items-center gap-2 group">
+        <a href="/#accueil" className="flex items-center gap-2 group">
           <Dna className="h-7 w-7 text-primary transition-transform group-hover:rotate-180 duration-700" />
           <span className="font-heading text-xl font-bold text-foreground">
             Geno<span className="text-primary">Lab</span>Gab
@@ -50,7 +50,7 @@ const Navbar = () => {
 
         <div className="hidden md:block">
           <Button asChild className="rounded-full font-heading text-sm px-6 glow-teal">
-            <a href="#contact">Demander un devis</a>
+            <a href="/#contact">Demander un devis</a>
           </Button>
         </div>
 
@@ -85,7 +85,7 @@ const Navbar = () => {
               ))}
               <li className="pt-2">
                 <Button asChild className="w-full rounded-full font-heading text-sm">
-                  <a href="#contact" onClick={() => setMobileOpen(false)}>Demander un devis</a>
+                  <a href="/#contact" onClick={() => setMobileOpen(false)}>Demander un devis</a>
                 </Button>
               </li>
             </ul>

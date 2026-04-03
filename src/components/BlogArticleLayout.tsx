@@ -35,7 +35,7 @@ const BlogArticleLayout = ({
     <div className="min-h-screen bg-background text-foreground">
       <Navbar />
       <main className="pt-24 pb-16">
-        <article className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-3xl">
+        <article className="mx-auto px-8 sm:px-10 lg:px-8 max-w-[800px] text-left">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -77,11 +77,11 @@ const BlogArticleLayout = ({
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="prose prose-invert prose-lg max-w-none
+            className="prose prose-invert prose-lg max-w-none text-left
               prose-headings:font-heading prose-headings:text-foreground
-              prose-h2:text-2xl prose-h2:md:text-3xl prose-h2:mt-16 prose-h2:mb-6 prose-h2:pt-4 prose-h2:border-t prose-h2:border-border/30
-              prose-h3:text-xl prose-h3:mt-12 prose-h3:mb-4
-              prose-p:font-body prose-p:text-muted-foreground prose-p:leading-[1.9] prose-p:mb-6
+              prose-h2:text-2xl prose-h2:md:text-3xl prose-h2:mt-[2.5rem] prose-h2:mb-6 prose-h2:pl-4 prose-h2:border-l-4 prose-h2:border-l-primary prose-h2:border-t-0
+              prose-h3:text-xl prose-h3:mt-[2rem] prose-h3:mb-4 prose-h3:text-foreground
+              prose-p:font-body prose-p:text-muted-foreground prose-p:leading-[1.8] prose-p:mb-[1.5rem] prose-p:text-left
               prose-li:font-body prose-li:text-muted-foreground prose-li:leading-[1.8] prose-li:mb-2
               prose-ul:my-6 prose-ol:my-6
               prose-strong:text-foreground
