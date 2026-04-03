@@ -1,25 +1,32 @@
 import { motion } from "framer-motion";
-import { ArrowRight, Calendar } from "lucide-react";
+import { ArrowRight, Calendar, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 const articles = [
   {
-    tag: "Génomique",
-    title: "Introduction au séquençage de nouvelle génération (NGS)",
-    excerpt: "Comprendre les technologies Illumina et Oxford Nanopore pour l'analyse génomique clinique.",
+    tag: "NGS & Génomique",
+    title: "Séquençage NGS : Comment bien pré-traiter vos données génomiques ?",
+    excerpt: "Découvrez les étapes clés du pré-traitement des données NGS : contrôle qualité FastQC, trimming Trimmomatic et alignement BWA.",
     date: "15 Jan 2025",
+    readTime: "6 min",
+    slug: "/blog/pretraitement-donnees-ngs",
   },
   {
-    tag: "Docking moléculaire",
-    title: "AutoDock Vina : principes et applications en drug discovery",
-    excerpt: "Comment le docking moléculaire accélère la découverte de nouveaux médicaments.",
+    tag: "Analyse bioinformatique",
+    title: "Détection de variants génétiques : SNPs, Indels et CNV — Guide complet",
+    excerpt: "Comment détecter et interpréter les variants génétiques (SNPs, indels, CNV) à partir de données NGS ? Méthodologie complète.",
     date: "28 Fév 2025",
+    readTime: "7 min",
+    slug: "/blog/detection-variants-snp-indel-cnv",
   },
   {
-    tag: "NGS",
-    title: "Pipelines bioinformatiques reproductibles avec Snakemake",
-    excerpt: "Construire des workflows automatisés et reproductibles pour l'analyse de données NGS.",
+    tag: "Bioinformatique structurale",
+    title: "Docking moléculaire : criblage virtuel de molécules naturelles contre des cibles protéiques",
+    excerpt: "Introduction au docking moléculaire avec AutoDock Vina : méthodologie, préparation des ligands et interprétation des scores.",
     date: "10 Mar 2025",
+    readTime: "8 min",
+    slug: "/blog/docking-moleculaire-criblage-virtuel",
   },
 ];
 
@@ -45,49 +52,46 @@ const Blog = () => {
         <div className="grid md:grid-cols-3 gap-6 lg:gap-8">
           {articles.map((article, i) => (
             <motion.article
-              key={article.title}
+              key={article.slug}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: i * 0.15 }}
-              className="group glass rounded-2xl overflow-hidden hover:-translate-y-2 transition-all duration-300 hover:glow-teal"
             >
-              <div className="h-48 bg-gradient-to-br from-secondary to-muted flex items-center justify-center">
-                <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center">
-                  <span className="font-heading text-2xl font-bold text-primary">G</span>
+              <Link
+                to={article.slug}
+                className="group glass rounded-2xl overflow-hidden hover:-translate-y-2 transition-all duration-300 hover:glow-teal block h-full"
+              >
+                <div className="h-48 bg-gradient-to-br from-secondary to-muted flex items-center justify-center">
+                  <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center">
+                    <span className="font-heading text-2xl font-bold text-primary">G</span>
+                  </div>
                 </div>
-              </div>
-              <div className="p-6">
-                <span className="font-heading text-[10px] font-semibold uppercase tracking-wider text-primary bg-primary/10 rounded-full px-3 py-1">
-                  {article.tag}
-                </span>
-                <h3 className="font-heading text-lg font-semibold mt-4 mb-2 text-foreground group-hover:text-primary transition-colors line-clamp-2">
-                  {article.title}
-                </h3>
-                <p className="font-body text-sm text-muted-foreground leading-relaxed mb-4 line-clamp-2">
-                  {article.excerpt}
-                </p>
-                <div className="flex items-center text-xs text-muted-foreground font-heading">
-                  <Calendar className="h-3 w-3 mr-1" />
-                  {article.date}
+                <div className="p-6">
+                  <span className="font-heading text-[10px] font-semibold uppercase tracking-wider text-primary bg-primary/10 rounded-full px-3 py-1">
+                    {article.tag}
+                  </span>
+                  <h3 className="font-heading text-lg font-semibold mt-4 mb-2 text-foreground group-hover:text-primary transition-colors line-clamp-2">
+                    {article.title}
+                  </h3>
+                  <p className="font-body text-sm text-muted-foreground leading-relaxed mb-4 line-clamp-2">
+                    {article.excerpt}
+                  </p>
+                  <div className="flex items-center gap-4 text-xs text-muted-foreground font-heading">
+                    <span className="flex items-center gap-1">
+                      <Calendar className="h-3 w-3" />
+                      {article.date}
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <Clock className="h-3 w-3" />
+                      {article.readTime}
+                    </span>
+                  </div>
                 </div>
-              </div>
+              </Link>
             </motion.article>
           ))}
         </div>
-
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.4 }}
-          className="text-center mt-12"
-        >
-          <Button variant="outline" className="rounded-full font-heading text-sm border-primary/30 hover:border-primary/60 group">
-            Voir tous les articles
-            <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-          </Button>
-        </motion.div>
       </div>
     </section>
   );
