@@ -28,7 +28,7 @@ const Navbar = () => {
       }`}
     >
       <nav className="container mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16 md:h-20">
-        <a href="#accueil" className="flex items-center gap-2 group">
+        <a href="/#accueil" className="flex items-center gap-2 group">
           <Dna className="h-7 w-7 text-primary transition-transform group-hover:rotate-180 duration-700" />
           <span className="font-heading text-xl font-bold text-foreground">
             Geno<span className="text-primary">Lab</span>Gab
