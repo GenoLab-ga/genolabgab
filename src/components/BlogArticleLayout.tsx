@@ -35,7 +35,7 @@ const BlogArticleLayout = ({
     <div className="min-h-screen bg-background text-foreground">
       <Navbar />
       <main className="pt-24 pb-16">
-        <article className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-3xl">
+        <article className="mx-auto px-8 sm:px-10 lg:px-8 max-w-[800px] text-left">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
