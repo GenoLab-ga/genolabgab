@@ -79,10 +79,11 @@ const BlogArticleLayout = ({
             transition={{ duration: 0.5, delay: 0.2 }}
             className="prose prose-invert prose-lg max-w-none
               prose-headings:font-heading prose-headings:text-foreground
-              prose-h2:text-2xl prose-h2:mt-10 prose-h2:mb-4
-              prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-3
-              prose-p:font-body prose-p:text-muted-foreground prose-p:leading-relaxed
-              prose-li:font-body prose-li:text-muted-foreground
+              prose-h2:text-2xl prose-h2:md:text-3xl prose-h2:mt-16 prose-h2:mb-6 prose-h2:pt-4 prose-h2:border-t prose-h2:border-border/30
+              prose-h3:text-xl prose-h3:mt-12 prose-h3:mb-4
+              prose-p:font-body prose-p:text-muted-foreground prose-p:leading-[1.9] prose-p:mb-6
+              prose-li:font-body prose-li:text-muted-foreground prose-li:leading-[1.8] prose-li:mb-2
+              prose-ul:my-6 prose-ol:my-6
               prose-strong:text-foreground
               prose-a:text-primary prose-a:no-underline hover:prose-a:underline"
           >
