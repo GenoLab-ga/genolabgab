@@ -27,13 +27,26 @@ const Contact = () => {
     defaultValues: { name: "", email: "", organisation: "", service: "", message: "" },
   });
 
-  const onSubmit = (data: ContactForm) => {
-    console.log("Form submitted:", data);
-    toast({
-      title: "Message envoyé !",
-      description: "Nous reviendrons vers vous dans les plus brefs délais.",
-    });
-    form.reset();
+  const onSubmit = async (data: ContactForm) => {
+    try {
+      const response = await fetch("https://formspree.io/f/xpqoyoyj", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify(data),
+      });
+      if (!response.ok) throw new Error("Erreur réseau");
+      toast({
+        title: "Message envoyé !",
+        description: "Votre message a bien été envoyé. Nous vous répondrons dans les plus brefs délais.",
+      });
+      form.reset();
+    } catch {
+      toast({
+        title: "Erreur",
+        description: "Une erreur est survenue. Veuillez réessayer.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
