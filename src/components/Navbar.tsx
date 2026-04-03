@@ -50,7 +50,7 @@ const Navbar = () => {
 
         <div className="hidden md:block">
           <Button asChild className="rounded-full font-heading text-sm px-6 glow-teal">
-            <a href="#contact">Demander un devis</a>
+            <a href="/#contact">Demander un devis</a>
           </Button>
         </div>
 
