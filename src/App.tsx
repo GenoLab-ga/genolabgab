@@ -19,6 +19,9 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/blog/pretraitement-donnees-ngs" element={<BlogNGS />} />
+          <Route path="/blog/detection-variants-snp-indel-cnv" element={<BlogVariants />} />
+          <Route path="/blog/docking-moleculaire-criblage-virtuel" element={<BlogDocking />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
