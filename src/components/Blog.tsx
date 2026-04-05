@@ -1,5 +1,6 @@
 import { ArrowRight, Calendar, Clock } from "lucide-react";
 import { Link } from "react-router-dom";
+import ScrollFadeIn from "@/components/ScrollFadeIn";
 
 const articles = [
   {
@@ -35,47 +36,51 @@ const Blog = () => {
   return (
     <section id="blog" className="py-28 md:py-36 border-t border-border/30">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="mb-20">
+        <ScrollFadeIn className="mb-20 text-center">
           <p className="font-heading text-sm tracking-widest uppercase text-primary mb-4">
             Publications
           </p>
           <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold text-foreground">
             Articles & Ressources
           </h2>
-        </div>
+          <p className="font-body text-lg text-muted-foreground leading-[1.8] mt-6 max-w-[700px] mx-auto">
+            Nos dernières publications sur la bioinformatique, le NGS et l'analyse structurale.
+          </p>
+        </ScrollFadeIn>
 
         <div className="grid md:grid-cols-3 gap-8">
-          {articles.map((article) => (
-            <Link
-              key={article.slug}
-              to={article.slug}
-              className="group block rounded-xl border border-border/60 bg-card/20 overflow-hidden hover:border-primary/40 transition-colors duration-200"
-            >
-              <div className="p-8">
-                <span className="font-heading text-[10px] font-semibold uppercase tracking-wider text-primary">
-                  {article.tag}
-                </span>
-                <h3 className="font-heading text-lg font-semibold mt-4 mb-3 text-foreground group-hover:text-primary transition-colors line-clamp-2">
-                  {article.title}
-                </h3>
-                <p className="font-body text-sm text-muted-foreground leading-[1.8] mb-6 line-clamp-3">
-                  {article.excerpt}
-                </p>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-4 text-xs text-muted-foreground font-heading">
-                    <span className="flex items-center gap-1">
-                      <Calendar className="h-3 w-3" />
-                      {article.date}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <Clock className="h-3 w-3" />
-                      {article.readTime}
-                    </span>
+          {articles.map((article, i) => (
+            <ScrollFadeIn key={article.slug} delay={i * 0.1}>
+              <Link
+                to={article.slug}
+                className="group block rounded-xl border border-border/60 bg-card/20 overflow-hidden hover:border-primary/40 transition-colors duration-300 h-full"
+              >
+                <div className="p-8">
+                  <span className="font-heading text-[10px] font-semibold uppercase tracking-wider text-primary">
+                    {article.tag}
+                  </span>
+                  <h3 className="font-heading text-lg font-semibold mt-4 mb-3 text-foreground group-hover:text-primary transition-colors line-clamp-2">
+                    {article.title}
+                  </h3>
+                  <p className="font-body text-sm text-muted-foreground leading-[1.8] mb-6 line-clamp-3">
+                    {article.excerpt}
+                  </p>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-4 text-xs text-muted-foreground font-heading">
+                      <span className="flex items-center gap-1">
+                        <Calendar className="h-3 w-3" />
+                        {article.date}
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <Clock className="h-3 w-3" />
+                        {article.readTime}
+                      </span>
+                    </div>
+                    <ArrowRight className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
                   </div>
-                  <ArrowRight className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
                 </div>
-              </div>
-            </Link>
+              </Link>
+            </ScrollFadeIn>
           ))}
         </div>
       </div>

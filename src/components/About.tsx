@@ -1,6 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Linkedin, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import ScrollFadeIn from "@/components/ScrollFadeIn";
 
 const skills = [
   "AutoDock Vina",
@@ -17,20 +18,23 @@ const About = () => {
   return (
     <section id="apropos" className="py-28 md:py-36">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <ScrollFadeIn className="mb-20 text-center">
+          <p className="font-heading text-sm tracking-widest uppercase text-primary mb-4">
+            À propos du fondateur
+          </p>
+          <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold text-foreground">
+            Karl Mounguele
+          </h2>
+        </ScrollFadeIn>
+
         <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
-          <div className="flex justify-center lg:justify-start">
+          <ScrollFadeIn className="flex justify-center">
             <div className="w-64 h-64 md:w-72 md:h-72 rounded-full bg-card border border-border/60 flex items-center justify-center">
               <span className="font-heading text-5xl md:text-6xl font-bold text-primary">KM</span>
             </div>
-          </div>
+          </ScrollFadeIn>
 
-          <div>
-            <p className="font-heading text-sm tracking-widest uppercase text-primary mb-4">
-              À propos du fondateur
-            </p>
-            <h2 className="font-heading text-3xl md:text-4xl font-bold mb-8 text-foreground">
-              Karl Mounguele
-            </h2>
+          <ScrollFadeIn delay={0.15}>
             <p className="font-body text-lg text-muted-foreground leading-[1.8] mb-8">
               Karl Mounguele est ingénieur biotechnologiste et bioinformaticien, spécialisé en
               bioinformatique structurale et analyse de données génomiques. Fondateur de GenoLabGab,
@@ -57,7 +61,7 @@ const About = () => {
                 <ExternalLink className="ml-2 h-3 w-3 opacity-50" />
               </a>
             </Button>
-          </div>
+          </ScrollFadeIn>
         </div>
       </div>
     </section>
