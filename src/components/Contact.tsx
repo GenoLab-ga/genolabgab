@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -50,44 +49,30 @@ const Contact = () => {
   };
 
   return (
-    <section id="contact" className="py-24 md:py-32 relative">
-      <div className="absolute inset-0 bg-gradient-to-b from-background via-secondary/20 to-background" />
-
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-16"
-        >
-          <span className="font-heading text-xs font-semibold tracking-widest uppercase text-primary mb-4 block">
-            Contactez-nous
-          </span>
-          <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold">
-            Démarrez votre <span className="text-gradient">projet</span>
+    <section id="contact" className="py-28 md:py-36 border-t border-border/30">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="mb-20">
+          <p className="font-heading text-sm tracking-widest uppercase text-primary mb-4">
+            Contact
+          </p>
+          <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold text-foreground">
+            Démarrez votre projet
           </h2>
-        </motion.div>
+        </div>
 
-        <div className="grid lg:grid-cols-5 gap-12 lg:gap-16 max-w-5xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="lg:col-span-3"
-          >
+        <div className="grid lg:grid-cols-5 gap-16 max-w-5xl">
+          <div className="lg:col-span-3">
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
-                <div className="grid sm:grid-cols-2 gap-5">
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                <div className="grid sm:grid-cols-2 gap-6">
                   <FormField
                     control={form.control}
                     name="name"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="font-heading text-sm">Nom complet</FormLabel>
+                        <FormLabel className="font-heading text-sm text-foreground">Nom complet</FormLabel>
                         <FormControl>
-                          <Input placeholder="Votre nom" className="bg-secondary/50 border-border font-body" {...field} />
+                          <Input placeholder="Votre nom" className="bg-card/30 border-border/60 font-body" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -98,9 +83,9 @@ const Contact = () => {
                     name="email"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="font-heading text-sm">Email</FormLabel>
+                        <FormLabel className="font-heading text-sm text-foreground">Email</FormLabel>
                         <FormControl>
-                          <Input placeholder="votre@email.com" type="email" className="bg-secondary/50 border-border font-body" {...field} />
+                          <Input placeholder="votre@email.com" type="email" className="bg-card/30 border-border/60 font-body" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -113,9 +98,9 @@ const Contact = () => {
                   name="organisation"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="font-heading text-sm">Organisation</FormLabel>
+                      <FormLabel className="font-heading text-sm text-foreground">Organisation</FormLabel>
                       <FormControl>
-                        <Input placeholder="Hôpital, laboratoire, université..." className="bg-secondary/50 border-border font-body" {...field} />
+                        <Input placeholder="Hôpital, laboratoire, université..." className="bg-card/30 border-border/60 font-body" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -127,10 +112,10 @@ const Contact = () => {
                   name="service"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="font-heading text-sm">Type de service</FormLabel>
+                      <FormLabel className="font-heading text-sm text-foreground">Type de service</FormLabel>
                       <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl>
-                          <SelectTrigger className="bg-secondary/50 border-border font-body">
+                          <SelectTrigger className="bg-card/30 border-border/60 font-body">
                             <SelectValue placeholder="Choisissez un service" />
                           </SelectTrigger>
                         </FormControl>
@@ -151,11 +136,11 @@ const Contact = () => {
                   name="message"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="font-heading text-sm">Message</FormLabel>
+                      <FormLabel className="font-heading text-sm text-foreground">Message</FormLabel>
                       <FormControl>
                         <Textarea
                           placeholder="Décrivez votre projet ou besoin..."
-                          className="bg-secondary/50 border-border font-body min-h-[120px]"
+                          className="bg-card/30 border-border/60 font-body min-h-[140px]"
                           {...field}
                         />
                       </FormControl>
@@ -164,52 +149,36 @@ const Contact = () => {
                   )}
                 />
 
-                <Button type="submit" size="lg" className="w-full rounded-full font-heading text-sm glow-teal">
+                <Button type="submit" size="lg" className="rounded-md font-heading text-sm px-10">
                   Envoyer la demande
                 </Button>
               </form>
             </Form>
-          </motion.div>
+          </div>
 
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="lg:col-span-2 flex flex-col justify-center gap-8"
-          >
-            <div className="flex items-start gap-4">
-              <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
-                <Mail className="h-5 w-5 text-primary" />
+          <div className="lg:col-span-2 flex flex-col justify-start gap-10 pt-2">
+            {[
+              { icon: Mail, title: "Email", content: "genolabgab@proton.me", href: "mailto:genolabgab@proton.me" },
+              { icon: MapPin, title: "Localisation", content: "Basé au Maroc" },
+              { icon: Globe, title: "Disponibilité", content: "Disponible à l'international" },
+            ].map((item) => (
+              <div key={item.title} className="flex items-start gap-4">
+                <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+                  <item.icon className="h-5 w-5 text-primary" />
+                </div>
+                <div>
+                  <h3 className="font-heading text-sm font-semibold mb-1 text-foreground">{item.title}</h3>
+                  {item.href ? (
+                    <a href={item.href} className="font-body text-sm text-muted-foreground hover:text-primary transition-colors">
+                      {item.content}
+                    </a>
+                  ) : (
+                    <p className="font-body text-sm text-muted-foreground">{item.content}</p>
+                  )}
+                </div>
               </div>
-              <div>
-                <h3 className="font-heading text-sm font-semibold mb-1">Email</h3>
-                <a href="mailto:genolabgab@proton.me" className="font-body text-muted-foreground hover:text-primary transition-colors">
-                  genolabgab@proton.me
-                </a>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-4">
-              <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
-                <MapPin className="h-5 w-5 text-primary" />
-              </div>
-              <div>
-                <h3 className="font-heading text-sm font-semibold mb-1">Localisation</h3>
-                <p className="font-body text-muted-foreground">Basé au Maroc</p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-4">
-              <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
-                <Globe className="h-5 w-5 text-primary" />
-              </div>
-              <div>
-                <h3 className="font-heading text-sm font-semibold mb-1">Disponibilité</h3>
-                <p className="font-body text-muted-foreground">Disponible à l'international</p>
-              </div>
-            </div>
-          </motion.div>
+            ))}
+          </div>
         </div>
       </div>
     </section>

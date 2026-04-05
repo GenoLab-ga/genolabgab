@@ -22,7 +22,7 @@
     --secondary-foreground: 210 40% 98%;
 
     --muted: 216 50% 20%;
-    --muted-foreground: 214 30% 78%;
+    --muted-foreground: 214 30% 70%;
 
     --accent: 216 100% 61%;
     --accent-foreground: 210 40% 98%;
@@ -34,7 +34,7 @@
     --input: 216 40% 20%;
     --ring: 166 100% 39%;
 
-    --radius: 0.75rem;
+    --radius: 0.5rem;
 
     --sidebar-background: 216 67% 10%;
     --sidebar-foreground: 210 40% 98%;
@@ -58,23 +58,5 @@
 
   h1, h2, h3, h4, h5, h6 {
     @apply font-heading;
-  }
-}
-
-@layer utilities {
-  .glass {
-    @apply bg-card/40 backdrop-blur-xl border border-border/50;
-  }
-
-  .glow-teal {
-    box-shadow: 0 0 30px hsl(166 100% 39% / 0.15), 0 0 60px hsl(166 100% 39% / 0.05);
-  }
-
-  .glow-teal-strong {
-    box-shadow: 0 0 20px hsl(166 100% 39% / 0.3), 0 0 40px hsl(166 100% 39% / 0.1);
-  }
-
-  .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent;
   }
 }

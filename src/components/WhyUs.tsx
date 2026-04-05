@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import { Target, Zap, BarChart3, Shield } from "lucide-react";
 
 const reasons = [
@@ -26,41 +25,26 @@ const reasons = [
 
 const WhyUs = () => {
   return (
-    <section className="py-24 md:py-32 relative">
-      <div className="absolute inset-0 bg-gradient-to-b from-background via-secondary/20 to-background" />
-
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-16"
-        >
-          <span className="font-heading text-xs font-semibold tracking-widest uppercase text-primary mb-4 block">
+    <section className="py-28 md:py-36 border-t border-border/30">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="mb-20">
+          <p className="font-heading text-sm tracking-widest uppercase text-primary mb-4">
             Nos engagements
-          </span>
-          <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold">
-            Pourquoi <span className="text-gradient">GenoLabGab</span> ?
+          </p>
+          <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold text-foreground">
+            Pourquoi GenoLabGab ?
           </h2>
-        </motion.div>
+        </div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {reasons.map((reason, i) => (
-            <motion.div
-              key={reason.title}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: i * 0.1 }}
-              className="text-center p-8 glass rounded-2xl hover:-translate-y-1 transition-transform duration-300"
-            >
-              <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-6">
-                <reason.icon className="h-8 w-8 text-primary" />
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          {reasons.map((reason) => (
+            <div key={reason.title} className="p-6">
+              <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-6">
+                <reason.icon className="h-6 w-6 text-primary" />
               </div>
               <h3 className="font-heading text-lg font-semibold mb-3 text-foreground">{reason.title}</h3>
-              <p className="font-body text-sm text-muted-foreground leading-relaxed">{reason.description}</p>
-            </motion.div>
+              <p className="font-body text-muted-foreground leading-[1.8]">{reason.description}</p>
+            </div>
           ))}
         </div>
       </div>
