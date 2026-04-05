@@ -30,6 +30,15 @@ const articles = [
     author: "Karl Mounguele",
     slug: "/blog/docking-moleculaire-criblage-virtuel",
   },
+  {
+    tag: "Bioinformatique structurale",
+    title: "Criblage virtuel de produits naturels contre la protéine de capside p24 du VIH-1",
+    excerpt: "Criblage virtuel par docking moléculaire AutoDock Vina de 100 produits naturels contre la capside p24 du VIH-1. Identification d'un triterpénoïde oléanane (-8,99 kcal/mol).",
+    date: "Avril 2026",
+    readTime: "8 min",
+    author: "Keny Karl Mounguele",
+    slug: "/blog/criblage-virtuel-p24-vih1",
+  },
 ];
 
 const Blog = () => {
