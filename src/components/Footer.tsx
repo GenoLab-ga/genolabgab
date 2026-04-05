@@ -2,7 +2,7 @@ import { Dna } from "lucide-react";
 
 const Footer = () => {
   return (
-    <footer className="border-t border-border/40 py-16 md:py-20">
+    <footer className="border-t border-border/40 py-16 md:py-20" style={{ backgroundColor: "hsl(240, 15%, 11%)" }}>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid md:grid-cols-4 gap-10">
           <div className="md:col-span-1">
