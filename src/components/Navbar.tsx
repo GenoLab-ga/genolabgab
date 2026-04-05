@@ -28,7 +28,7 @@ const Navbar = () => {
           : "bg-transparent"
       }`}
     >
-      <nav className="container mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16 md:h-20">
+      <nav className="container mx-auto px-4 sm:px-6 lg:px-8 flex items-center gap-12 h-16 md:h-20">
         <a href="/#accueil" className="flex items-center gap-2">
           <Dna className="h-6 w-6 text-primary" />
           <span className="font-heading text-lg font-bold text-foreground">
@@ -36,7 +36,7 @@ const Navbar = () => {
           </span>
         </a>
 
-        <ul className="hidden md:flex items-center gap-10">
+        <ul className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (
             <li key={link.href}>
               <a
@@ -50,7 +50,7 @@ const Navbar = () => {
         </ul>
 
         <button
-          className="md:hidden text-foreground p-2"
+          className="md:hidden text-foreground p-2 ml-auto"
           onClick={() => setMobileOpen(!mobileOpen)}
           aria-label="Menu"
         >
