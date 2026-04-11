@@ -35,7 +35,7 @@ const BlogArticleLayout = ({
     <div className="min-h-screen bg-background text-foreground">
       <Navbar />
       <main className="pt-24 pb-16">
-        <article className="mx-auto px-8 sm:px-10 lg:px-8 max-w-[800px] text-left">
+        <article className="mx-auto px-6 sm:px-8 max-w-[820px] text-left">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -79,13 +79,17 @@ const BlogArticleLayout = ({
             transition={{ duration: 0.5, delay: 0.2 }}
             className="prose prose-invert prose-lg max-w-none text-left
               prose-headings:font-heading prose-headings:text-foreground
-              prose-h2:text-2xl prose-h2:md:text-3xl prose-h2:mt-[2.5rem] prose-h2:mb-6 prose-h2:pl-4 prose-h2:border-l-4 prose-h2:border-l-primary prose-h2:border-t-0
-              prose-h3:text-xl prose-h3:mt-[2rem] prose-h3:mb-4 prose-h3:text-foreground
-              prose-p:font-body prose-p:text-muted-foreground prose-p:leading-[1.8] prose-p:mb-[1.5rem] prose-p:text-left
-              prose-li:font-body prose-li:text-muted-foreground prose-li:leading-[1.8] prose-li:mb-2
-              prose-ul:my-6 prose-ol:my-6
+              prose-h2:text-[1.6rem] prose-h2:md:text-[1.6rem] prose-h2:mt-[3rem] prose-h2:mb-4 prose-h2:pl-4 prose-h2:border-l-4 prose-h2:border-l-primary prose-h2:border-t-0
+              prose-h3:text-[1.2rem] prose-h3:mt-[2rem] prose-h3:mb-3 prose-h3:text-foreground
+              prose-p:font-body prose-p:text-muted-foreground prose-p:leading-[1.9] prose-p:mb-[1.5rem] prose-p:text-left
+              prose-li:font-body prose-li:text-muted-foreground prose-li:leading-[1.9] prose-li:py-[0.3rem]
+              prose-ul:mb-6 prose-ol:mb-6
               prose-strong:text-foreground
-              prose-a:text-primary prose-a:no-underline hover:prose-a:underline"
+              prose-a:text-primary prose-a:no-underline hover:prose-a:underline
+              prose-table:w-full prose-table:border-collapse prose-table:my-6
+              prose-th:bg-primary/10 prose-th:text-foreground prose-th:font-heading prose-th:text-sm prose-th:px-4 prose-th:py-3 prose-th:text-left prose-th:border prose-th:border-border/50
+              prose-td:text-muted-foreground prose-td:text-sm prose-td:px-4 prose-td:py-2.5 prose-td:border prose-td:border-border/50
+              prose-tr:even:bg-muted/20"
           >
             {children}
           </motion.div>
