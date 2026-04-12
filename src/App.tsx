@@ -9,6 +9,8 @@ import BlogNGS from "./pages/BlogNGS.tsx";
 import BlogVariants from "./pages/BlogVariants.tsx";
 import BlogDocking from "./pages/BlogDocking.tsx";
 import BlogP24 from "./pages/BlogP24.tsx";
+import Terms from "./pages/Terms.tsx";
+import Privacy from "./pages/Privacy.tsx";
 
 const queryClient = new QueryClient();
 
@@ -20,6 +22,8 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/terms" element={<Terms />} />
+          <Route path="/privacy" element={<Privacy />} />
           <Route path="/blog/pretraitement-donnees-ngs" element={<BlogNGS />} />
           <Route path="/blog/detection-variants-snp-indel-cnv" element={<BlogVariants />} />
           <Route path="/blog/docking-moleculaire-criblage-virtuel" element={<BlogDocking />} />
