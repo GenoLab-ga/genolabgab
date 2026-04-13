@@ -1,14 +1,8 @@
 {
-  "routes": [
-    { "handle": "filesystem" },
-    { "src": "/(.*)", "dest": "/index.html" }
-  ],
-  "headers": [
+  "rewrites": [
     {
-      "source": "/sitemap.xml",
-      "headers": [
-        { "key": "Content-Type", "value": "application/xml" }
-      ]
+      "source": "/((?!tiktok|privacy|terms).*)",
+      "destination": "/index.html"
     }
   ]
 }
