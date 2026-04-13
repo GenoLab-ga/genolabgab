@@ -8,6 +8,14 @@ const Privacy = () => {
   useEffect(() => {
     document.title = "Politique de confidentialité | GenoLabGab";
     window.scrollTo(0, 0);
+    let meta = document.querySelector('meta[name="tiktok-developers-site-verification"]');
+    if (!meta) {
+      meta = document.createElement("meta");
+      meta.setAttribute("name", "tiktok-developers-site-verification");
+      document.head.appendChild(meta);
+    }
+    meta.setAttribute("content", "qBzUv0wIMMq3sJrV5tgmj5oarBZXILIs");
+    return () => { meta?.remove(); };
   }, []);
 
   return (
