@@ -2,11 +2,14 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { publications } from "@/data/site";
+// On importe notre nouveau wrapper à la place de l'import dynamique direct
+import QcChartWrapper from "@/components/QcChartWrapper";
 
 export const metadata: Metadata = {
   title: "Keny Karl Mounguele — Ingénieur Bioinformaticien · GenoLabGab",
   description:
     "Fondateur de GenoLabGab, ingénieur bioinformaticien spécialisé en génomique computationnelle, bioinformatique structurale et vaccinomique. Basé à Fès, Maroc.",
+  keywords: ["Génomique", "Bio-informatique", "Gabon", "DNA", "Analyse de données"],
   alternates: {
     canonical: "https://genolabgab.vercel.app",
   },
@@ -182,6 +185,20 @@ export default function HomePage() {
               <p className="mt-2 text-sm leading-relaxed text-slate-600">{d.desc}</p>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* ── DEMO DU LABORATOIRE INTERACTIF ──────── */}
+      <section className="mx-auto mt-20 max-w-6xl px-4 sm:px-6 lg:px-8">
+        <h2 className="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
+          Visualisation de données de recherche
+        </h2>
+        <p className="mt-2 text-sm text-slate-600 max-w-2xl">
+          Aperçu interactif des outils d'évaluation de la qualité des données brutes de séquençage générés par nos pipelines bioinformatiques.
+        </p>
+        <div className="mt-8 max-w-3xl">
+          {/* Utilisation propre du composant isolé */}
+          <QcChartWrapper />
         </div>
       </section>
 
