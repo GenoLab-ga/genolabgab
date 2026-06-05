@@ -1,154 +1,114 @@
-import type { Metadata } from "next";
+"use client";
 
-export const metadata: Metadata = {
-  title: "Contact — Keny Karl Mounguele · GenoLabGab",
-  description:
-    "Contactez Keny Karl Mounguele pour des collaborations scientifiques, stages, ou discussions en bioinformatique et génomique computationnelle.",
-  alternates: {
-    canonical: "https://genolabgab.vercel.app/contact",
-  },
-};
-
-export const dynamic = "force-static";
-
-const contacts = [
-  {
-    icon: "✉️",
-    label: "Email",
-    value: "mounguele.kenykarl@gmail.com",
-    href: "mailto:mounguele.kenykarl@gmail.com",
-    description: "Pour toute collaboration ou question scientifique",
-  },
-  {
-    icon: "🐙",
-    label: "GitHub",
-    value: "github.com/GenoLab-ga",
-    href: "https://github.com/GenoLab-ga",
-    description: "Scripts, pipelines et notebooks",
-  },
-  {
-    icon: "💼",
-    label: "LinkedIn",
-    value: "Keny Karl Mounguele",
-    href: "https://linkedin.com/in/keny-karl-mounguele",
-    description: "Réseau professionnel",
-  },
-  {
-    icon: "🆔",
-    label: "ORCID",
-    value: "0009-0006-6706-0069",
-    href: "https://orcid.org/0009-0006-6706-0069",
-    description: "Identifiant chercheur international",
-  },
-  {
-    icon: "📍",
-    label: "Localisation",
-    value: "Fès, Maroc",
-    href: undefined,
-    description: "Université Euromed de Fès",
-  },
-];
+import { useState } from "react";
 
 export default function ContactPage() {
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "ContactPage",
-    name: "Contact — GenoLabGab",
-    url: "https://genolabgab.vercel.app/contact",
-    mainEntity: {
-      "@type": "Person",
-      name: "Keny Karl Mounguele",
-      email: "mounguele.kenykarl@gmail.com",
-      url: "https://genolabgab.vercel.app",
-    },
-  };
+  const [status, setStatus] = useState<string | null>(null);
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setStatus("envoi");
+
+    const form = e.currentTarget;
+    const data = new FormData(form);
+
+    // ⚠️ REMPLACE 'xbjnyozk' PAR TON ID FORMSPREE
+    const response = await fetch("https://formspree.io/f/xbjnyozk", {
+      method: "POST",
+      body: data,
+      headers: {
+        'Accept': 'application/json'
+      }
+    });
+
+    if (response.ok) {
+      setStatus("succes");
+      form.reset();
+    } else {
+      setStatus("erreur");
+    }
+  }
 
   return (
-    <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+    <div className="mx-auto max-w-4xl px-6 py-20 text-center">
+      <h1 className="text-4xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50 sm:text-5xl">
+        Contactez-nous
+      </h1>
+      <p className="mt-4 text-lg text-zinc-600 dark:text-zinc-400">
+        Une question sur nos services de bio-informatique ou un projet d'analyse génomique ? Laissez-nous un message.
+      </p>
 
-      <div className="mx-auto max-w-4xl px-4 py-16 sm:px-6 lg:px-8">
-        <h1 className="text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl">
-          Contact
-        </h1>
-        <p className="mt-3 max-w-xl text-lg text-slate-600">
-          Je suis ouvert aux collaborations scientifiques, stages, projets de recherche, ou tout
-          simplement à des échanges autour de la bioinformatique.
-        </p>
-
-        {/* Contact cards */}
-        <div className="mt-10 grid gap-4 sm:grid-cols-2">
-          {contacts.map((c) => (
-            <div
-              key={c.label}
-              className="rounded-2xl border border-slate-200 bg-white p-5 transition hover:border-emerald-300 hover:shadow-md"
-            >
-              <div className="flex items-start gap-4">
-                <div className="text-2xl">{c.icon}</div>
-                <div>
-                  <div className="text-xs font-semibold uppercase tracking-wide text-slate-400">
-                    {c.label}
-                  </div>
-                  {c.href ? (
-                    <a
-                      href={c.href}
-                      target={c.href.startsWith("mailto") ? undefined : "_blank"}
-                      rel={c.href.startsWith("mailto") ? undefined : "noreferrer"}
-                      className="mt-0.5 block font-semibold text-slate-900 hover:text-emerald-700 transition break-all"
-                    >
-                      {c.value}
-                    </a>
-                  ) : (
-                    <span className="mt-0.5 block font-semibold text-slate-900">{c.value}</span>
-                  )}
-                  <p className="mt-1 text-xs text-slate-500">{c.description}</p>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Availability note */}
-        <div className="mt-10 rounded-2xl border border-emerald-200 bg-emerald-50 p-6">
-          <div className="flex items-start gap-3">
-            <div className="mt-0.5 inline-block h-2.5 w-2.5 shrink-0 animate-pulse rounded-full bg-emerald-500" />
-            <div>
-              <h2 className="font-semibold text-emerald-800">Disponible pour collaboration</h2>
-              <p className="mt-1 text-sm leading-relaxed text-emerald-700">
-                Je suis actuellement disponible pour des collaborations en recherche, des stages
-                post-master, ou des projets freelance en bioinformatique. N'hésitez pas à me
-                contacter pour discuter de vos projets.
-              </p>
-            </div>
+      {/* Formulaire de Contact Formspree */}
+      <div className="mt-10 max-w-xl mx-auto bg-white dark:bg-zinc-900 p-8 rounded-2xl shadow-sm border border-zinc-100 dark:border-zinc-800 text-left">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+          <div>
+            <label htmlFor="name" className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">
+              Nom complet
+            </label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              required
+              className="w-full rounded-xl border border-zinc-200 dark:border-zinc-700 bg-transparent px-4 py-2.5 text-sm outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 text-zinc-900 dark:text-zinc-100"
+            />
           </div>
-        </div>
 
-        {/* Email CTA */}
-        <div className="mt-10 text-center">
-          <a
-            href="mailto:mounguele.kenykarl@gmail.com"
-            className="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-6 py-3 font-semibold text-white shadow-sm transition hover:bg-emerald-700"
+          <div>
+            <label htmlFor="email" className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">
+              Adresse email
+            </label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              required
+              className="w-full rounded-xl border border-zinc-200 dark:border-zinc-700 bg-transparent px-4 py-2.5 text-sm outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 text-zinc-900 dark:text-zinc-100"
+            />
+          </div>
+
+          <div>
+            <label htmlFor="message" className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">
+              Votre message
+            </label>
+            <textarea
+              id="message"
+              name="message"
+              required
+              rows={5}
+              className="w-full rounded-xl border border-zinc-200 dark:border-zinc-700 bg-transparent px-4 py-2.5 text-sm outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 text-zinc-900 dark:text-zinc-100"
+            />
+          </div>
+
+          <button
+            type="submit"
+            disabled={status === "envoi"}
+            className="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-6 py-3 font-semibold text-white shadow-sm transition hover:bg-emerald-700 disabled:opacity-50 w-full"
           >
-            <svg
-              className="h-4 w-4"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={2}
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-              />
-            </svg>
-            Envoyer un email
-          </a>
-        </div>
+            {status === "envoi" ? (
+              "Envoi en cours..."
+            ) : (
+              <>
+                <svg className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+                Envoyer le message
+              </>
+            )}
+          </button>
+        </form>
+
+        {status === "succes" && (
+          <p className="mt-4 p-3 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400 rounded-xl text-sm font-medium text-center">
+            Merci ! Votre message a bien été envoyé.
+          </p>
+        )}
+        {status === "erreur" && (
+          <p className="mt-4 p-3 bg-red-50 dark:bg-red-950/30 text-red-600 dark:text-red-400 rounded-xl text-sm font-medium text-center">
+            Oups ! Une erreur est survenue. Veuillez réessayer.
+          </p>
+        )}
       </div>
-    </>
+    </div>
   );
 }
