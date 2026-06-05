@@ -11,6 +11,7 @@ export const metadata: Metadata = {
     "Fondateur de GenoLabGab, ingénieur bioinformaticien spécialisé en génomique computationnelle, bioinformatique structurale et vaccinomique. Basé à Fès, Maroc.",
   keywords: ["Génomique", "Bio-informatique", "Gabon", "DNA", "Analyse de données"],
   alternates: {
+    // Remplace par ton sous-domaine exact Vercel
     canonical: "https://genolabgab.vercel.app",
   },
 };
