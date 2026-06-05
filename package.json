@@ -17,6 +17,8 @@
     "react-dom": "19.2.6"
   },
   "devDependencies": {
+    "@esbuild-kit/core-utils": "^3.3.2",
+    "@esbuild-kit/esm-loader": "^2.6.5",
     "@tailwindcss/postcss": "4.1.17",
     "@types/node": "22.19.15",
     "@types/pg": "8.18.0",
@@ -27,6 +29,7 @@
     "eslint-config-next": "16.2.0",
     "postcss": "8.5.8",
     "tailwindcss": "4.1.17",
+    "tsx": "^4.22.4",
     "typescript": "5.9.3"
   }
 }

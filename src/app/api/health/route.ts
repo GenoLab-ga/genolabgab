@@ -1,3 +1,7 @@
+export const dynamic = 'force-dynamic';
+
+// Le reste de ton code existant (ex: export async function GET()...)
+
 import { db } from "@/db";
 import { sql } from "drizzle-orm";
 
