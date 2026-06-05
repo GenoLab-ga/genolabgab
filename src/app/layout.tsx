@@ -7,11 +7,11 @@ import Footer from "@/components/Footer";
 export const metadata: Metadata = {
   metadataBase: new URL("https://genolabgab.vercel.app"),
   title: {
-    default: "Keny Karl Mounguele — Ingénieur Bioinformaticien · GenoLabGab",
+    default: "Karl Mounguele — Ingénieur Bioinformaticien · GenoLabGab",
     template: "%s · GenoLabGab",
   },
   description:
-    "Site personnel de Keny Karl Mounguele — ingénieur bioinformaticien à Fès, Maroc. Génomique computationnelle, bioinformatique structurale, docking moléculaire, GenoLabGab.",
+    "Site de Karl Mounguele — ingénieur bioinformaticien à Fès, Maroc. Génomique computationnelle, bioinformatique structurale, docking moléculaire, GenoLabGab.",
   keywords: [
     "génomique",
     "bioinformatique",
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     "AlphaFold",
     "AutoDock Vina",
   ],
-  authors: [{ name: "Keny Karl Mounguele" }],
+  authors: [{ name: "Karl Mounguele" }],
   creator: "Keny Karl Mounguele",
   openGraph: {
     type: "website",
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     alternateLocale: ["en_US"],
     url: "https://genolabgab.vercel.app",
     siteName: "GenoLabGab",
-    title: "Keny Karl Mounguele — Ingénieur Bioinformaticien · GenoLabGab",
+    title: "Karl Mounguele — Ingénieur Bioinformaticien · GenoLabGab",
     description:
       "Génomique computationnelle, bioinformatique structurale, docking moléculaire, vaccinomique.",
     images: [
@@ -50,7 +50,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Keny Karl Mounguele — Ingénieur Bioinformaticien · GenoLabGab",
+    title: "Karl Mounguele — Ingénieur Bioinformaticien · GenoLabGab",
     description:
       "Génomique computationnelle, bioinformatique structurale, docking moléculaire, vaccinomique.",
     images: ["/og-image.svg"],
