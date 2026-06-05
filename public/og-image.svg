@@ -1,0 +1,25 @@
+<svg xmlns='http://www.w3.org/2000/svg' width='1200' height='630' viewBox='0 0 1200 630'>
+  <defs>
+    <linearGradient id='bg' x1='0' y1='0' x2='1' y2='1'>
+      <stop offset='0%' stop-color='#064e3b'/>
+      <stop offset='100%' stop-color='#065f46'/>
+    </linearGradient>
+  </defs>
+  <rect width='1200' height='630' fill='url(#bg)'/>
+  <!-- DNA helix decoration -->
+  <circle cx='950' cy='150' r='200' fill='#10b981' opacity='0.1'/>
+  <circle cx='1100' cy='500' r='150' fill='#34d399' opacity='0.08'/>
+  <!-- Content -->
+  <text x='80' y='120' font-family='system-ui,sans-serif' font-size='28' fill='#6ee7b7' font-weight='600' letter-spacing='2'>🧬 GENOLABGAB</text>
+  <text x='80' y='240' font-family='system-ui,sans-serif' font-size='72' fill='white' font-weight='700'>Keny Karl</text>
+  <text x='80' y='330' font-family='system-ui,sans-serif' font-size='72' fill='white' font-weight='700'>Mounguele</text>
+  <text x='80' y='410' font-family='system-ui,sans-serif' font-size='36' fill='#6ee7b7' font-weight='500'>Ingénieur Bioinformaticien</text>
+  <text x='80' y='460' font-family='system-ui,sans-serif' font-size='24' fill='#a7f3d0'>Université Euromed de Fès · Fès, Maroc</text>
+  <!-- Tags -->
+  <rect x='80' y='500' width='160' height='40' rx='20' fill='#10b981' opacity='0.3'/>
+  <text x='160' y='526' font-family='system-ui,sans-serif' font-size='16' fill='white' text-anchor='middle'>Génomique</text>
+  <rect x='260' y='500' width='200' height='40' rx='20' fill='#10b981' opacity='0.3'/>
+  <text x='360' y='526' font-family='system-ui,sans-serif' font-size='16' fill='white' text-anchor='middle'>Docking Moléculaire</text>
+  <rect x='480' y='500' width='160' height='40' rx='20' fill='#10b981' opacity='0.3'/>
+  <text x='560' y='526' font-family='system-ui,sans-serif' font-size='16' fill='white' text-anchor='middle'>Vaccinomique</text>
+</svg>
