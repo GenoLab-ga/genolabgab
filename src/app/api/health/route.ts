@@ -5,10 +5,14 @@ export const dynamic = 'force-dynamic';
 import { db } from "@/db";
 import { sql } from "drizzle-orm";
 
-export const dynamic = "force-dynamic";
 
 export async function GET() {
   try {
+    // On vérifie explicitement si db existe pour rassurer TypeScript
+    if (!db) {
+      return Response.json({ ok: false, error: "Database connection not initialized" }, { status: 500 });
+    }
+
     await db.execute(sql`select 1`);
     return Response.json({ ok: true });
   } catch {
