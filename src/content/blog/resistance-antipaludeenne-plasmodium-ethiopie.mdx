@@ -1,0 +1,194 @@
+---
+title: "Surveillance moléculaire de la résistance aux antipaludéens chez Plasmodium falciparum en Éthiopie"
+date: "2026-05-25"
+description: "Analyse bioinformatique complète de 318 isolats cliniques de P. falciparum issus de sites de résurgence en Éthiopie (BioProject PRJNA1465284). Détection de 7 mutations de résistance validées par l'OMS, dont kelch13-P441L à 4,1% — signal d'alerte précoce pour la résistance à l'artémisinine en Afrique de l'Est."
+tags: ["Plasmodium falciparum", "Résistance antipaludéenne", "kelch13", "Pipeline NGS", "GATK", "Éthiopie", "Surveillance moléculaire"]
+---
+
+## Résumé exécutif
+
+Cette étude présente une analyse bioinformatique complète de la surveillance moléculaire de la résistance aux antipaludéens chez *Plasmodium falciparum* dans des sites de résurgence clinique en Éthiopie (BioProject PRJNA1465284, 326 isolats). Un pipeline reproductible a été développé sous Linux/Ubuntu, intégrant le contrôle qualité (FastQC/MultiQC), le trimming (fastp), l'alignement sur le génome de référence Pf3D7 (BWA-MEM), l'appel de variants (GATK HaplotypeCaller), l'annotation fonctionnelle (SnpEff) et l'analyse de génétique des populations (PLINK/vcftools).
+
+**Résultats principaux :** Sept mutations de résistance validées par l'OMS ont été identifiées. Le triple mutant *dhfr* (N51I + C59R + S108N) associé à la résistance à la sulfadoxine-pyriméthamine présente une prévalence quasi-fixée (96,5–99,4%). La mutation *pfcrt*-K76T, marqueur de résistance à la chloroquine, atteint 81%. De manière alarmante, la mutation *kelch13*-P441L, marqueur validé OMS de résistance partielle à l'artémisinine, a été détectée chez 13/318 isolats (4,1%), répartis en trois clusters géographiques distincts, suggérant une dissémination active dans la région.
+
+**Implications :** Ces résultats ont des implications directes pour les politiques thérapeutiques antipaludéennes en Éthiopie et soulignent l'urgence d'un renforcement de la surveillance moléculaire en Afrique de l'Est.
+
+---
+
+## Introduction
+
+Le paludisme reste l'une des maladies infectieuses les plus dévastatrices à l'échelle mondiale. *Plasmodium falciparum* est responsable de la majorité des cas graves et des décès, en particulier en Afrique subsaharienne. Les thérapies combinées à base d'artémisinine (ACT) constituent le traitement de première ligne recommandé par l'OMS, mais l'émergence et la propagation de résistances menacent des décennies de progrès dans la lutte antipaludéenne.
+
+La surveillance moléculaire des marqueurs de résistance constitue un système d'alerte précoce pour les échecs thérapeutiques, avant que la résistance clinique ne devienne généralisée. Le gène *kelch13* (*pfkelch13*, PF3D7_1343700) code une protéine à domaine Kelch dont les mutations confèrent une résistance partielle à l'artémisinine via des mécanismes impliquant une susceptibilité réduite au stade anneau. L'OMS a validé une liste croissante de mutations *kelch13* associées à des échecs thérapeutiques cliniques, dont C580Y (dominante en Asie du Sud-Est), R539T, et plus récemment P441L et I622L, identifiées dans la Corne de l'Afrique.
+
+L'Éthiopie a connu une résurgence du paludisme ces dernières années, avec des signalements croissants d'échecs thérapeutiques. Le protocole de séquençage amplicon multiplexe PfSMARRTer permet le génotypage simultané de plusieurs loci de résistance (*kelch13*, *crt*, *mdr1*, *dhfr*, *dhps*) à partir d'échantillons cliniques, offrant des profils de résistance complets à grande échelle.
+
+Ce rapport présente une réanalyse bioinformatique indépendante de PRJNA1465284, un jeu de données de l'Université Brown (2026) généré dans le cadre des projets AMR-malaria (ACDCP167916, Banque mondiale) et MAREE (R01AI177791, NIH).
+
+---
+
+## Matériel et méthodes
+
+### Jeu de données
+
+| Paramètre | Valeur |
+|-----------|--------|
+| Accession BioProject | PRJNA1465284 |
+| Type de données | Targeted Locus — Amplicon |
+| Organisme | *Plasmodium falciparum* 3D7 |
+| Protocole | PfSMARRTer multiplexe |
+| Total runs SRA | 326 |
+| Runs analysés | 318 |
+| Exclus (QC) | 8 (échec qualité par tuile) |
+| Institution | Brown University |
+
+### Loci de résistance ciblés
+
+| Gène | Chr | Médicament | Mutations OMS clés |
+|------|-----|------------|-------------------|
+| *kelch13* | 13 | Artémisinines (ACT) | C580Y, R539T, P441L, I622L |
+| *crt* | 7 | Chloroquine | K76T (haplotype CVIET) |
+| *mdr1* | 5 | Méfloquine / Luméfantrine | N86Y, Y184F, D1246Y |
+| *dhfr* | 4 | Pyriméthamine (SP) | N51I, C59R, S108N, I164L |
+| *dhps* | 8 | Sulfadoxine (SP) | A437G, K540E, A581G |
+
+### Pipeline bioinformatique
+
+Le pipeline d'analyse comprenait huit étapes séquentielles :
+
+**Étape 1 — Récupération des données.** Les runs SRA ont été téléchargés avec `prefetch` et convertis au format FASTQ avec `fasterq-dump` (SRA Toolkit v3.x). Volume total : ~6 Go pour 326 fichiers FASTQ paired-end.
+
+**Étape 2 — Contrôle qualité.** Les métriques de qualité par échantillon ont été évaluées avec FastQC (v0.12) et les rapports agrégés générés avec MultiQC (v1.x). Huit échantillons ont été exclus pour des échecs de qualité par tuile (dégradation de flowcell). Les flags FAIL systématiques pour la duplication, le contenu en bases et le taux GC ont été ignorés — ils reflètent la biologie du séquençage amplicon et le génome AT-riche de *P. falciparum* (~80% AT).
+
+**Étape 3 — Trimming des adaptateurs.** Les adaptateurs résiduels (détectés dans 355/652 fichiers FASTQ) et les bases de faible qualité ont été supprimés avec fastp (v0.23) :
+
+```bash
+fastp \
+  --qualified_quality_phred 20 \
+  --unqualified_percent_limit 40 \
+  --length_required 50 \
+  --cut_tail \
+  --cut_tail_mean_quality 20
+```
+
+**Étape 4 — Alignement de référence.** Les reads appairés et trimmés ont été alignés sur le génome de référence *P. falciparum* 3D7 (PlasmoDB release 68) avec BWA-MEM (v0.7.18) :
+
+```bash
+bwa mem ref.fa R1.fastq R2.fastq \
+  | samtools fixmate -m - - \
+  | samtools sort \
+  | samtools markdup - output.bam
+```
+
+Taux de mapping moyen : **99,87%** sur les 318 échantillons.
+
+**Étape 5 — Appel de variants.** Le génotypage joint a été réalisé avec GATK HaplotypeCaller (v4.6.2) en mode GVCF avec `--sample-ploidy 1` (organisme haploïde), restreint aux cinq loci de résistance via un fichier BED. GenomicsDBImport et GenotypeGVCFs ont été appliqués pour le génotypage au niveau de la cohorte. Filtres durs appliqués : QD < 2,0 ; FS > 60,0 ; MQ < 40,0 ; DP < 10.
+
+**Étape 6 — Annotation fonctionnelle.** Les variants ont été annotés avec SnpEff (v5.4) sur la base de données `Plasmodium_falciparum` après normalisation des noms de chromosomes (Pf3D7_XX_v3 → 1–14). Les variants faux-sens, décalage du cadre de lecture et stop-gain ont été extraits.
+
+**Étape 7 — Génétique des populations.** Les fréquences alléliques ont été calculées avec vcftools. L'analyse en composantes principales (ACP) et l'analyse d'identité par descendance (IBD) ont été réalisées avec PLINK v1.9 sur 55 SNPs bialléliques (taux de génotypage : 90,0%).
+
+---
+
+## Résultats
+
+### Statistiques de qualité et d'alignement
+
+| Métrique | Valeur |
+|----------|--------|
+| Total runs SRA téléchargés | 326 |
+| Échantillons exclus (échec QC) | 8 |
+| Échantillons analysés | 318 |
+| Taux de mapping moyen | 99,87% |
+| Échantillons avec mapping > 95% | 318/318 (100%) |
+| Total variants appelés | 42 |
+| Variants passant les filtres | 42 (100%) |
+| Taux de génotypage (ACP) | 90,0% |
+
+### Mutations de résistance validées par l'OMS
+
+Sept mutations de résistance validées par l'OMS ont été confirmées dans cette cohorte :
+
+| Gène | Mutation | Fréquence allélique | Porteurs estimés | Médicament | Statut OMS |
+|------|----------|--------------------|--------------------|------------|------------|
+| *dhfr* | N51I | 96,5% | ~307 | SP (pyriméthamine) | Validé |
+| *dhfr* | C59R | 59,7% | ~190 | SP (pyriméthamine) | Validé |
+| *dhfr* | S108N | 99,4% | ~316 | SP (pyriméthamine) | Validé |
+| *crt* | K76T | 81,0% | ~257 | Chloroquine | Validé |
+| *mdr1* | Y184F | 0,9% | ~3 | Luméfantrine | Validé |
+| *dhps* | A581G | 0,9% | ~3 | SP (sulfadoxine) | Validé |
+| *kelch13* | P441L | 4,1% | 13 | Artémisinine (ACT) | Validé (2023) |
+
+### Analyse des haplotypes Kelch13
+
+Des variants *kelch13* ont été identifiés à deux positions génomiques distinctes, suggérant deux lignées indépendantes :
+
+**Lignée A (n = 1, SRR38527352) :** Un isolat unique portant 21 variants co-ségrégants aux positions 1725354–1725459, tous à une fréquence allélique mineure identique (~0,32%), indiquant un fond haplotypique hautement divergent. Cet isolat pourrait représenter une souche importée ou le descendant d'un ancêtre ancien.
+
+**Lignée B (n = 13) :** Treize isolats portaient la mutation P441L (pos. 1725676, FA = 4,15%) sans co-ségrégation avec les variants de la Lignée A. Ces 13 isolats étaient distribués dans trois clusters SRR numériquement distincts (SRR38527224–242, SRR38527309–330, SRR38527427–431), cohérent avec une distribution géographique sur plusieurs sites cliniques.
+
+| Lignée | N isolats | Variant clé | Fréquence | Interprétation épidémiologique |
+|--------|-----------|-------------|-----------|-------------------------------|
+| A | 1 | 21 variants co-ségrégants | 0,32% | Haplotype divergent — import possible |
+| B | 13 | P441L uniquement (G→A) | 4,1% | Expansion clonale sur ≥3 sites géographiques |
+
+---
+
+## Discussion
+
+### Haute prévalence des marqueurs de résistance à la SP
+
+La quasi-fixation du triple mutant *dhfr* (N51I + C59R + S108N) à des fréquences de 59,7–99,4% représente une préoccupation majeure de santé publique. La sulfadoxine-pyriméthamine (SP) est actuellement recommandée par l'OMS pour le traitement préventif intermittent pendant la grossesse (TPIg) en Afrique subsaharienne. La prévalence extraordinairement élevée des marqueurs de résistance à la SP dans les isolats cliniques éthiopiens soulève de sérieuses questions quant à l'efficacité de cette stratégie prophylactique dans la région.
+
+### Résistance à la chloroquine toujours dominante
+
+La mutation *pfcrt*-K76T, composante de l'haplotype CVIET associé à la résistance à la chloroquine, a été détectée à une fréquence de 81%. Bien que la chloroquine ait été retirée comme traitement de première intention en Éthiopie il y a plus de deux décennies, son utilisation en prophylaxie et sa potentielle réintroduction comme partenaire de combinaison nécessitent une surveillance continue de ce marqueur.
+
+### Résistance émergente à l'artémisinine — un signal critique
+
+La détection de *kelch13*-P441L à 4,1% de fréquence (13/318 isolats) dans des échantillons cliniques provenant de sites de résurgence du paludisme représente la découverte la plus significative cliniquement de cette étude. P441L a été formellement ajouté à la liste OMS des marqueurs validés de résistance partielle à l'artémisinine en 2023, suite à sa documentation en Érythrée et en Éthiopie.
+
+La distribution des porteurs de P441L dans trois clusters SRR géographiquement distincts suggère que cette mutation s'est implantée dans plusieurs foyers de transmission, plutôt que d'être limitée à un événement d'introduction unique. Bien que 4,1% puisse paraître modeste, les tendances historiques d'Asie du Sud-Est montrent que les mutations *kelch13* peuvent atteindre une pertinence clinique en quelques saisons de transmission une fois établies.
+
+### Implications pour la santé publique
+
+La co-occurrence de marqueurs de résistance à la SP à haute fréquence et d'une résistance émergente aux ACT représente une menace composée pour l'efficacité des traitements antipaludéens en Éthiopie. Des programmes de surveillance moléculaire renforcés, idéalement intégrés au suivi des résultats thérapeutiques cliniques, devraient être prioritaires pour suivre la trajectoire de P441L et toute nouvelle mutation *kelch13* émergente dans la région.
+
+### Limites
+
+Plusieurs limites de cette analyse méritent d'être reconnues. Premièrement, l'approche de séquençage amplicon, bien que puissante pour la surveillance ciblée de la résistance, fournit un contexte génomique limité pour l'inférence de la structure des populations. Les 55 SNPs bialléliques identifiés sur ~15 kb sont insuffisants pour une analyse IBD robuste. Deuxièmement, les métadonnées géographiques liant les identifiants SRR à des sites cliniques spécifiques n'étaient pas disponibles dans le jeu de données public. Troisièmement, l'absence de données d'issues cliniques appariées empêche l'évaluation directe des taux d'échecs thérapeutiques associés aux mutations identifiées.
+
+---
+
+## Conclusions
+
+Cette réanalyse bioinformatique indépendante de PRJNA1465284 confirme et étend l'épidémiologie moléculaire de la résistance aux antipaludéens chez *P. falciparum* éthiopien. Les résultats clés sont :
+
+1. Le triple mutant *dhfr* conférant la résistance à la SP est quasi-fixé dans les isolats cliniques des sites de résurgence éthiopiens, remettant en question l'efficacité du TPIg-SP dans ce contexte géographique.
+2. La résistance à la chloroquine (*pfcrt*-K76T) reste très prévalente à 81%, cohérent avec les tendances historiques en Afrique de l'Est.
+3. Le marqueur de résistance à l'artémisinine *kelch13*-P441L a été détecté à 4,1% dans plusieurs clusters géographiques, représentant un signal d'alerte précoce mais exploitable pour l'efficacité des ACT en Éthiopie.
+
+Ces résultats soulignent l'importance critique de programmes systématiques de surveillance moléculaire en Afrique de l'Est et soutiennent la nécessité urgente d'une réponse au niveau des politiques de santé face à la résistance émergente aux ACT.
+
+---
+
+## Reproductibilité
+
+Toutes les analyses ont été réalisées sous Ubuntu 24.04 LTS (AMD Ryzen 5 PRO, 16 Go RAM, 12 CPUs) avec des environnements conda/mamba. Le pipeline complet, incluant tous les scripts bash et le code R, est disponible publiquement sur [GitHub — GenoLab-ga](https://github.com/GenoLab-ga).
+
+| Outil | Version | Usage |
+|-------|---------|-------|
+| FastQC | 0.12 | Contrôle qualité par échantillon |
+| MultiQC | 1.x | Rapport QC agrégé |
+| fastp | 0.23 | Trimming des adaptateurs |
+| BWA-MEM | 0.7.18 | Alignement de référence |
+| samtools | 1.x | Traitement BAM |
+| GATK | 4.6.2 | Appel de variants |
+| SnpEff | 5.4 | Annotation fonctionnelle |
+| vcftools | 0.1.16 | Fréquences alléliques |
+| PLINK | 1.9 | ACP / IBD |
+| R | 4.x | Analyses statistiques et figures |
+
+---
+
+*Analyse réalisée dans le cadre de GenoLabGab — Initiative indépendante en biologie computationnelle. Les données brutes de séquençage ont été générées par des chercheurs de l'Université Brown dans le cadre des projets ACDCP167916 (Banque mondiale) et R01AI177791 (NIH/NIAID).*

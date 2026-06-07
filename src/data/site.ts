@@ -71,6 +71,28 @@ export const publications = [
     },
     href: undefined as string | undefined,
   },
+  {
+    id: "blog-3",
+    year: 2026,
+    category: "blog" as const,
+    categoryLabel: { fr: "Analyse bioinformatique", en: "Bioinformatics analysis" },
+    title: {
+    fr: "Surveillance moléculaire de la résistance aux antipaludéens chez Plasmodium falciparum en Éthiopie",
+    en: "Molecular Surveillance of Antimalarial Drug Resistance in Plasmodium falciparum from Ethiopia",
+    },
+    authors: "Keny Karl Mounguele",
+    journal: "GenoLabGab Blog",
+    status: { fr: "Publié", en: "Published" },
+    abstract: {
+      fr: "Pipeline NGS complet sur 318 isolats cliniques de P. falciparum (PRJNA1465284). Détection de kelch13-P441L à 4,1% — signal d'alerte pour la résistance à l'artémisinine en Afrique de l'Est.",
+      en: "Complete NGS pipeline on 318 P. falciparum clinical isolates (PRJNA1465284). Detection of kelch13-P441L at 4.1% — early warning signal for artemisinin resistance in East Africa.",
+    },
+    tags: {
+      fr: ["Plasmodium falciparum", "kelch13", "Résistance antipaludéenne", "GATK", "Éthiopie"],
+      en: ["Plasmodium falciparum", "kelch13", "Antimalarial resistance", "GATK", "Ethiopia"],
+    },
+    href: "/blog/resistance-antipaludeenne-plasmodium-ethiopie",
+  },
 ];
 
 export const researchAxes = [
