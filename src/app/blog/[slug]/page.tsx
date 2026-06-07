@@ -3,6 +3,7 @@ import path from "path";
 import matter from "gray-matter";
 import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
+import type { Metadata } from "next";
 
 export const dynamic = "force-static";
 
@@ -25,6 +26,22 @@ export async function generateStaticParams() {
     .readdirSync(dir)
     .filter((f) => f.endsWith(".mdx"))
     .map((f) => ({ slug: f.replace(".mdx", "") }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const article = getArticle(slug);
+  return {
+    title: article?.frontmatter.title ?? "Article — GenoLabGab",
+    description: article?.frontmatter.description ?? "",
+    alternates: {
+      canonical: `https://genolabgab.vercel.app/blog/${slug}`,
+    },
+  };
 }
 
 export default async function BlogPostPage({
