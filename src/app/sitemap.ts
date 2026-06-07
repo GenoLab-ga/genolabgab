@@ -13,6 +13,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE_URL}/projects`, priority: 0.8, changeFrequency: "monthly" as const },
     { url: `${BASE_URL}/cv`, priority: 0.7, changeFrequency: "monthly" as const },
     { url: `${BASE_URL}/contact`, priority: 0.6, changeFrequency: "yearly" as const },
+    { url: `${BASE_URL}/blog`, priority: 0.8, changeFrequency: "weekly" as const },
+    { url: `${BASE_URL}/blog/docking-p24-vih`, priority: 0.7, changeFrequency: "monthly" as const },
+    { url: `${BASE_URL}/blog/resistance-antipaludeenne-plasmodium-ethiopie`, priority: 0.7, changeFrequency: "monthly" as const },
   ];
 
   return routes.map(({ url, priority, changeFrequency }) => ({
