@@ -17,10 +17,9 @@ export const publications = [
     authors: "Keny Karl Mounguele et al.",
     journal: "Agronomy — MDPI",
     status: { fr: "Publié", en: "Published" },
-
     abstract: {
-      fr: "Étude sur la tolérance à la sécheresse chez la fève (Vicia faba) — analyse phénotypique et biochimique sous stress hydrique. Soumis à Agronomy (MDPI).",
-      en: "Study on drought tolerance in faba bean (Vicia faba) — phenotypic and biochemical analysis under water stress. Submitted to Agronomy (MDPI).",
+      fr: "Étude sur la tolérance à la sécheresse chez la fève (Vicia faba) — analyse phénotypique et biochimique sous stress hydrique. Publié dans Agronomy (MDPI).",
+      en: "Study on drought tolerance in faba bean (Vicia faba) — phenotypic and biochemical analysis under water stress. Published in Agronomy (MDPI).",
     },
     tags: {
       fr: ["Vicia faba", "Tolérance à la sécheresse", "Phénotypage"],
