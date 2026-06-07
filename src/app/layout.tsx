@@ -33,7 +33,6 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "fr_FR",
-    alternateLocale: ["en_US"],
     url: "https://genolabgab.vercel.app",
     siteName: "GenoLabGab",
     title: "Karl Mounguele — Ingénieur Bioinformaticien · GenoLabGab",
@@ -41,7 +40,7 @@ export const metadata: Metadata = {
       "Génomique computationnelle, bioinformatique structurale, docking moléculaire, vaccinomique.",
     images: [
       {
-        url: "/og-image.svg",
+        url: "/og-image.png",
         width: 1200,
         height: 630,
         alt: "GenoLabGab — Keny Karl Mounguele",
@@ -53,7 +52,7 @@ export const metadata: Metadata = {
     title: "Karl Mounguele — Ingénieur Bioinformaticien · GenoLabGab",
     description:
       "Génomique computationnelle, bioinformatique structurale, docking moléculaire, vaccinomique.",
-    images: ["/og-image.svg"],
+    images: ["/og-image.png"],
   },
   robots: {
     index: true,
@@ -74,10 +73,6 @@ export const metadata: Metadata = {
   },
   alternates: {
     canonical: "https://genolabgab.vercel.app",
-    languages: {
-      fr: "https://genolabgab.vercel.app",
-      en: "https://genolabgab.vercel.app",
-    },
   },
 };
 
