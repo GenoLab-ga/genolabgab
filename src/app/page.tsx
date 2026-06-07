@@ -34,7 +34,7 @@ export default function HomePage() {
     url: "https://genolabgab.vercel.app",
     sameAs: [
       "https://github.com/GenoLab-ga",
-      "https://linkedin.com/in/keny-karl-mounguele",
+      "https://linkedin.com/in/karl-mounguele",
       "https://orcid.org/0009-0006-6706-0069",
     ],
     knowsAbout: [
@@ -141,10 +141,9 @@ export default function HomePage() {
       <section className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8" aria-label="Statistiques">
         <div className="grid grid-cols-2 gap-4 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:grid-cols-4">
           {[
-            { k: "4+", v: "Années de recherche" },
+            { k: "2+", v: "Années de recherche" },
             { k: "4", v: "Projets actifs" },
             { k: "6", v: "Catégories d'outils" },
-            { k: "3", v: "Langues" },
           ].map((s) => (
             <div key={s.v} className="text-center">
               <div className="text-2xl font-bold text-slate-900 sm:text-3xl">{s.k}</div>

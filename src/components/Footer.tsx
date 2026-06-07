@@ -45,10 +45,10 @@ export default function Footer() {
             <ul className="mt-4 space-y-2 text-sm">
               <li>
                 <a
-                  href="mailto:mounguele.kenykarl@gmail.com"
+                  href="mailto:genolabgab@proton.me"
                   className="transition hover:text-emerald-400"
                 >
-                  mounguele.kenykarl@gmail.com
+                  genolabgab@proton.me
                 </a>
               </li>
               <li className="text-slate-400">Université Euromed de Fès</li>
@@ -66,7 +66,7 @@ export default function Footer() {
                   </svg>
                 </a>
                 <a
-                  href="https://linkedin.com/in/keny-karl-mounguele"
+                  href="https://linkedin.com/in/karl-mounguele"
                   target="_blank"
                   rel="noreferrer"
                   aria-label="LinkedIn"
