@@ -47,7 +47,7 @@ export const publications = [
       fr: ["AutoDock Vina", "VIH-1", "Criblage virtuel", "Python"],
       en: ["AutoDock Vina", "HIV-1", "Virtual Screening", "Python"],
     },
-    href: "https://genolabgab.vercel.app",
+    href: "/blog/docking-p24-vih",
   },
   {
     id: "blog-2",
