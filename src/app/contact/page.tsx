@@ -13,7 +13,7 @@ export default function ContactPage() {
     const data = new FormData(form);
 
     // ⚠️ REMPLACE 'xbjnyozk' PAR TON ID FORMSPREE
-    const response = await fetch("https://formspree.io/f/xbjnyozk", {
+    const response = await fetch("https://formspree.io/f/xpqoyoyj", {
       method: "POST",
       body: data,
       headers: {
