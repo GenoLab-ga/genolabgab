@@ -25,7 +25,7 @@ export const publications = [
       fr: ["Vicia faba", "Tolérance à la sécheresse", "Phénotypage"],
       en: ["Vicia faba", "Drought tolerance", "Phenotyping"],
     },
-    href: "https://www.mdpi.com/2073-4395/10.3390/agronomy16111064",
+    href: "https://doi.org/10.3390/agronomy16111064",
   },
   {
     id: "blog-1",
