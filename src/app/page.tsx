@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import { publications } from "@/data/site";
-// On importe notre nouveau wrapper à la place de l'import dynamique direct
+import { getAllPublications, type Publication } from "@/lib/get-publications";
 import QcChartWrapper from "@/components/QcChartWrapper";
 
 export const metadata: Metadata = {
@@ -11,16 +10,14 @@ export const metadata: Metadata = {
     "Fondateur de GenoLabGab, ingénieur bioinformaticien spécialisé en génomique computationnelle, bioinformatique structurale et vaccinomique. Basé à Fès, Maroc.",
   keywords: ["Génomique", "Bio-informatique", "Gabon", "DNA", "Analyse de données"],
   alternates: {
-    // Remplace par ton sous-domaine exact Vercel
     canonical: "https://genolabgab.vercel.app",
   },
 };
 
-// This page is statically generated at build time (SSG)
 export const dynamic = "force-static";
 
 export default function HomePage() {
-  const recent = [...publications].sort((a, b) => b.year - a.year).slice(0, 3);
+  const recent: Publication[] = getAllPublications().slice(0, 3);
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -86,7 +83,7 @@ export default function HomePage() {
             </p>
             <p className="mt-6 max-w-2xl text-lg leading-relaxed text-slate-600">
               Fondateur de <strong>GenoLabGab</strong>, une initiative indépendante en biologie
-              computationnelle. Je développe des pipelines automatisés pour l'analyse NGS, le
+              computationnelle. Je développe des pipelines automatisés pour l&apos;analyse NGS, le
               criblage virtuel de composés bioactifs, et la conception de vaccins par vaccinomique.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
@@ -95,15 +92,7 @@ export default function HomePage() {
                 className="inline-flex items-center gap-2 rounded-xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800"
               >
                 Mes recherches
-                <svg
-                  className="h-4 w-4"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
+                <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
                   <path d="M5 12h14" />
                   <path d="m12 5 7 7-7 7" />
                 </svg>
@@ -156,7 +145,7 @@ export default function HomePage() {
       {/* ── DOMAINES ─────────────────────────────────────────────── */}
       <section className="mx-auto mt-20 max-w-6xl px-4 sm:px-6 lg:px-8">
         <h2 className="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
-          Domaines d'expertise
+          Domaines d&apos;expertise
         </h2>
         <div className="mt-8 grid gap-4 sm:grid-cols-2 md:grid-cols-3">
           {[
@@ -173,7 +162,7 @@ export default function HomePage() {
             {
               icon: "💉",
               title: "Vaccinomique",
-              desc: "Conception de vaccins par vaccinomique inverse, prédiction d'épitopes (NetMHCpan, IEDB).",
+              desc: "Conception de vaccins par vaccinomique inverse, prédiction d&apos;épitopes (NetMHCpan, IEDB).",
             },
           ].map((d) => (
             <div
@@ -194,10 +183,9 @@ export default function HomePage() {
           Visualisation de données de recherche
         </h2>
         <p className="mt-2 text-sm text-slate-600 max-w-2xl">
-          Aperçu interactif des outils d'évaluation de la qualité des données brutes de séquençage générés par nos pipelines bioinformatiques.
+          Aperçu interactif des outils d&apos;évaluation de la qualité des données brutes de séquençage générés par nos pipelines bioinformatiques.
         </p>
         <div className="mt-8 max-w-3xl">
-          {/* Utilisation propre du composant isolé */}
           <QcChartWrapper />
         </div>
       </section>
@@ -223,7 +211,7 @@ export default function HomePage() {
               className="group flex flex-col rounded-2xl border border-slate-200 bg-white p-6 transition hover:-translate-y-0.5 hover:border-emerald-300 hover:shadow-lg"
             >
               <div className="flex items-center justify-between text-xs">
-                <span className="rounded-full bg-emerald-50 px-2.5 py-1 font-medium text-emerald-700">
+                <span className={`rounded-full px-2.5 py-1 font-medium ${p.category === "paper" ? "bg-blue-50 text-blue-700" : "bg-emerald-50 text-emerald-700"}`}>
                   {p.categoryLabel.fr}
                 </span>
                 <span className="text-slate-500">{p.year}</span>
@@ -240,7 +228,7 @@ export default function HomePage() {
                   rel="noreferrer"
                   className="mt-4 text-xs font-semibold text-emerald-700 hover:text-emerald-800"
                 >
-                  Lire l'article →
+                  Lire l&apos;article →
                 </a>
               )}
             </article>
