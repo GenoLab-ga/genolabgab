@@ -1,3 +1,4 @@
+import remarkGfm from "remark-gfm";
 import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
@@ -72,7 +73,7 @@ export default async function BlogPostPage({
         ))}
       </div>
       <article className="prose prose-slate max-w-none">
-        <MDXRemote source={article.content} />
+        <MDXRemote source={article.content} options={{ mdxOptions: { remarkPlugins: [remarkGfm] } }} />
       </article>
     </div>
   );
