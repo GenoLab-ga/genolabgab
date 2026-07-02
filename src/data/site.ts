@@ -93,6 +93,28 @@ export const publications = [
     },
     href: "/blog/resistance-antipaludeenne-plasmodium-ethiopie",
   },
+  {
+    id: "blog-4",
+    year: 2026,
+    category: "blog" as const,
+    categoryLabel: { fr: "Analyse bioinformatique", en: "Bioinformatics analysis" },
+    title: {
+      fr: "Identification de Mycobacterium tuberculosis et résistance aux antituberculeux par séquençage Nanopore ciblé",
+      en: "Identification of Mycobacterium tuberculosis and Antitubercular Drug Resistance via Targeted Nanopore Sequencing",
+    },
+    authors: "Keny Karl Mounguele",
+    journal: "GenoLabGab Blog",
+    status: { fr: "Publié", en: "Published" },
+    abstract: {
+      fr: "Réanalyse bioinformatique de 277 échantillons cliniques de sputum (BioProject PRJNA1177198, NIRT Chennai, Inde) via TB-Profiler v6.7.0 et le catalogue OMS v2+. 46,6% de résistance à au moins une drogue, 21,7% de Pre-XDR-TB.",
+      en: "Bioinformatics reanalysis of 277 clinical sputum samples (BioProject PRJNA1177198, NIRT Chennai, India) using TB-Profiler v6.7.0 and WHO v2+ mutation catalogue. 46.6% resistance to at least one drug, 21.7% Pre-XDR-TB.",
+    },
+    tags: {
+      fr: ["Mycobacterium tuberculosis", "Nanopore", "TB-Profiler", "Résistance antituberculeuse", "Snakemake", "OMS"],
+      en: ["Mycobacterium tuberculosis", "Nanopore", "TB-Profiler", "Antitubercular resistance", "Snakemake", "WHO"],
+    },
+    href: "/blog/surveillance-resistance-mtb-nanopore",
+  },
 ];
 
 export const researchAxes = [
