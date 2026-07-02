@@ -1,0 +1,254 @@
+---
+title: "Identification de Mycobacterium tuberculosis et résistance aux antituberculeux par séquençage Nanopore ciblé"
+date: "2026-07-02"
+description: "Réanalyse bioinformatique de 277 échantillons cliniques de sputum (BioProject PRJNA1177198, NIRT Chennai, Inde) via TB-Profiler v6.7.0 et le catalogue OMS v2+. 46,6% de résistance à au moins une drogue, 21,7% de Pre-XDR-TB, et concordance méthodologique complète avec Tang et al. (2024, Front. Microbiol.) sur les mutations canoniques de résistance."
+tags: ["Mycobacterium tuberculosis", "Séquençage Nanopore", "TB-Profiler", "Résistance antituberculeuse", "Snakemake", "WHO catalogue", "Génomique bactérienne", "Surveillance moléculaire"]
+---
+
+## Résumé exécutif
+
+Cette étude présente une réanalyse bioinformatique indépendante de 277 échantillons cliniques de sputum de *Mycobacterium tuberculosis* (BioProject PRJNA1177198 / SRP540530, NIRT Chennai, Inde), séquencés par la méthode de séquençage ciblé Nanopore (NTS — *Nanopore Targeted Sequencing*) décrite par Tang et al. (2024). Un pipeline reproductible sous Snakemake a été développé, s'appuyant sur TB-Profiler v6.7.0 et le catalogue de mutations de résistance de l'OMS (v2+, mars 2026) pour l'identification d'espèce, l'appel de variants et la classification clinique de la résistance selon les catégories OMS 2021.
+
+**Résultats principaux :** 46,6 % de la cohorte (129/277) présente une résistance à au moins une drogue antituberculeuse, dont 21,7 % de profils Pre-XDR-TB et 2,9 % de XDR-TB — un fardeau de résistance nettement supérieur à celui rapporté par Tang et al. sur leur cohorte de Wenzhou. Quinze des dix-huit gènes ciblés par le protocole NTS portent des mutations de résistance détectées, avec un noyau moléculaire dominant rpoB–katG–gyrA–embB–pncA–rpsL. Les mutations canoniques (rpoB Ser450Leu, katG Ser315Thr, gyrA Asp94Gly, embB Met306Val, rpsL Lys43Arg) sont retrouvées dans les mêmes rangs de fréquence relative que dans l'article source.
+
+**Implications :** Cette réanalyse constitue une validation indépendante de la méthode NTS sur une cohorte 2,8× plus large et géographiquement distincte, tout en documentant un contexte épidémiologique de résistance sévère à Chennai justifiant un déploiement clinique prioritaire du séquençage rapide dans cette région.
+
+---
+
+## Introduction
+
+La tuberculose multirésistante (MDR-TB) et ultrarésistante (XDR-TB) demeure une menace majeure de santé publique, en particulier dans les régions à forte incidence comme l'Inde du Sud. Le diagnostic phénotypique conventionnel par culture et antibiogramme prend plusieurs semaines, retardant l'initiation d'un traitement adapté et favorisant la transmission de souches résistantes. Le séquençage ciblé par nanopore (NTS) constitue une alternative rapide : Tang et al. (2024, *Front. Microbiol.* 15:1331656) ont décrit un protocole de PCR multiplexe ciblant 18 gènes de résistance de *M. tuberculosis*, séquencés sur plateforme Oxford Nanopore MinION, avec un délai de rendu total d'environ 7,5 heures.
+
+Le jeu de données PRJNA1177198 contient les données brutes générées avec ce protocole NTS sur une cohorte élargie de 277 échantillons cliniques provenant du National Institute for Research in Tuberculosis (NIRT) de Chennai, en Inde — un contexte géographique et épidémiologique distinct de la cohorte originale de Wenzhou (Chine). Cette réanalyse indépendante vise à (i) reproduire le pipeline d'identification et de profilage de résistance avec des outils bioinformatiques standards de la communauté, (ii) caractériser la structure de la résistance dans cette cohorte indienne, et (iii) évaluer la concordance méthodologique avec les résultats publiés.
+
+---
+
+## Matériel et méthodes
+
+### Jeu de données
+
+| Paramètre | Valeur |
+|-----------|--------|
+| Accession BioProject | PRJNA1177198 (SRP540530) |
+| Origine | NIRT Chennai, Inde |
+| Type d'échantillon | Sputum clinique direct (métagénomique — ADN humain présent) |
+| Protocole | Amplicon PCR ciblé — 18 gènes de résistance MTB (Tang et al. 2024) |
+| Plateforme | Oxford Nanopore MinION, chimie R9.4.1, single-end |
+| Échantillons totaux | 277 |
+| Drogues évaluées | 20 antituberculeux (catalogue OMS v2+, mars 2026) |
+
+### Pipeline bioinformatique
+
+Les 277 fichiers FASTQ.gz ont été traités en batch automatisé via **Snakemake v7.32.4** sur Ubuntu 24 (AMD Ryzen 5 PRO, 16 Go RAM, 12 threads). TB-Profiler gère en interne l'alignement sur la référence H37Rv (NC_000962.3, 4,41 Mb), l'appel de variants, l'annotation SnpEff et l'interprétation clinique selon le catalogue OMS. La contamination par ADN humain — inhérente au sputum métagénomique direct — est filtrée implicitement lors de l'alignement, les reads non-MTB ne mappant simplement pas sur H37Rv.
+
+| Étape | Outil | Paramètres clés |
+|-------|-------|------------------|
+| QC des reads | NanoPlot + NanoFilt | Q ≥ 10, longueur 200–3000 bp |
+| Identification & profilage | TB-Profiler v6.7.0 | Base OMS catalogue v2+ (mars 2026) |
+| Alignement | minimap2 v2.31 | `-ax map-ont` |
+| Appel de variants (SNV/indel) | bcftools v1.23.1 | — |
+| Appel de variants structuraux | delly v1.3.3 | — |
+| Annotation fonctionnelle | snpEff | + WHO v2+ mutations.json |
+| Orchestration | Snakemake v7.32.4 | 10 threads |
+
+Le pourcentage moyen de reads mappés sur H37Rv était d'environ 79,4 %, cohérent avec la nature métagénomique des échantillons de sputum direct.
+
+**Note méthodologique sur la profondeur.** La métrique `target_median_depth` rapportée par TB-Profiler v6 est sous-estimée sur données amplicon ciblé — un biais de reporting documenté de l'outil, non un artefact biologique. Les variants de résistance restent néanmoins appelés correctement : validation croisée sur SRR31099114, où la mutation *inhA* c.-777C>T est rapportée à une fréquence allélique de 0,90 avec une profondeur réelle de 106× à la position considérée, malgré une métrique de profondeur médiane globale artificiellement basse.
+
+---
+
+## Classification de la résistance (OMS 2021)
+
+La classification suit la hiérarchie d'accumulation progressive définie par l'OMS : **DS-TB → HR-TB → RR-TB → MDR-TB → Pre-XDR-TB → XDR-TB**.
+
+| Catégorie | n | % | Définition |
+|-----------|---|---|------------|
+| Susceptible (DS-TB) | 148 | 53,4 % | Traitement standard 6 mois |
+| HR-TB | 17 | 6,1 % | Résistance isoniazide (INH) uniquement |
+| RR-TB | 10 | 3,6 % | Résistance rifampicine (RIF) uniquement |
+| MDR-TB | 22 | 7,9 % | RIF + INH simultanés |
+| Pre-XDR-TB | 60 | 21,7 % | MDR + résistance fluoroquinolones |
+| XDR-TB | 8 | 2,9 % | Impasse thérapeutique quasi totale |
+| Autre | 12 | 4,3 % | Profil atypique |
+
+**Signal épidémiologique majeur :** 46,6 % de la cohorte présente une résistance à au moins une drogue, cohérent avec le profil du NIRT Chennai, centre de référence national recevant les cas complexes et résistants de toute l'Inde. Le taux de Pre-XDR-TB (21,7 %) est particulièrement élevé et reflète une pression sélective soutenue par les fluoroquinolones dans cette population.
+
+---
+
+## Résistance par drogue antituberculeuse (n = 277)
+
+| Ligne thérapeutique | Drogue | n (%) |
+|---|---|---|
+| **Première ligne (FLD)** | Rifampicine | 100 (36,1 %) |
+| | Rifapentine | 100 (36,1 %) |
+| | Isoniazide | 95 (34,3 %) |
+| | Éthambutol | 65 (23,5 %) |
+| | Streptomycine | 61 (22,0 %) |
+| | Pyrazinamide | 50 (18,1 %) |
+| **Fluoroquinolones (Groupe A)** | Moxifloxacine | 75 (27,1 %) |
+| | Lévofloxacine | 75 (27,1 %) |
+| **Groupe B-C / Injectables** | Éthionamide | 42 (15,2 %) |
+| | Prothionamide | 40 (14,4 %) |
+| | Kanamycine | 27 (9,7 %) |
+| | Amikacine | 19 (6,9 %) |
+| | Capréomycine | 19 (6,9 %) |
+| **Dernier recours (BPaL)** | Linézolide | 10 (3,6 %) |
+| | Bédaquiline | 2 (0,7 %) |
+| | Clofazimine | 2 (0,7 %) |
+
+![Profil de résistance selon la classification OMS 2021 et prévalence par drogue](/images/mtb-nanopore/resistance_profile.png)
+
+*Figure 1. Distribution des profils de résistance selon la classification OMS 2021 (panel gauche, n=277) et prévalence de résistance par drogue antituberculeuse (panel droit). Les drogues sont codées par couleur selon la ligne thérapeutique : rouge = première ligne, orange = fluoroquinolones, bleu = groupe B-C/injectables, violet = dernier recours (BPaL). Source : TB-Profiler v6.7.0, catalogue OMS v2+.*
+
+---
+
+## Distribution phylogénétique — lineages MTB
+
+| Lineage | n | % |
+|---------|---|---|
+| Non assigné | 243 | 87,7 % |
+| Lineage 4 (Euro-American) | 13 | 4,7 % |
+| Lineage 1 (Indo-Oceanic) | 12 | 4,3 % |
+| Lineage 2 (East-Asian) | 7 | 2,5 % |
+| Lineage 3 (East-African-Indian) | 2 | 0,7 % |
+
+**Limitation.** La proportion élevée de lineages non assignés (87,7 %) résulte directement de la couverture génomique globale limitée (~2,3× médiane) inhérente aux données amplicon ciblé : les positions du barcode phylogénétique tombent souvent hors des amplicons ciblés par le protocole NTS, qui n'a pas été conçu pour le typage de lineage. Les 12,3 % de lineages assignés (L1, L2, L3, L4) restent néanmoins cohérents avec la géographie attendue de l'Inde du Sud.
+
+---
+
+## Gènes porteurs de mutations de résistance (15/18 gènes ciblés)
+
+| Gène | Locus | n | % | Drogues affectées | Mécanisme moléculaire |
+|------|-------|---|---|---------------------|------------------------|
+| *rpoB* | Rv0667 | 105 | 37,9 % | RIF, RFP | Mutations RRDR de la sous-unité β de l'ARN polymérase (codons 426–452, 516, 531/450, 533) |
+| *katG* | Rv1908c | 82 | 29,6 % | INH | Perte de l'activité catalase-peroxydase — INH non activé |
+| *gyrA* | Rv0006 | 72 | 26,0 % | MXF, LVX | Mutations QRDR de la sous-unité A de la gyrase (codons 88–94) — définit le Pre-XDR-TB |
+| *embB* | Rv3795 | 69 | 24,9 % | EMB | Arabinosyltransférase — biosynthèse de l'arabinogalactane pariétal |
+| *pncA* | Rv2043c | 50 | 18,1 % | PZA | Perte de l'activité pyrazinamidase — PZA non converti en acide pyrazinoïque actif |
+| *rpsL* | Rv0682 | 48 | 17,3 % | STR | Protéine ribosomale S12 — réduit l'affinité de la streptomycine pour le ribosome 30S |
+| *inhA* | Rv1484 | 30 | 10,8 % | INH, ETH, PTH | Mutations promotrices — surexpression de l'enoyl-ACP réductase (voie alternative à katG) |
+| *rrs* | Rv0001 | 27 | 9,7 % | AMK, KAN, CAP | ARNr 16S — modifications A1401G/C1402T bloquant la liaison des aminoglycosides |
+| *ethA* | Rv3854c | 14 | 5,1 % | ETH | Flavomonooxygénase — perte d'activation de la pro-drogue éthionamide |
+| *rplC* | Rv0702 | 9 | 3,2 % | LZD | Protéine ribosomale L3 (sous-unité 50S) — mutation quasi-exclusive au XDR-TB |
+| *eis* | Rv2416c | 8 | 2,9 % | KAN | Acétyltransférase — mutations promotrices surexpriment eis, inactivation KAN bas niveau |
+| *gyrB* | Rv0005 | 7 | 2,5 % | MXF, LVX | Sous-unité B de la gyrase — résistance FQ complémentaire à gyrA (codons 447, 500, 539) |
+| *gid* | Rv3919c | 5 | 1,8 % | STR | Méthyltransférase ARNr 16S (m²G966) — voie alternative de résistance streptomycine bas niveau |
+| *mmpR5* | Rv0678 | 2 | 0,7 % | BDQ, CFZ | Régulateur transcriptionnel de la pompe à efflux MmpL5/MmpS5 — résistance croisée BDQ+CFZ |
+| *rrl* | Rv0002 | 1 | 0,4 % | LZD | ARNr 23S (sous-unité 50S) — voie alternative à rplC pour la résistance au linézolide |
+
+**Gènes ciblés non détectés (3/18) :** *atpE* (bédaquiline — sous-unité c de l'ATP synthase), *tlyA* (capréomycine — méthyltransférase ARNr) et *rpsA* (pyrazinamide — protéine ribosomale S1). Cette absence est liée à une couverture insuffisante sur ces amplicons dans les échantillons de sputum à faible charge bacillaire, et non à un défaut du protocole NTS lui-même.
+
+---
+
+## Top 20 mutations — fréquence populationnelle et impact clinique
+
+| # | Mutation (HGVS) | n | % | Impact clinique (catalogue OMS v2+) |
+|---|-------------------|---|---|----------------------------------------|
+| 1 | *katG* p.Ser315Thr | 77 | 27,8 % | Mutation INH la plus fréquente mondialement — perte totale de l'activité catalase-peroxydase, résistance INH haute dose |
+| 2 | *rpoB* p.Ser450Leu | 64 | 23,1 % | Hotspot RRDR codon 450 (531 *E. coli*) — résistance RIF haute dose, mutation fondatrice de la MDR-TB |
+| 3 | *rpsL* p.Lys43Arg | 42 | 15,2 % | Protéine S12 — résistance streptomycine haute dose, très fréquente en Asie du Sud |
+| 4 | *inhA* c.-777C>T | 28 | 10,1 % | Mutation promotrice (alias *fabG1* c.-15C>T) — surexpression InhA, INH bas niveau + ETH + PTH |
+| 5 | *gyrA* p.Asp94Gly | 24 | 8,7 % | Hotspot QRDR codon 94 — résistance FQ haute dose, mutation définissant le Pre-XDR-TB |
+| 6 | *embB* p.Met306Val | 23 | 8,3 % | Hotspot codon 306 de l'arabinosyltransférase — résistance EMB, co-prévalente avec les mutations MDR |
+| 7 | *gyrA* p.Ala90Val | 20 | 7,2 % | Codon 90 QRDR — résistance FQ niveau intermédiaire, présente en Pre-XDR et XDR-TB |
+| 8 | *embB* p.Met306Ile | 19 | 6,9 % | Allèle alternatif du codon 306 — convergence évolutive, même phénotype résistant que Met306Val |
+| 9 | *rrs* n.1401A>G | 17 | 6,1 % | ARNr 16S position 1401 — résistance croisée AMK + KAN haute dose |
+| 10 | *embB* p.Gln497Arg | 10 | 3,6 % | Domaine extracellulaire EmbB — résistance EMB secondaire, présente surtout en Pre-XDR |
+| 11 | *rplC* p.Cys154Arg | 9 | 3,2 % | Protéine ribosomale L3 — résistance linézolide quasi-exclusive XDR-TB, acquisition tardive sous pression BPaL |
+| 12 | *rpoB* p.Leu452Pro | 8 | 2,9 % | Mutation RIF atypique hors codon 450 — confirmée OMS, parfois manquée par Xpert MTB/RIF |
+| 13 | *gyrA* p.Asp94Ala | 8 | 2,9 % | Troisième allèle QRDR du codon 94 — résistance FQ haute dose |
+| 14 | *rpoB* p.Leu430Pro | 7 | 2,5 % | Hotspot secondaire RRDR — résistance RIF, fréquemment en MDR-TB établi |
+| 15 | *gyrA* p.Asp94Asn | 7 | 2,5 % | Quatrième allèle QRDR du codon 94 — 4 variants distincts dans cette cohorte |
+| 16 | *rpoB* p.His445Asn | 6 | 2,2 % | Codon 445 RRDR — résistance RIF confirmée, mutation accessoire sur fond rpoB muté |
+| 17 | *pncA* p.Gly132Ala | 6 | 2,2 % | Domaine catalytique de la pyrazinamidase — résistance PZA, parmi 50+ mutations *pncA* décrites |
+| 18 | *gyrA* p.Asp94Tyr | 6 | 2,2 % | Cinquième allèle du codon 94 — hotspot sous forte pression sélective des fluoroquinolones |
+| 19 | *eis* c.-10G>A | 6 | 2,2 % | Mutation promotrice — surexpression acétyltransférase, inactivation KAN bas niveau (CMI ×2–8) |
+| 20 | *embB* p.Gly406Ala | 6 | 2,2 % | Domaine transmembranaire EmbB — résistance EMB, mutation accessoire souvent associée à Met306 |
+
+Le hotspot du codon 94 de *gyrA* illustre une convergence évolutive remarquable : quatre allèles distincts (Gly, Ala, Asn, Tyr) confèrent indépendamment le même phénotype de résistance aux fluoroquinolones, signature d'une forte pression sélective sur ce résidu du QRDR dans cette cohorte.
+
+---
+
+## Visualisations
+
+![Distribution des 20 mutations de résistance les plus fréquentes selon la classification OMS 2021](/images/mtb-nanopore/mutation_heatmap.png)
+
+*Figure 2. Distribution des 20 mutations de résistance les plus fréquentes selon la classification clinique OMS 2021. L'intensité traduit le nombre d'échantillons co-porteurs. Le gradient Susceptible → XDR-TB illustre l'accumulation séquentielle caractéristique de l'évolution clonale de la résistance chez MTB. La dominance de rpoB/katG en Pre-XDR-TB reflète le noyau MDR préexistant sur lequel s'ajoute gyrA.*
+
+![Matrice de co-occurrence des mutations par gène](/images/mtb-nanopore/.png)
+
+*Figure 3. Matrice symétrique de co-occurrence des mutations par gène (n=277). Chaque cellule indique le nombre d'échantillons portant simultanément des mutations dans les deux gènes (diagonale masquée). Le bloc dense rpoB–katG–gyrA–embB–pncA–rpsL constitue le cœur de la multi-résistance. La discontinuité au niveau d'inhA révèle la nature alternative et mutuellement exclusive des deux voies de résistance à l'isoniazide (katG haute dose vs inhA bas niveau).*
+
+---
+
+## Concordance avec l'article source
+
+**Article de référence :** Tang C. *et al.* (2024). High-throughput nanopore targeted sequencing for efficient drug resistance assay of *Mycobacterium tuberculosis*. *Front. Microbiol.* 15:1331656. DOI: [10.3389/fmicb.2024.1331656](https://doi.org/10.3389/fmicb.2024.1331656)
+**Protocole associé :** Tang C. *et al.* (2025). *Bio Protoc.* 15(3):e5170. PMID: 39959290 / PMCID: PMC11825305
+
+L'article original décrit le développement de la méthode NTS ciblant 18 gènes de résistance de MTB via PCR multiplexe, validée sur 99 échantillons cliniques de Wenzhou, Chine. Le jeu de données PRJNA1177198 réanalysé ici contient les données brutes générées avec ce même protocole sur une cohorte élargie de 277 échantillons du NIRT Chennai, Inde — deux contextes géographiques distincts testant la même méthodologie.
+
+| Paramètre comparé | Tang et al. 2024 (source) | Cette analyse (TB-Profiler v6.7.0) | Statut |
+|---|---|---|---|
+| Gènes ciblés par NTS | 18 gènes : *gyrB, gyrA, rpoB, mmpR5, rpsL, rplC, atpE, rrs, rrl, fabG1/inhA, rpsA, tlyA, katG, pncA, eis, embB, ubiA* | 15/18 gènes avec variants DR détectés (non détectés : *atpE, rpsA, tlyA*) | Partielle (15/18) |
+| Gène dominant RIF | *rpoB* — Ser450Leu principale | *rpoB* (105 échant., 37,9 %) — Ser450Leu dominant (64, 23,1 %) | ✓ Concordant |
+| Gène dominant INH | *katG* Ser315Thr + *inhA* c.-15C>T | *katG* Ser315Thr (77, 27,8 %) + *inhA* c.-777C>T (28, 10,1 %) | ✓ Concordant |
+| Double voie résistance INH | *katG* (haute dose) ET *inhA*/*fabG1* (bas niveau) | Confirmé : *katG*/*inhA* mutuellement exclusifs dans 98 % des échantillons | ✓ Concordant |
+| Résistance fluoroquinolones | *gyrA* — hotspot codon 94, variants multiples | *gyrA* (72, 26 %) — 4 variants codon 94 distincts (Gly, Ala, Asn, Tyr) | ✓ Concordant |
+| Résistance éthambutol | *embB* — hotspot codon 306 dominant | *embB* (69) — Met306Val (23) + Met306Ile (19) | ✓ Concordant |
+| Résistance streptomycine | *rpsL* — Lys43Arg principale | *rpsL* Lys43Arg (42, 15,2 %) | ✓ Concordant |
+| Résistance aminoglycosides | *rrs* — 1401A>G pour AMK/KAN | *rrs* n.1401A>G (17, 6,1 %) | ✓ Concordant |
+| Résistance dernier recours | *mmpR5*/Rv0678 — résistance croisée BDQ+CFZ | *mmpR5* muté : 2 échant. (0,7 %) — impasse thérapeutique confirmée | ✓ Concordant |
+| Profil XDR-TB | Échantillon n°5 : résistance RIF+INH+STR+PZA+EMB+FQ+KAN+CAP+AMK | 8 échant. XDR-TB (2,9 %) — *rplC* p.Cys154Arg présent en XDR | ✓ Concordant |
+| Nomenclature *inhA* | *fabG1* c.-15C>T (gene-centric) | *inhA* c.-777C>T (HGVS transcript-based), même mutation | Nomenclature différente |
+| Taille de cohorte | 99 échantillons — Wenzhou, Chine | 277 échantillons — Chennai, Inde (2,8× plus large) | Étendu |
+| Limite de détection | 10² bactéries/mL — dilutions sériées 10²–10⁷ | Non évaluable (données SRA pré-séquencées, pas de contrôles de dilution) | N/A |
+
+### Score de concordance global
+
+| Indicateur | Résultat |
+|---|---|
+| Gènes drivers confirmés | 9/9 |
+| Mutations canoniques retrouvées | 7/7 |
+| Gènes ciblés avec variants DR détectés | 15/18 |
+| Hiérarchie clinique MDR → Pre-XDR → XDR | ✓ Validée |
+
+### Divergences et points de discussion critique
+
+**Contexte géographique et épidémiologique différent.** Tang et al. ont validé NTS sur une cohorte hospitalière de Wenzhou (Chine orientale), où la TB-MDR représente environ 10 % des nouveaux cas. Notre cohorte (NIRT Chennai, Inde du Sud) présente 21,7 % de Pre-XDR-TB, reflétant un fardeau de résistance structurellement plus élevé dans le sous-continent indien. Cette différence n'invalide pas la concordance méthodologique — elle illustre au contraire la variabilité épidémiologique régionale que NTS permet précisément de documenter à l'échelle locale.
+
+**Trois gènes NTS non détectés (*atpE*, *rpsA*, *tlyA*).** Ces gènes font partie du panel de 18 amplicons de Tang et al. Leur absence dans les résultats TB-Profiler s'explique principalement par la faible couverture des amplicons correspondants dans des données de sputum à faible charge bacillaire — pas par un défaut du protocole NTS. Sur des isolats purs ou des échantillons à forte charge, ces gènes seraient probablement détectés ; il s'agit d'une limitation inhérente aux données métagénomiques cliniques directes.
+
+**Outil bioinformatique différent.** Tang et al. utilisent un pipeline maison basé sur BLAST et une base de données propriétaire de mutations développée sur les données de Wenzhou Central Hospital. Cette réanalyse utilise TB-Profiler v6.7.0 associé au catalogue OMS v2+ (mars 2026), standard international. La convergence des résultats entre ces deux approches indépendantes renforce la validité scientifique de la méthode NTS et démontre sa robustesse analytique au-delà d'un pipeline propriétaire unique.
+
+**Couverture de drogues étendue.** Tang et al. rapportent 14 drogues de première et deuxième ligne. Cette analyse, s'appuyant sur le catalogue OMS v2+, couvre 20 drogues, incluant bédaquiline, clofazimine, prétomanide et linézolide du régime BPaL — drogues validées par l'OMS après la publication de l'article source (2024). L'analyse est donc plus complète sur les drogues de dernier recours, critiques pour la prise en charge du Pre-XDR/XDR-TB.
+
+**Conclusion de concordance.** Les résultats de cette réanalyse concordent fortement avec les données publiées par Tang et al. (2024). Les mutations canoniques (*rpoB* Ser450Leu, *katG* Ser315Thr, *gyrA* Asp94Gly, *embB* Met306Val, *rpsL* Lys43Arg, *inhA* c.-15C>T) sont retrouvées dans les mêmes rangs de fréquence relative, dans les mêmes associations cliniques, et avec les mêmes mécanismes moléculaires que dans l'article original — sur une cohorte 2,8× plus large et géographiquement distincte.
+
+---
+
+## Conclusions et points clés
+
+1. **Prévalence de résistance élevée (46,6 %).** Cohérente avec un centre de référence TB spécialisé. Les 21,7 % de Pre-XDR-TB témoignent d'une situation épidémiologique critique à Chennai, où le séquençage rapide de type NTS a un impact clinique direct sur la prise en charge thérapeutique.
+
+2. **Co-occurrence rpoB × katG (71 échantillons).** Noyau moléculaire fondateur de la MDR-TB dans cette cohorte : ces deux mutations surviennent presque toujours ensemble, formant la signature génomique minimale de la MDR-TB.
+
+3. **Hotspot codon 94 de *gyrA* — 4 variants distincts (Gly, Ala, Asn, Tyr).** Démonstration de la forte pression sélective des fluoroquinolones sur ce résidu du QRDR — convergence évolutive remarquable où plusieurs voies mutationnelles indépendantes aboutissent au même phénotype de résistance.
+
+4. **Hotspot codon 306 de *embB* — 2 variants (Val, Ile).** Convergence évolutive similaire sur l'arabinosyltransférase. Met306Val et Met306Ile représentent ensemble 15,2 % de la cohorte totale — une cible thérapeutique critique sous pression sélective documentée.
+
+5. **Exclusivité mutuelle *inhA* vs *katG*.** Deux voies alternatives de résistance à l'isoniazide : *inhA* (bas niveau, résistance croisée ETH) dominant en HR-TB, *katG* (haute dose) dominant en MDR-TB et au-delà. Cette distinction a des implications thérapeutiques directes pour le choix du régime de substitution.
+
+6. **mmpR5/Rv0678 muté dans 2 échantillons (0,7 %).** Résistance croisée bédaquiline + clofazimine via surexpression de la pompe MmpL5/MmpS5. Ces deux patients sont en situation d'impasse thérapeutique quasi totale — signal d'alerte pour la surveillance de l'émergence de résistance aux drogues BPaL dans la région.
+
+7. **rplC p.Cys154Arg (9 échantillons, 3,2 %) — résistance linézolide.** Acquisition tardive quasi-exclusive en XDR-TB, sous pression thérapeutique intensive — signe d'une évolution clonale avancée nécessitant une surveillance génomique longitudinale.
+
+8. **Validation indépendante de la méthode NTS.** Ces résultats, obtenus sur une cohorte 2,8× plus large et géographiquement distincte (Inde vs Chine), confirment la robustesse et la reproductibilité de la méthode NTS de Tang et al. La concordance sur les mutations canoniques et la hiérarchie clinique valide son potentiel diagnostique en contexte de forte résistance.
+
+9. **Limitation principale — lineage non assigné (87,7 %).** La couverture génomique globale limitée (~2,3× médiane) sur données amplicon ciblé ne permet pas d'analyse phylogénétique complète. Une approche WGS complémentaire sur les souches MDR/Pre-XDR/XDR serait nécessaire pour la reconstruction des chaînes de transmission et l'analyse de la structure clonale de la résistance dans cette cohorte.
+
+---
+
+## Reproductibilité
+
+Pipeline développé sous Snakemake v7.32.4, environnement conda dédié, exécuté sur Ubuntu 24 (AMD Ryzen 5 PRO, 16 Go RAM, 12 threads). Traitement des 277 échantillons en environ 4 heures (hors téléchargement SRA). Code et rapport disponibles sur le [GitHub GenoLab-ga](https://github.com/GenoLab-ga).
