@@ -11,6 +11,8 @@ export const metadata: Metadata = {
   },
 };
 
+export const lastModified = "2026-07-02"; // ← à bumper quand tu modifies cette page
+
 export const dynamic = "force-static";
 
 export default function PublicationsPage() {

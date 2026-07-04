@@ -10,6 +10,8 @@ export const metadata: Metadata = {
   },
 };
 
+export const lastModified = "2026-06-07"; // ← à bumper quand tu modifies cette page
+
 export default function ContactLayout({ children }: { children: ReactNode }) {
   return <>{children}</>;
 }

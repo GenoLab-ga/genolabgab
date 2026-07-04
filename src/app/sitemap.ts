@@ -1,102 +1,76 @@
 import type { MetadataRoute } from "next";
 import fs from "fs";
 import path from "path";
-import { execSync } from "child_process";
+import matter from "gray-matter";
 
 const BASE_URL = "https://genolabgab.vercel.app";
 
 /**
- * Récupère la date du dernier commit Git touchant ce fichier.
- * Fiable en local ET sur Vercel (contrairement à fs.statSync().mtime,
- * qui reflète l'heure du `git checkout` après un clone frais, pas la
- * date de dernière modification réelle du contenu).
- * Fallback sur la date actuelle si aucun historique Git n'est trouvé
- * (fichier non commité, ou repo shallow-clone sans historique).
+ * Chaque page statique déclare sa propre date de dernière modification
+ * via `export const lastModified = "YYYY-MM-DD"` en tête de fichier.
+ * On importe dynamiquement ces modules pour lire la valeur, exactement
+ * comme le blog lit le frontmatter de ses .mdx.
+ *
+ * Avantage vs git log : aucune dépendance à la profondeur de clone Git
+ * de l'environnement de build (shallow clone Vercel = source non fiable,
+ * cf. incident précédent). La donnée est portée par le code source lui-même,
+ * versionnée avec lui, sans intermédiaire externe.
  */
-function getLastModifiedFromGit(relativeFilePath: string): Date {
-  try {
-    const timestamp = execSync(
-      `git log -1 --format=%aI -- "${relativeFilePath}"`,
-      { cwd: process.cwd(), stdio: ["pipe", "pipe", "ignore"] }
-    )
-      .toString()
-      .trim();
-    return timestamp ? new Date(timestamp) : new Date();
-  } catch {
-    return new Date();
-  }
+const STATIC_PAGES = [
+  { route: "/", modulePath: "../app/page", priority: 1.0, changeFrequency: "monthly" as const },
+  { route: "/about", modulePath: "../app/about/page", priority: 0.9, changeFrequency: "monthly" as const },
+  { route: "/research", modulePath: "../app/research/page", priority: 0.9, changeFrequency: "monthly" as const },
+  { route: "/publications", modulePath: "../app/publications/page", priority: 0.8, changeFrequency: "weekly" as const },
+  { route: "/projects", modulePath: "../app/projects/page", priority: 0.8, changeFrequency: "monthly" as const },
+  { route: "/blog", modulePath: "../app/blog/page", priority: 0.8, changeFrequency: "weekly" as const },
+  { route: "/cv", modulePath: "../app/cv/page", priority: 0.7, changeFrequency: "monthly" as const },
+  { route: "/contact", modulePath: "../app/contact/layout", priority: 0.6, changeFrequency: "yearly" as const },
+];
+
+async function getStaticRoutes(): Promise<MetadataRoute.Sitemap> {
+  return Promise.all(
+    STATIC_PAGES.map(async ({ route, modulePath, priority, changeFrequency }) => {
+      let lastModified = new Date();
+      try {
+        const mod = await import(modulePath);
+        if (mod.lastModified) lastModified = new Date(mod.lastModified);
+      } catch {
+        // module introuvable ou export absent -> fallback silencieux
+      }
+      return {
+        url: `${BASE_URL}${route === "/" ? "" : route}`,
+        lastModified,
+        priority,
+        changeFrequency,
+      };
+    })
+  );
 }
 
-function getBlogSlugs(): string[] {
+function getBlogEntries(): { slug: string; updatedAt: string }[] {
   const dir = path.join(process.cwd(), "src/content/blog");
   if (!fs.existsSync(dir)) return [];
   return fs
     .readdirSync(dir)
     .filter((f) => f.endsWith(".mdx"))
-    .map((f) => f.replace(".mdx", ""));
+    .map((filename) => {
+      const slug = filename.replace(".mdx", "");
+      const raw = fs.readFileSync(path.join(dir, filename), "utf-8");
+      const { data } = matter(raw);
+      const updatedAt = data.updatedAt || data.date || new Date().toISOString();
+      return { slug, updatedAt };
+    });
 }
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  const staticRoutes: MetadataRoute.Sitemap = [
-    {
-      url: BASE_URL,
-      lastModified: getLastModifiedFromGit("src/app/page.tsx"),
-      priority: 1.0,
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const staticRoutes = await getStaticRoutes();
+  const blogRoutes: MetadataRoute.Sitemap = getBlogEntries().map(
+    ({ slug, updatedAt }) => ({
+      url: `${BASE_URL}/blog/${slug}`,
+      lastModified: new Date(updatedAt),
       changeFrequency: "monthly",
-    },
-    {
-      url: `${BASE_URL}/about`,
-      lastModified: getLastModifiedFromGit("src/app/about/page.tsx"),
-      priority: 0.9,
-      changeFrequency: "monthly",
-    },
-    {
-      url: `${BASE_URL}/research`,
-      lastModified: getLastModifiedFromGit("src/app/research/page.tsx"),
-      priority: 0.9,
-      changeFrequency: "monthly",
-    },
-    {
-      url: `${BASE_URL}/publications`,
-      lastModified: getLastModifiedFromGit("src/app/publications/page.tsx"),
-      priority: 0.8,
-      changeFrequency: "weekly",
-    },
-    {
-      url: `${BASE_URL}/projects`,
-      lastModified: getLastModifiedFromGit("src/app/projects/page.tsx"),
-      priority: 0.8,
-      changeFrequency: "monthly",
-    },
-    {
-      url: `${BASE_URL}/blog`,
-      lastModified: getLastModifiedFromGit("src/app/blog/page.tsx"),
-      priority: 0.8,
-      changeFrequency: "weekly",
-    },
-    {
-      url: `${BASE_URL}/cv`,
-      lastModified: getLastModifiedFromGit("src/app/cv/page.tsx"),
       priority: 0.7,
-      changeFrequency: "monthly",
-    },
-    {
-      url: `${BASE_URL}/contact`,
-      lastModified: getLastModifiedFromGit("src/app/contact/page.tsx"),
-      priority: 0.6,
-      changeFrequency: "yearly",
-    },
-  ];
-
-  // IMPORTANT : on utilise git log ici aussi, PAS fs.statSync(...).mtime.
-  // Sur Vercel, un clone frais donne le même mtime (heure du checkout)
-  // à tous les fichiers, ce qui recrée le bug initial du sitemap.
-  const blogRoutes: MetadataRoute.Sitemap = getBlogSlugs().map((slug) => ({
-    url: `${BASE_URL}/blog/${slug}`,
-    lastModified: getLastModifiedFromGit(`src/content/blog/${slug}.mdx`),
-    changeFrequency: "monthly",
-    priority: 0.7,
-  }));
-
+    })
+  );
   return [...staticRoutes, ...blogRoutes];
 }

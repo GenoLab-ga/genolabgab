@@ -10,6 +10,8 @@ export const metadata: Metadata = {
   },
 };
 
+export const lastModified = "2026-06-05"; // ← à bumper quand tu modifies cette page
+
 export const dynamic = "force-static";
 
 export default function ResearchPage() {
