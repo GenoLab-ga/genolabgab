@@ -7,8 +7,11 @@ const BASE_URL = "https://genolabgab.vercel.app";
 
 /**
  * Récupère la date du dernier commit Git touchant ce fichier.
- * Fallback sur la date actuelle si le fichier n'a pas encore d'historique Git
- * (ex: build local avant premier commit, ou repo shallow-clone sur Vercel).
+ * Fiable en local ET sur Vercel (contrairement à fs.statSync().mtime,
+ * qui reflète l'heure du `git checkout` après un clone frais, pas la
+ * date de dernière modification réelle du contenu).
+ * Fallback sur la date actuelle si aucun historique Git n'est trouvé
+ * (fichier non commité, ou repo shallow-clone sans historique).
  */
 function getLastModifiedFromGit(relativeFilePath: string): Date {
   try {
@@ -85,16 +88,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ];
 
-  const blogRoutes: MetadataRoute.Sitemap = getBlogSlugs().map((slug) => {
-    const filePath = path.join(process.cwd(), "src/content/blog", `${slug}.mdx`);
-    const stats = fs.statSync(filePath);
-    return {
-      url: `${BASE_URL}/blog/${slug}`,
-      lastModified: stats.mtime,
-      changeFrequency: "monthly",
-      priority: 0.7,
-    };
-  });
+  // IMPORTANT : on utilise git log ici aussi, PAS fs.statSync(...).mtime.
+  // Sur Vercel, un clone frais donne le même mtime (heure du checkout)
+  // à tous les fichiers, ce qui recrée le bug initial du sitemap.
+  const blogRoutes: MetadataRoute.Sitemap = getBlogSlugs().map((slug) => ({
+    url: `${BASE_URL}/blog/${slug}`,
+    lastModified: getLastModifiedFromGit(`src/content/blog/${slug}.mdx`),
+    changeFrequency: "monthly",
+    priority: 0.7,
+  }));
 
   return [...staticRoutes, ...blogRoutes];
 }
