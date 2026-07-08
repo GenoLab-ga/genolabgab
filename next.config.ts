@@ -9,35 +9,50 @@ const withMDX = createMDX({
 });
 
 const nextConfig: NextConfig = {
-  // Optionnel : Si tu veux un export 100% statique (HTML/CSS/JS) sans aucun serveur Node,
-  // remplace "standalone" par "export". Mais "standalone" fonctionne très bien sur Vercel.
   output: "standalone",
-
-  // Active les extensions .mdx en plus de .ts et .tsx
   pageExtensions: ["ts", "tsx", "mdx"],
-
   images: {
-    // Formats modernes pour réduire drastiquement le poids de tes images de séquençage/profil
     formats: ["image/avif", "image/webp"],
-    // Indispensable pour ton fichier /images/avatar.svg
     dangerouslyAllowSVG: true,
     contentDispositionType: "attachment",
-    // Ajustement de la CSP pour s'assurer que les styles inline de tes SVGs (couleurs, gradients) fonctionnent
     contentSecurityPolicy: "default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'none'; sandbox;",
-    // Si tu prévois d'afficher des images provenant d'outils externes (ex: GitHub, ORCID, Unsplash)
     remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "github.com",
-      },
-      {
-        protocol: "https",
-        hostname: "avatars.githubusercontent.com",
-      },
+      { protocol: "https", hostname: "github.com" },
+      { protocol: "https", hostname: "avatars.githubusercontent.com" },
     ],
   },
-
   reactStrictMode: true,
+
+  // Headers de sécurité globaux, appliqués à toutes les routes
+  async headers() {
+    return [
+      {
+        source: "/(.*)",
+        headers: [
+          { key: "X-Frame-Options", value: "DENY" },
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+          { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
+          { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" },
+          {
+            key: "Content-Security-Policy",
+            value: [
+              "default-src 'self'",
+              "script-src 'self'",
+              "style-src 'self' 'unsafe-inline'",
+              "img-src 'self' data: https://avatars.githubusercontent.com",
+              "font-src 'self'",
+              "connect-src 'self'",
+              "frame-ancestors 'none'",
+              "base-uri 'self'",
+              "form-action 'self'",
+              "object-src 'none'",
+            ].join("; "),
+          },
+        ],
+      },
+    ];
+  },
 };
 
 export default withMDX(nextConfig);
