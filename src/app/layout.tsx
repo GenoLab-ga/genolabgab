@@ -116,64 +116,41 @@ export default function RootLayout({ children }: { children: ReactNode }) {
               "@type": "WebSite",
               "name": "GenoLabGab",
               "url": "https://genolabgab.vercel.app",
-              "description": "Site de Karl Mounguele — ingénieur bioinformaticien. Génomique computationnelle, bioinformatique structurale, docking moléculaire.",
-              "author": {
+              "description":
+                "Site de Karl Mounguele — ingénieur bioinformaticien. Génomique computationnelle, bioinformatique structurale, docking moléculaire.",
+              author: {
                 "@type": "Person",
-                "name": "Keny Karl Mounguele",
-                "url": "https://genolabgab.vercel.app",
-                "jobTitle": "Ingénieur Bioinformaticien",
-                "worksFor": {
+                name: "Keny Karl Mounguele",
+                url: "https://genolabgab.vercel.app",
+                jobTitle: "Ingénieur Bioinformaticien",
+                worksFor: {
                   "@type": "Organization",
-                  "name": "GenoLabGab"
+                  name: "GenoLabGab",
                 },
-                "address": {
+                address: {
                   "@type": "PostalAddress",
-                  "addressLocality": "Fès",
-                  "addressCountry": "Maroc"
+                  addressLocality: "Fès",
+                  addressCountry: "Maroc",
                 },
-                "knowsAbout": [
+                knowsAbout: [
                   "Bioinformatique",
                   "Génomique",
                   "Transcriptomique",
                   "Docking Moléculaire",
                   "Pharmacogénomique",
                   "NGS",
-                  "RNA-seq"
-                ]
+                  "RNA-seq",
+                ],
               },
-              "potentialAction": {
+              potentialAction: {
                 "@type": "SearchAction",
-                "target": {
+                target: {
                   "@type": "EntryPoint",
-                  "urlTemplate": "https://genolabgab.vercel.app/search?q={search_term_string}"
+                  urlTemplate:
+                    "https://genolabgab.vercel.app/search?q={search_term_string}",
                 },
-                "query-input": "required name=search_term_string"
-              }
-            }),
-          }}
-        />
-      </head>
-      <body className="min-h-screen bg-white text-slate-900 antialiased">
-        <Navbar />
-        <main>{children}</main>
-        <Footer />
-      </body>
-    </html>
-  );
-export default function RootLayout({ children }: { children: ReactNode }) {
-  return (
-    <html lang="fr">
-      <head>
-        <meta name="theme-color" content="#10b981" />
-        <link rel="icon" href="/favicon.ico" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-
-        {/* Structured Data existant */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              // ... votre JSON-LD existant
+                "query-input": "required name=search_term_string",
+              },
             }),
           }}
         />
