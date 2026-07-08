@@ -23,8 +23,8 @@ const nextConfig: NextConfig = {
   },
   reactStrictMode: true,
 
-  // Headers de sécurité globaux, appliqués à toutes les routes
   async headers() {
+    const isDev = process.env.NODE_ENV === "development";
     return [
       {
         source: "/(.*)",
@@ -38,14 +38,14 @@ const nextConfig: NextConfig = {
             key: "Content-Security-Policy",
             value: [
               "default-src 'self'",
-              "script-src 'self'",
+              `script-src 'self'${isDev ? " 'unsafe-eval' 'unsafe-inline'" : ""}`,
               "style-src 'self' 'unsafe-inline'",
               "img-src 'self' data: https://avatars.githubusercontent.com",
               "font-src 'self'",
-              "connect-src 'self'",
+              `connect-src 'self' https://formspree.io${isDev ? " ws://localhost:* ws://*:*" : ""}`,
               "frame-ancestors 'none'",
               "base-uri 'self'",
-              "form-action 'self'",
+              "form-action 'self' https://formspree.io",
               "object-src 'none'",
             ].join("; "),
           },
