@@ -11,12 +11,21 @@ if (!databaseUrl && process.env.NODE_ENV === "production") {
 }
 
 let pool: Pool | null = null;
+
 if (databaseUrl) {
   const globalForDb = globalThis as typeof globalThis & {
     __arenaNextJsPostgresqlPool?: Pool;
   };
 
-  pool = globalForDb.__arenaNextJsPostgresqlPool ?? new Pool({ connectionString: databaseUrl });
+  pool =
+    globalForDb.__arenaNextJsPostgresqlPool ??
+    new Pool({
+      connectionString: databaseUrl,
+      // Force TLS en production, jamais de connexion en clair vers la DB
+      ssl: process.env.NODE_ENV === "production" ? { rejectUnauthorized: true } : false,
+      // Limite basse adaptée au contexte serverless (évite l'épuisement de connexions côté hébergeur)
+      max: 5,
+    });
 
   if (process.env.NODE_ENV !== "production") {
     globalForDb.__arenaNextJsPostgresqlPool = pool;
