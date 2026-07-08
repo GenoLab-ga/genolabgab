@@ -12,7 +12,6 @@ export default function ContactPage() {
     const form = e.currentTarget;
     const data = new FormData(form);
 
-    // ⚠️ REMPLACE 'xbjnyozk' PAR TON ID FORMSPREE
     const response = await fetch("https://formspree.io/f/xpqoyoyj", {
       method: "POST",
       body: data,
@@ -41,6 +40,16 @@ export default function ContactPage() {
       {/* Formulaire de Contact Formspree */}
       <div className="mt-10 max-w-xl mx-auto bg-white dark:bg-zinc-900 p-8 rounded-2xl shadow-sm border border-zinc-100 dark:border-zinc-800 text-left">
         <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+
+          {/* Honeypot anti-spam : invisible pour un humain, un bot le remplit et Formspree rejette silencieusement */}
+          <input
+            type="text"
+            name="_gotcha"
+            style={{ display: "none" }}
+            tabIndex={-1}
+            autoComplete="off"
+          />
+
           <div>
             <label htmlFor="name" className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">
               Nom complet
