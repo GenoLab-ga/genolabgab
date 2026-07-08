@@ -27,9 +27,22 @@ export const metadata: Metadata = {
     "vaccinomique",
     "AlphaFold",
     "AutoDock Vina",
+    "RNA-seq",
+    "transcriptomique",
+    "métagénomique",
+    "Nextflow",
+    "Snakemake",
+    "Python bioinformatique",
+    "R bioinformatique",
   ],
-  authors: [{ name: "Karl Mounguele" }],
+  authors: [{ name: "Karl Mounguele", url: "https://genolabgab.vercel.app" }],
   creator: "Keny Karl Mounguele",
+  publisher: "GenoLabGab",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
   openGraph: {
     type: "website",
     locale: "fr_FR",
@@ -40,10 +53,11 @@ export const metadata: Metadata = {
       "Génomique computationnelle, bioinformatique structurale, docking moléculaire, vaccinomique.",
     images: [
       {
-        url: "/og-image.png",
+        url: "https://genolabgab.vercel.app/og-image.png",
         width: 1200,
         height: 630,
         alt: "GenoLabGab — Keny Karl Mounguele",
+        type: "image/png",
       },
     ],
   },
@@ -52,7 +66,8 @@ export const metadata: Metadata = {
     title: "Karl Mounguele — Ingénieur Bioinformaticien · GenoLabGab",
     description:
       "Génomique computationnelle, bioinformatique structurale, docking moléculaire, vaccinomique.",
-    images: ["/og-image.png"],
+    images: ["https://genolabgab.vercel.app/og-image.png"],
+    creator: "@GenoLabGab",
   },
   robots: {
     index: true,
@@ -66,14 +81,20 @@ export const metadata: Metadata = {
     },
   },
   verification: {
-    google: "KSPKVmdz3wUSa4N-qu8TSSxnZDPKPSg071ICnfFU3-g",
+    google: "1XF9YFr5FtdxzRCsgUJeesC9sQ9cbynLDq9WMr03quE",
+    yandex: "",
+    yahoo: "",
     other: {
       "msvalidate.01": "4E4CEC3F26BDCEB4B1E0DF8227477927",
     },
   },
   alternates: {
     canonical: "https://genolabgab.vercel.app",
+    languages: {
+      "fr-FR": "https://genolabgab.vercel.app",
+    },
   },
+  category: "technology",
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
@@ -82,6 +103,53 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <head>
         <meta name="theme-color" content="#10b981" />
         <link rel="icon" href="/favicon.ico" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+        {/* Structured Data - Website */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              "name": "GenoLabGab",
+              "url": "https://genolabgab.vercel.app",
+              "description": "Site de Karl Mounguele — ingénieur bioinformaticien. Génomique computationnelle, bioinformatique structurale, docking moléculaire.",
+              "author": {
+                "@type": "Person",
+                "name": "Keny Karl Mounguele",
+                "url": "https://genolabgab.vercel.app",
+                "jobTitle": "Ingénieur Bioinformaticien",
+                "worksFor": {
+                  "@type": "Organization",
+                  "name": "GenoLabGab"
+                },
+                "address": {
+                  "@type": "PostalAddress",
+                  "addressLocality": "Fès",
+                  "addressCountry": "Maroc"
+                },
+                "knowsAbout": [
+                  "Bioinformatique",
+                  "Génomique",
+                  "Transcriptomique",
+                  "Docking Moléculaire",
+                  "Pharmacogénomique",
+                  "NGS",
+                  "RNA-seq"
+                ]
+              },
+              "potentialAction": {
+                "@type": "SearchAction",
+                "target": {
+                  "@type": "EntryPoint",
+                  "urlTemplate": "https://genolabgab.vercel.app/search?q={search_term_string}"
+                },
+                "query-input": "required name=search_term_string"
+              }
+            }),
+          }}
+        />
       </head>
       <body className="min-h-screen bg-white text-slate-900 antialiased">
         <Navbar />
