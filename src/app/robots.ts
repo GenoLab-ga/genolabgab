@@ -10,6 +10,5 @@ export default function robots(): MetadataRoute.Robots {
       },
     ],
     sitemap: "https://genolabgab.vercel.app/sitemap.xml",
-    host: "https://genolabgab.vercel.app",
   };
 }
