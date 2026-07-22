@@ -9,6 +9,9 @@ import type { Metadata } from "next";
 export const dynamic = "force-static";
 export const dynamicParams = false; // 404 immédiat pour tout slug absent de generateStaticParams
 
+// Un slug valide correspond au nom d'un fichier .mdx : kebab-case, alphanumérique
+const SLUG_PATTERN = /^[a-z0-9]+(-[a-z0-9]+)*$/;
+
 function getArticle(slug: string) {
   if (!SLUG_PATTERN.test(slug)) return null;
 
