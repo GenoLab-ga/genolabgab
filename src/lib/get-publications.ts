@@ -53,7 +53,7 @@ function getBlogArticles(): Publication[] {
     .map((file) => {
       // nosemgrep: javascript.lang.security.audit.path-traversal.path-join-resolve-traversal.path-join-resolve-traversal
       // `file` provient de fs.readdirSync(dir), pas d'une entrée utilisateur -> pas de traversal possible
-      const raw = fs.readFileSync(path.join(dir, file), "utf8");
+      const raw = fs.readFileSync(path.join(dir, file), "utf8"); // nosemgrep: javascript.lang.security.audit.path-traversal.path-join-resolve-traversal.path-join-resolve-traversal
       const { data } = matter(raw);
       const slug = file.replace(".mdx", "");
       return {

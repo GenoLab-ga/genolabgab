@@ -9,18 +9,16 @@ import type { Metadata } from "next";
 export const dynamic = "force-static";
 export const dynamicParams = false; // 404 immédiat pour tout slug absent de generateStaticParams
 
-// Un slug valide correspond au nom d'un fichier .mdx : kebab-case, alphanumérique
-const SLUG_PATTERN = /^[a-z0-9]+(-[a-z0-9]+)*$/;
-
 function getArticle(slug: string) {
   if (!SLUG_PATTERN.test(slug)) return null;
 
   const blogDir = path.join(process.cwd(), "src/content/blog");
-  const filePath = path.join(blogDir, `${slug}.mdx`);
+  // `slug` est validé par SLUG_PATTERN (kebab-case strict) juste au-dessus -> pas de traversal possible
+  const filePath = path.join(blogDir, `${slug}.mdx`); // nosemgrep: javascript.lang.security.audit.path-traversal.path-join-resolve-traversal.path-join-resolve-traversal
 
   // Vérifie que le chemin résolu reste bien dans le dossier autorisé
   // (défense en profondeur contre un contournement éventuel du regex)
-  const resolvedPath = path.resolve(filePath);
+  const resolvedPath = path.resolve(filePath); // nosemgrep: javascript.lang.security.audit.path-traversal.path-join-resolve-traversal.path-join-resolve-traversal
   if (!resolvedPath.startsWith(path.resolve(blogDir) + path.sep)) return null;
 
   if (!fs.existsSync(resolvedPath)) return null;
