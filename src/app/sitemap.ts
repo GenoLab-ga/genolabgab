@@ -55,6 +55,8 @@ function getBlogEntries(): { slug: string; updatedAt: string }[] {
     .filter((f) => f.endsWith(".mdx"))
     .map((filename) => {
       const slug = filename.replace(".mdx", "");
+      // nosemgrep: javascript.lang.security.audit.path-traversal.path-join-resolve-traversal.path-join-resolve-traversal
+      // `filename` provient de fs.readdirSync(dir), pas d'une entrée utilisateur -> pas de traversal possible
       const raw = fs.readFileSync(path.join(dir, filename), "utf-8");
       const { data } = matter(raw);
       const updatedAt = data.updatedAt || data.date || new Date().toISOString();

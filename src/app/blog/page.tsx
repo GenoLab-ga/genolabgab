@@ -14,7 +14,6 @@ export const metadata: Metadata = {
 };
 
 export const lastModified = "2026-06-07"; // ← à bumper quand tu modifies cette page
-
 export const dynamic = "force-static";
 
 function getArticles() {
@@ -24,6 +23,8 @@ function getArticles() {
     .readdirSync(dir)
     .filter((f) => f.endsWith(".mdx"))
     .map((file) => {
+      // nosemgrep: javascript.lang.security.audit.path-traversal.path-join-resolve-traversal.path-join-resolve-traversal
+      // `file` provient de fs.readdirSync(dir), pas d'une entrée utilisateur -> pas de traversal possible
       const raw = fs.readFileSync(path.join(dir, file), "utf8");
       const { data } = matter(raw);
       return { slug: file.replace(".mdx", ""), ...data } as {
@@ -41,7 +42,6 @@ function getArticles() {
 
 export default function BlogPage() {
   const articles = getArticles();
-
   return (
     <div className="mx-auto max-w-4xl px-4 py-16 sm:px-6 lg:px-8">
       <h1 className="text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl">
@@ -50,7 +50,6 @@ export default function BlogPage() {
       <p className="mt-3 max-w-2xl text-lg text-slate-600">
         Analyses bioinformatiques, pipelines et notes de recherche
       </p>
-
       <div className="mt-10 space-y-6">
         {articles.length === 0 ? (
           <p className="text-slate-500">Aucun article pour le moment.</p>

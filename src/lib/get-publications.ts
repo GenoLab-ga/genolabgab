@@ -47,15 +47,15 @@ const externalPublications: Omit<Publication, "_timestamp">[] = [
 function getBlogArticles(): Publication[] {
   const dir = path.join(process.cwd(), "src/content/blog");
   if (!fs.existsSync(dir)) return [];
-
   return fs
     .readdirSync(dir)
     .filter((f) => f.endsWith(".mdx"))
     .map((file) => {
+      // nosemgrep: javascript.lang.security.audit.path-traversal.path-join-resolve-traversal.path-join-resolve-traversal
+      // `file` provient de fs.readdirSync(dir), pas d'une entrée utilisateur -> pas de traversal possible
       const raw = fs.readFileSync(path.join(dir, file), "utf8");
       const { data } = matter(raw);
       const slug = file.replace(".mdx", "");
-
       return {
         id: `blog-${slug}`,
         year: new Date(data.date).getFullYear(),
@@ -81,6 +81,5 @@ export function getAllPublications(): Publication[] {
     ...p,
     _timestamp: new Date(`${p.year}-06-01`).getTime(),
   }));
-
   return [...blogs, ...externals].sort((a, b) => b._timestamp - a._timestamp);
 }

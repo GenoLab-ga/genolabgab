@@ -7,15 +7,24 @@ import { MDXRemote } from "next-mdx-remote/rsc";
 import type { Metadata } from "next";
 
 export const dynamic = "force-static";
+export const dynamicParams = false; // 404 immédiat pour tout slug absent de generateStaticParams
+
+// Un slug valide correspond au nom d'un fichier .mdx : kebab-case, alphanumérique
+const SLUG_PATTERN = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 
 function getArticle(slug: string) {
-  const filePath = path.join(
-    process.cwd(),
-    "src/content/blog",
-    `${slug}.mdx`
-  );
-  if (!fs.existsSync(filePath)) return null;
-  const raw = fs.readFileSync(filePath, "utf8");
+  if (!SLUG_PATTERN.test(slug)) return null;
+
+  const blogDir = path.join(process.cwd(), "src/content/blog");
+  const filePath = path.join(blogDir, `${slug}.mdx`);
+
+  // Vérifie que le chemin résolu reste bien dans le dossier autorisé
+  // (défense en profondeur contre un contournement éventuel du regex)
+  const resolvedPath = path.resolve(filePath);
+  if (!resolvedPath.startsWith(path.resolve(blogDir) + path.sep)) return null;
+
+  if (!fs.existsSync(resolvedPath)) return null;
+  const raw = fs.readFileSync(resolvedPath, "utf8");
   const { data, content } = matter(raw);
   return { frontmatter: data, content };
 }
@@ -53,7 +62,6 @@ export default async function BlogPostPage({
   const { slug } = await params;
   const article = getArticle(slug);
   if (!article) notFound();
-
   return (
     <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
       <p className="text-sm text-slate-400 mb-2">
