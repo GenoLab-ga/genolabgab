@@ -132,7 +132,7 @@ export default function AboutPage() {
             <p>
               Je suis <strong>Keny Karl Mounguele</strong>, ingénieur en biotechnologie et
               bioinformatique (Master, Université Euromed de Fès) et fondateur de{" "}
-              <strong>GenoLabGab</strong> — une initiative indépendante en biologie computationnelle
+              <strong>GenoLabGab</strong> - une initiative indépendante en biologie computationnelle
               basée au Maroc.
             </p>
             <p>
