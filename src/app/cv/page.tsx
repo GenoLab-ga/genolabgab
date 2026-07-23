@@ -44,14 +44,14 @@ const education = [
     degree: "Master en Biotechnologie & Bioinformatique",
     school: "Université Euromed de Fès",
     location: "Fès, Maroc",
-    years: "2022 – 2024",
-    highlight: "Mention : Très Bien",
+    years: "2022 – 2025",
+    highlight: "",
   },
   {
-    degree: "Licence en Sciences Biologiques",
-    school: "Université Omar Bongo",
-    location: "Libreville, Gabon",
-    years: "2018 – 2021",
+    degree: "Licence 2 en Ingénierie de la Santé",
+    school: "Ecole Supérieure d'Ingénierie de la Santé et de Management de Projets",
+    location: "Casablanca, Maroc",
+    years: "2020 – 2022",
     highlight: "",
   },
 ];
@@ -77,8 +77,8 @@ const skillGroups = [
 
 const languages = [
   { lang: "Français", level: "Langue maternelle" },
-  { lang: "Anglais", level: "Professionnel (C1)" },
-  { lang: "Arabe", level: "Notions (A2)" },
+  { lang: "Anglais", level: "Professionnel (B1)" },
+
 ];
 
 export default function CVPage() {
