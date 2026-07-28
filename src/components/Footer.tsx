@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 const socialLinks = [
   {
@@ -52,14 +53,13 @@ export default function Footer() {
     {/* Brand */}
     <div className="lg:col-span-1">
     <Link href="/" className="inline-flex items-center gap-2.5 group">
-    <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-emerald-500 to-emerald-600 text-white">
-    <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-    <path d="M2 15c6.667-6 13.333 0 20-6" />
-    <path d="M2 9c6.667 6 13.333 0 20 6" />
-    <path d="M2 6c3.33-3 6.67-3 10 0s6.67 3 10 0" />
-    <path d="M2 18c3.33 3 6.67 3 10 0s6.67-3 10 0" />
-    </svg>
-    </div>
+    <Image
+    src="/images/logo.png"
+    alt="GenoLabGab Logo"
+    width={36}
+    height={36}
+    className="rounded-lg"
+    />
     <span className="text-lg font-bold text-white">
     GenoLab<span className="text-emerald-400">Gab</span>
     </span>

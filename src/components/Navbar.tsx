@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 
@@ -31,8 +32,6 @@ export default function Navbar() {
     return () => { document.body.style.overflow = ""; };
   }, [open]);
 
-  const isHome = pathname === "/";
-
   return (
     <header
     className={`sticky top-0 z-50 w-full transition-all duration-300 ${
@@ -42,17 +41,17 @@ export default function Navbar() {
     }`}
     >
     <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3.5 sm:px-6 lg:px-8">
-    {/* Logo */}
+    {/* Logo — utilise votre image logo.png */}
     <Link href="/" className="flex items-center gap-2.5 group">
-    <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-emerald-500 to-emerald-600 text-white shadow-sm shadow-emerald-200 transition group-hover:shadow-emerald-300">
-    <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-    <path d="M2 15c6.667-6 13.333 0 20-6" />
-    <path d="M2 9c6.667 6 13.333 0 20 6" />
-    <path d="M2 6c3.33-3 6.67-3 10 0s6.67 3 10 0" />
-    <path d="M2 18c3.33 3 6.67 3 10 0s6.67-3 10 0" />
-    </svg>
-    </div>
-    <span className={`text-lg font-bold tracking-tight ${scrolled || !isHome ? "text-slate-900" : "text-slate-900"}`}>
+    <Image
+    src="/images/logo.png"
+    alt="GenoLabGab Logo"
+    width={36}
+    height={36}
+    className="rounded-lg shadow-sm shadow-emerald-200 transition group-hover:shadow-emerald-300"
+    priority
+    />
+    <span className="text-lg font-bold tracking-tight text-slate-900">
     GenoLab<span className="text-emerald-600">Gab</span>
     </span>
     </Link>
@@ -126,9 +125,18 @@ export default function Navbar() {
     }`}
     >
     <div className="flex items-center justify-between border-b border-slate-100 px-5 py-4">
+    <div className="flex items-center gap-2.5">
+    <Image
+    src="/images/logo.png"
+    alt="GenoLabGab Logo"
+    width={28}
+    height={28}
+    className="rounded-lg"
+    />
     <span className="text-lg font-bold text-slate-900">
     GenoLab<span className="text-emerald-600">Gab</span>
     </span>
+    </div>
     <button
     onClick={() => setOpen(false)}
     className="flex h-9 w-9 items-center justify-center rounded-lg text-slate-400 hover:bg-slate-100 hover:text-slate-600"

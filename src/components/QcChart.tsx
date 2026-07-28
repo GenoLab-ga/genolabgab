@@ -9,7 +9,7 @@ import {
   Title,
   Tooltip,
   Legend,
-  Filler
+  Filler,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 
@@ -37,33 +37,43 @@ export default function QcChart() {
     responsive: true,
     plugins: {
       legend: { display: false },
-      tooltip: { enabled: true }
+      tooltip: { enabled: true },
     },
     scales: {
       y: {
         min: 0,
         max: 40,
         title: { display: true, text: "Phred Score (Q)", font: { weight: "bold" as const } },
-        grid: { color: "rgba(200, 200, 200, 0.1)" }
+        grid: { color: "rgba(200, 200, 200, 0.15)" },
       },
       x: {
         title: { display: true, text: "Position dans la lecture (bp)", font: { weight: "bold" as const } },
-        grid: { display: false }
-      }
-    }
+        grid: { display: false },
+      },
+    },
   };
 
   return (
-    <div className="w-full bg-white dark:bg-zinc-900 p-6 rounded-2xl border border-zinc-100 dark:border-zinc-800 shadow-sm">
-      <div className="mb-4 text-left">
-        <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">Contrôle Qualité des Lectures (Simulé)</h3>
-        <p className="text-xs text-zinc-500">Distribution des scores de qualité Phred par position de nucléotide.</p>
-      </div>
-      <Line data={data} options={options} />
-      <div className="mt-4 flex gap-4 text-xs font-medium justify-center">
-        <span className="flex items-center gap-1 text-emerald-600">● Zone Verte (Q ≥ 30) : Excellente qualité</span>
-        <span className="flex items-center gap-1 text-amber-500">● Zone Orange (20 ≤ Q &lt; 30) : Acceptable</span>
-      </div>
+    <>
+    <div className="mb-4 text-left">
+    <h3 className="text-lg font-semibold text-slate-900">
+    Contrôle Qualité des Lectures (Simulé)
+    </h3>
+    <p className="text-xs text-slate-500">
+    Distribution des scores de qualité Phred par position de nucléotide.
+    </p>
     </div>
+    <Line data={data} options={options} />
+    <div className="mt-4 flex flex-wrap gap-4 justify-center text-xs font-medium">
+    <span className="flex items-center gap-1.5 text-emerald-600">
+    <span className="h-2.5 w-2.5 rounded-full bg-emerald-500" />
+    Zone Verte (Q ≥ 30) : Excellente qualité
+    </span>
+    <span className="flex items-center gap-1.5 text-amber-500">
+    <span className="h-2.5 w-2.5 rounded-full bg-amber-400" />
+    Zone Orange (20 ≤ Q &lt; 30) : Acceptable
+    </span>
+    </div>
+    </>
   );
 }
