@@ -5,7 +5,7 @@ import { getAllPublications, type Publication } from "@/lib/get-publications";
 import QcChartWrapper from "@/components/QcChartWrapper";
 
 export const metadata: Metadata = {
-  title: "Keny Karl Mounguele — Ingénieur Bioinformaticien · GenoLabGab",
+  title: "Keny Karl Mounguele - Ingénieur Bioinformaticien · GenoLabGab",
   description:
   "Fondateur de GenoLabGab, ingénieur bioinformaticien spécialisé en génomique computationnelle, bioinformatique structurale et vaccinomique. Basé à Fès, Maroc.",
   keywords: ["Génomique", "Bio-informatique", "Gabon", "DNA", "Analyse de données"],
@@ -116,7 +116,7 @@ export default function HomePage() {
     jobTitle: "Ingénieur Bioinformaticien",
     affiliation: {
       "@type": "Organization",
-      name: "Université Euromed de Fès",
+      name: "Diplômé de l'Université Euromed de Fès",
     },
     url: "https://genolabgab.vercel.app",
     sameAs: [
