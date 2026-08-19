@@ -15,12 +15,12 @@ const nextConfig: NextConfig = {
   images: {
     formats: ["image/avif", "image/webp"],
 
-    // ✅ Désactiver SVG si possible
-    dangerouslyAllowSVG: false,
+      // ✅ Désactiver SVG si possible
+      dangerouslyAllowSVG: false,
 
-    remotePatterns: [
-      { protocol: "https", hostname: "avatars.githubusercontent.com" },
-    ],
+      remotePatterns: [
+        { protocol: "https", hostname: "avatars.githubusercontent.com" },
+      ],
   },
 
   reactStrictMode: true,
@@ -58,7 +58,7 @@ const nextConfig: NextConfig = {
             key: "Content-Security-Policy",
             value: [
               "default-src 'self'",
-              // ✅ CORRECTION: Autoriser Vercel Analytics
+              // ✅ CORRECTION: Autoriser Vercel Analytics et scripts inline (requis pour l'hydration Next.js)
               `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""} https://va.vercel-scripts.com`,
               "style-src 'self' 'unsafe-inline'",
               "img-src 'self' data: https://avatars.githubusercontent.com",
