@@ -9,11 +9,11 @@ import Footer from "@/components/Footer";
 export const metadata: Metadata = {
   metadataBase: new URL("https://genolabgab.vercel.app"),
   title: {
-    default: "Karl Mounguele — Ingénieur Bioinformaticien · GenoLabGab",
+    default: "Karl Mounguele - Ingénieur Bioinformaticien · GenoLabGab",
     template: "%s · GenoLabGab",
   },
   description:
-    "Site de Karl Mounguele — ingénieur bioinformaticien à Fès, Maroc. Génomique computationnelle, bioinformatique structurale, docking moléculaire, GenoLabGab.",
+    "Site de Karl Mounguele - ingénieur bioinformaticien à Fès, Maroc. Génomique computationnelle, bioinformatique structurale, docking moléculaire, GenoLabGab.",
   keywords: [
     "génomique",
     "bioinformatique",
@@ -50,7 +50,7 @@ export const metadata: Metadata = {
     locale: "fr_FR",
     url: "https://genolabgab.vercel.app",
     siteName: "GenoLabGab",
-    title: "Karl Mounguele — Ingénieur Bioinformaticien · GenoLabGab",
+    title: "Karl Mounguele - Ingénieur Bioinformaticien · GenoLabGab",
     description:
       "Génomique computationnelle, bioinformatique structurale, docking moléculaire, vaccinomique.",
     images: [
@@ -58,14 +58,14 @@ export const metadata: Metadata = {
         url: "https://genolabgab.vercel.app/og-image.png",
         width: 1200,
         height: 630,
-        alt: "GenoLabGab — Keny Karl Mounguele",
+        alt: "GenoLabGab - Keny Karl Mounguele",
         type: "image/png",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Karl Mounguele — Ingénieur Bioinformaticien · GenoLabGab",
+    title: "Karl Mounguele - Ingénieur Bioinformaticien · GenoLabGab",
     description:
       "Génomique computationnelle, bioinformatique structurale, docking moléculaire, vaccinomique.",
     images: ["https://genolabgab.vercel.app/og-image.png"],
@@ -117,7 +117,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
               "name": "GenoLabGab",
               "url": "https://genolabgab.vercel.app",
               "description":
-                "Site de Karl Mounguele — ingénieur bioinformaticien. Génomique computationnelle, bioinformatique structurale, docking moléculaire.",
+                "Site de Karl Mounguele - ingénieur bioinformaticien. Génomique computationnelle, bioinformatique structurale, docking moléculaire.",
               author: {
                 "@type": "Person",
                 name: "Keny Karl Mounguele",
