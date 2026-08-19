@@ -180,7 +180,7 @@ export default function HomePage() {
     <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
     <circle cx="12" cy="10" r="3" />
     </svg>
-    Diplômé de l&apos;Diplômé de l&apos;Université Euromed de Fès · Fès, Maroc
+    Diplômé de l&apos;Université Euromed de Fès · Fès, Maroc
     </p>
     <p className="mt-6 max-w-xl text-base leading-relaxed text-slate-300 sm:text-lg">
     Fondateur de <span className="font-semibold text-emerald-400">GenoLabGab</span>, une initiative
@@ -214,7 +214,7 @@ export default function HomePage() {
     <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/20 to-cyan-500/10" />
     <Image
     src="/images/avatar.svg"
-    alt="Photo de Keny Karl Mounguele — Ingénieur Bioinformaticien"
+    alt="Photo de Keny Karl Mounguele - Ingénieur Bioinformaticien"
     fill
     sizes="(max-width: 640px) 256px, 320px"
     className="object-cover p-2"
