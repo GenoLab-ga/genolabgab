@@ -59,7 +59,7 @@ const nextConfig: NextConfig = {
             value: [
               "default-src 'self'",
               // ✅ CORRECTION: Autoriser Vercel Analytics
-              `script-src 'self'${isDev ? " 'unsafe-eval' 'unsafe-inline'" : ""} https://va.vercel-scripts.com`,
+              `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""} https://va.vercel-scripts.com`,
               "style-src 'self' 'unsafe-inline'",
               "img-src 'self' data: https://avatars.githubusercontent.com",
               "font-src 'self'",
