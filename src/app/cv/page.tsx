@@ -93,8 +93,8 @@ export default function CVPage() {
           <p className="mt-2 text-lg font-medium text-emerald-700">Ingénieur Bioinformaticien</p>
           <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-sm text-slate-500">
             <span>📍 Fès, Maroc</span>
-            <a href="mailto:mounguele.kenykarl@gmail.com" className="hover:text-emerald-700">
-              ✉️ mounguele.kenykarl@gmail.com
+            <a href="k.karlmounguele@gmail.com" className="hover:text-emerald-700">
+              ✉️ k.karlmounguele@gmail.com
             </a>
             <a
               href="https://github.com/GenoLab-ga"
@@ -139,7 +139,7 @@ export default function CVPage() {
           Profil
         </h2>
         <p className="mt-3 text-sm leading-relaxed text-slate-600">
-          Ingénieur en biotechnologie et bioinformatique (Master, Université Euromed de Fès),
+          Ingénieur en biotechnologie et bioinformatique (Ingénieur, Université Euromed de Fès),
           fondateur de GenoLabGab — initiative indépendante en biologie computationnelle. Expertise
           en développement de pipelines NGS automatisés, criblage virtuel de composés bioactifs et
           conception de vaccins par vaccinomique inverse. Passionné par la science ouverte et la
