@@ -1,0 +1,84 @@
+# Pipeline Reproductible pour l'Analyse du Microbiome Édaphique en Environnements Miniers : De l'Amplicon 16S à l'Inférence Statistique
+
+**Auteur :** Karl
+**Catégorie :** Bioinformatique / Métagénomique / Écologie Microbienne
+**Stack Technique :** Bash, QIIME 2, DADA2, R (phyloseq, vegan, ggplot2)
+
+---
+
+## Introduction
+
+Les écosystèmes édaphiques soumis à des pressions anthropiques, tels que les sites miniers actifs ou abandonnés, présentent des profils microbiens complexes. Le séquençage de l'amplicon du gène de l'ARNr 16S constitue une approche de référence pour profiler ces communautés et évaluer les dynamiques de restauration écologique ou de stress métallique.
+
+Cet article détaille la conception et l'exécution d'un pipeline bioinformatique complet, modulaire et reproductible. L'objectif est de démontrer une chaîne de traitement automatisée, allant de l'extraction des données brutes (NCBI SRA) jusqu'à la visualisation statistique de niveau publication, en passant par l'inférence des variants d'amplicons (ASV).
+
+## Matériel et Méthodes : Architecture du Pipeline
+
+La rigueur en bioinformatique repose sur la traçabilité des données et l'isolation des environnements de calcul. Ce projet a été orchestré via des scripts Bash et R, exécutés dans un environnement `mamba`/`conda` dédié.
+
+### 1. Acquisition et Prétraitement des Données
+Les données brutes (Illumina MiSeq, *paired-end*) ont été extraites du dépôt public NCBI SRA (BioProject: PRJNA1085262). Le contrôle qualité et le dénisage ont été réalisés avec **QIIME 2** couplé à l'algorithme **DADA2**. Contrairement aux approches classiques basées sur les OTU (Operational Taxonomic Units) à 97% de similarité, DADA2 permet l'inférence des ASV (Amplicon Sequence Variants), offrant une résolution à l'échelle de la nucléotide unique et une meilleure reproductibilité inter-études.
+
+### 2. Assignation Taxonomique
+Les séquences représentatives ont été classifiées à l'aide d'un classificateur Naïve de Bayes pré-entraîné sur la base de données **SILVA 138** (région V4), garantissant une couverture taxonomique robuste des procaryotes.
+
+### 3. Analyse Statistique et Visualisation
+L'export des artefacts QIIME 2 a été traité sous **R**. L'objet `phyloseq` a été construit en alignant programmatiquement les tables d'abondance, les métadonnées et la taxonomie. Les analyses de diversité ont été réalisées avec le package `vegan`, et les visualisations vectorielles générées via `ggplot2`.
+
+---
+
+## Résultats et Interprétation Biologique
+
+L'analyse a été appliquée à un sous-ensemble représentatif de 6 échantillons (Proof of Concept), comparant des sols de surface de mines actives et des sites miniers abandonnés (manganèse, fer, étain, plomb-zinc).
+
+### 1. Diversité Alpha (Indice de Shannon)
+L'indice de Shannon évalue la richesse spécifique et l'équitabilité des abondances au sein d'un même échantillon.
+Les valeurs observées se situent dans une fourchette de **5.6 à 6.0**, indiquant une diversité microbienne globalement élevée et typique des écosystèmes édaphiques matures.
+
+Le test non paramétrique de Kruskal-Wallis n'a pas révélé de différence statistiquement significative entre les groupes (p-value > 0.05). Cela suggère que, dans cette cohorte restreinte, le statut d'exploitation n'impacte pas drastiquement la richesse globale locale, ou que la variabilité intra-groupe masque un effet plus subtil.
+
+
+![Graphique en boîte à moustaches comparant l'indice de diversité Alpha de Shannon entre les sols de sites miniers actifs et abandonnés, montrant des valeurs comprises entre 5.6 et 6.0.](/home/karl/Documents/genolabgab/public/images/mine/alpha_diversity.png)
+*Figure 1 : Diversité Alpha (Indice de Shannon). Comparaison de la richesse et de l'équitabilité des communautés microbiennes. Le test de Kruskal-Wallis ne révèle pas de différence statistiquement significative (p = 0.143), indiquant une diversité locale globalement homogène malgré le statut d'exploitation.*
+
+### 2. Diversité Bêta (PCoA sur distance de Bray-Curtis)
+L'analyse en Coordonnées Principales (PCoA) basée sur la distance de Bray-Curtis (pondérant la présence/absence et l'abondance des taxons) montre une dispersion des échantillons le long des deux premiers axes, expliquant chacun **20 % de la variance totale**.
+
+Le test PERMANOVA indique que le facteur "statut du site" explique 20 % de la variation des communautés (R² = 0.2). Cependant, la p-value associée est de 1, confirmant l'absence de signification statistique. Visuellement, on n'observe pas de clustering net séparant les sites actifs des sites abandonnés, ce qui est cohérent avec les limites de puissance statistique inhérentes à un petit effectif (n=6).
+
+![Analyse en coordonnées principales (PCoA) basée sur la distance de Bray-Curtis, illustrant la dispersion des échantillons de sols miniers selon leur statut (actif ou abandonné).](/home/karl/Documents/genolabgab/public/images/mine/beta_diversity.png)
+*Figure 2 : Diversité Bêta (PCoA - Bray-Curtis). Représentation de la dissimilarité des communautés microbiennes. Les axes 1 et 2 expliquent chacun 20 % de la variance. Le test PERMANOVA (R² = 0.2, p = 1) indique l'absence de clustering significatif, reflétant les limites de puissance statistique de ce jeu de données.*
+
+### 3. Composition Taxonomique Relative (Niveau Phylum)
+L'agrégation au niveau du phylum révèle une communauté complexe dominée par des taxons classiquement associés aux sols, mais aussi connus pour leur résilience face aux stress abiotiques :
+
+*   **Proteobacteria** et **Actinobacteriota** : Souvent impliqués dans les cycles biogéochimiques, la dégradation de composés organiques complexes et la résistance aux métaux lourds.
+*   **Acidobacteriota** et **Chloroflexi** : Fréquemment abondants dans les sols oligotrophes ou soumis à des stress environnementaux.
+*   **Firmicutes** : Phylum incluant de nombreuses espèces sporulantes, souvent enrichies dans les environnements extrêmes ou perturbés.
+*   **Crenarchaeota** : Indicateur de la présence d'Archées, cruciales pour les cycles de l'azote et du carbone dans les sols.
+
+![Diagramme en barres empilées montrant l'abondance relative des phylums bactériens et archéens (Proteobacteria, Acidobacteriota, Actinobacteriota, etc.) dans les échantillons de sols.](/home/karl/Documents/genolabgab/public/images/mine/taxonomy_barplot.png)
+*Figure 3 : Composition taxonomique relative au niveau du phylum. Répartition des principaux taxons édaphiques résilients. La fraction "Unassigned" met en évidence la présence de matière noire microbienne, fréquente dans les environnements soumis à un stress métallique.*
+
+La présence notable de séquences classées comme *"Unassigned"* est un résultat scientifiquement pertinent. Les sols contaminés par les métaux lourds abritent souvent une **"matière noire microbienne"** (*microbial dark matter*), composée de lignées non cultivées et sous-représentées dans les bases de données de référence actuelles.
+
+---
+
+## Discussion : Perspective Ingénierie et Limites
+
+L'interprétation écologique de ces résultats doit être nuancée par la conception expérimentale du jeu de données test. Avec un effectif total de n=6, la puissance des tests statistiques (Kruskal-Wallis, PERMANOVA) est intrinsèquement limitée. L'absence de significativité (p > 0.05) ne prouve pas l'absence d'effet biologique.
+
+Cependant, la valeur principale de ce travail réside dans la **validation de l'infrastructure d'analyse**. Le pipeline développé intègre une gestion défensive des erreurs, notamment :
+1.  L'alignement programmatique des identifiants d'échantillons pour éviter les erreurs de jointure dans `phyloseq`.
+2.  Le nettoyage robuste des chaînes taxonomiques (gestion des séparateurs `;` vs `; ` et des préfixes variables) pour empêcher la perte de données lors de l'agrégation (`tax_glom`).
+
+Ce script est modulaire, documenté et capable de traiter des cohortes de plusieurs centaines d'échantillons sans modification structurelle.
+
+## Perspectives
+
+Pour aller au-delà du profilage taxonomique, les prochaines itérations de ce projet incluront :
+1.  L'application du pipeline à une cohorte équilibrée et de plus grande taille pour identifier des bio-indicateurs robustes de la réhabilitation.
+2.  Le passage à la **métagénomique shotgun** pour annoter les voies métaboliques fonctionnelles (gènes de résistance aux métaux, cycles biogéochimiques) via des outils comme `MetaPhlAn` ou `HUMAnN`.
+---
+
+*Le code source complet de ce pipeline, incluant les scripts Bash d'orchestration et le script R d'analyse, est disponible en accès libre sur mon [GitHub](https://github.com/GenoLab-ga).*
