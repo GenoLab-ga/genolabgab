@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description:
     "Axes de recherche de Keny Karl Mounguele : génomique computationnelle, bioinformatique structurale et docking moléculaire, vaccinomique et immunoinformatique, biologie des plantes.",
   alternates: {
-    canonical: "https://genolabgab.vercel.app/research",
+    canonical: "https://genolabgab.com/research",
   },
 };
 
@@ -19,7 +19,7 @@ export default function ResearchPage() {
     "@context": "https://schema.org",
     "@type": "ResearchProject",
     name: "GenoLabGab — Recherche en bioinformatique",
-    url: "https://genolabgab.vercel.app/research",
+    url: "https://genolabgab.com/research",
     description:
       "Axes de recherche en génomique computationnelle, bioinformatique structurale et vaccinomique.",
     member: {

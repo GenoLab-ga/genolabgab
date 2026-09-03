@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description:
     "Projets de Keny Karl Mounguele : génomique du riz 3K-RGP, vaccin anti-paludéen TBV Pfs48/45, criblage anti-VIH p24, tolérance à la sécheresse chez Vicia faba.",
   alternates: {
-    canonical: "https://genolabgab.vercel.app/projects",
+    canonical: "https://genolabgab.com/projects",
   },
 };
 

@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description:
   "Contactez Keny Karl Mounguele pour des collaborations en bioinformatique, analyses génomiques ou projets de recherche.",
   alternates: {
-    canonical: "https://genolabgab.vercel.app/contact",
+    canonical: "https://genolabgab.com/contact",
   },
 };
 

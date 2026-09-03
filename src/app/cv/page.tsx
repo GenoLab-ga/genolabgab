@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   description:
     "Curriculum vitae de Keny Karl Mounguele : formation, expériences en recherche, compétences bioinformatiques et publications.",
   alternates: {
-    canonical: "https://genolabgab.vercel.app/cv",
+    canonical: "https://genolabgab.com/cv",
   },
 };
 

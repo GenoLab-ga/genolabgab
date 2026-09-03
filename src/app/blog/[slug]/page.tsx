@@ -50,7 +50,7 @@ export async function generateMetadata({
     title: article?.frontmatter.title ?? "Article — GenoLabGab",
     description: article?.frontmatter.description ?? "",
     alternates: {
-      canonical: `https://genolabgab.vercel.app/blog/${slug}`,
+      canonical: `https://genolabgab.com/blog/${slug}`,
     },
   };
 }

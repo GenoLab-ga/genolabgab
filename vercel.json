@@ -1,1 +1,17 @@
-{"buildCommand": "npm run build", "installCommand": "npm install"}
+{
+  "buildCommand": "npm run build",
+  "installCommand": "npm install",
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "genolabgab.vercel.app"
+        }
+      ],
+      "destination": "https://genolabgab.com/$1",
+      "permanent": true
+    }
+  ]
+}

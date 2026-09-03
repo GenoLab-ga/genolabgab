@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description:
     "Publications scientifiques, prépublications et articles de blog de Keny Karl Mounguele en bioinformatique, génomique et vaccinomique.",
   alternates: {
-    canonical: "https://genolabgab.vercel.app/publications",
+    canonical: "https://genolabgab.com/publications",
   },
 };
 
@@ -22,7 +22,7 @@ export default function PublicationsPage() {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
     name: "Publications — GenoLabGab",
-    url: "https://genolabgab.vercel.app/publications",
+    url: "https://genolabgab.com/publications",
     description: "Publications scientifiques et articles de Keny Karl Mounguele.",
     hasPart: sorted.map((p) => ({
       "@type": "ScholarlyArticle",

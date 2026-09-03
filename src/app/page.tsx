@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   "Fondateur de GenoLabGab, ingénieur bioinformaticien spécialisé en génomique computationnelle, bioinformatique structurale et vaccinomique. Basé à Fès, Maroc.",
   keywords: ["Génomique", "Bio-informatique", "Gabon", "DNA", "Analyse de données"],
   alternates: {
-    canonical: "https://genolabgab.vercel.app",
+    canonical: "https://genolabgab.com",
   },
 };
 
@@ -118,7 +118,7 @@ export default function HomePage() {
       "@type": "Organization",
       name: "Diplômé de l'Université Euromed de Fès",
     },
-    url: "https://genolabgab.vercel.app",
+    url: "https://genolabgab.com",
     sameAs: [
       "https://github.com/GenoLab-ga",
       "https://linkedin.com/in/karl-mounguele",

@@ -1,4 +1,4 @@
-export const SITE_URL = "https://genolabgab.vercel.app";
+export const SITE_URL = "https://genolabgab.com";
 export const SITE_NAME = "GenoLabGab";
 export const AUTHOR_NAME = "Keny Karl Mounguele";
 export const AUTHOR_ROLE_FR = "Ingénieur Bioinformaticien";

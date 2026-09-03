@@ -9,6 +9,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ["/api/"],
       },
     ],
-    sitemap: "https://genolabgab.vercel.app/sitemap.xml",
+    sitemap: "https://genolabgab.com/sitemap.xml",
   };
 }

@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description:
     "Ingénieur en biotechnologie et bioinformatique, fondateur de GenoLabGab. Découvrez mon parcours, mes compétences et mes centres d'intérêt en biologie computationnelle.",
   alternates: {
-    canonical: "https://genolabgab.vercel.app/about",
+    canonical: "https://genolabgab.com/about",
   },
 };
 

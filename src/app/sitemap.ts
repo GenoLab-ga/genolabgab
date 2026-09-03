@@ -3,7 +3,7 @@ import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
 
-const BASE_URL = "https://genolabgab.vercel.app";
+const BASE_URL = "https://genolabgab.com";
 
 /**
  * Chaque page statique déclare sa propre date de dernière modification

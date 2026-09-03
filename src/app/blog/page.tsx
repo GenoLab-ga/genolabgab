@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   description:
     "Articles et analyses bioinformatiques de Keny Karl Mounguele : génomique, docking moléculaire, résistance antipaludéenne, pipelines NGS.",
   alternates: {
-    canonical: "https://genolabgab.vercel.app/blog",
+    canonical: "https://genolabgab.com/blog",
   },
 };
 
