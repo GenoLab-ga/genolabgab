@@ -12,6 +12,17 @@
       ],
       "destination": "https://genolabgab.com/$1",
       "permanent": true
+    },
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.genolabgab.com"
+        }
+      ],
+      "destination": "https://genolabgab.com/$1",
+      "permanent": true
     }
   ]
 }
