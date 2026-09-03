@@ -14,3 +14,8 @@ build/
 !.env.example
 .vercel
 .env*
+
+# Build artifacts
+build_output.log
+texput.log
+tsconfig.tsbuildinfo

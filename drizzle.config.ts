@@ -1,10 +1,16 @@
 import { defineConfig } from "drizzle-kit";
 import "dotenv/config";
 
+const databaseUrl = process.env.DATABASE_URL;
+
+if (!databaseUrl) {
+  throw new Error("DATABASE_URL is required. Create a .env file from .env.example");
+}
+
 export default defineConfig({
   dialect: "postgresql",
   schema: "./src/db/schema.ts",
   dbCredentials: {
-    url: process.env.DATABASE_URL ?? "postgresql://postgres:postgres@127.0.0.1:5432/app_db",
+    url: databaseUrl,
   },
 });
