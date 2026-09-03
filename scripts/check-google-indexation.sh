@@ -3,7 +3,7 @@
 # Script pour vérifier quelles pages sont indexées par Google
 # Usage: ./scripts/check-google-indexation.sh
 
-URL_BASE="https://genolabgab.vercel.app"
+URL_BASE="https://genolabgab.com"
 
 # Liste des pages du sitemap
 PAGES=(
@@ -76,4 +76,4 @@ echo "   2. Menu 'Pages' → 'Pages exclues'"
 echo "   3. Analysez les raisons d'exclusion"
 echo ""
 echo "💡 Commande pour vérifier manuellement sur Google :"
-echo "   Ouvrez: https://www.google.com/search?q=site:genolabgab.vercel.app"
+echo "   Ouvrez: https://www.google.com/search?q=site:genolabgab.com"

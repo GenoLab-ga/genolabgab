@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Teste la CSP de votre site
-URL="https://genolabgab.vercel.app"
+URL="https://genolabgab.com"
 
 echo "🔍 Test des headers de sécurité pour $URL"
 echo "=========================================="

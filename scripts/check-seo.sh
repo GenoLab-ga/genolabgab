@@ -1,11 +1,11 @@
 #!/bin/bash
 
-# Script de vérification SEO pour genolabgab.vercel.app
+# Script de vérification SEO pour genolabgab.com
 # Auteur: Karl Mounguele
 # Date: 2026-07-08
 # Version: 1.1 (correction case-insensitive)
 
-URL="https://genolabgab.vercel.app"
+URL="https://genolabgab.com"
 REPORT_FILE="seo-report-$(date +%Y-%m-%d_%H-%M-%S).txt"
 
 # Couleurs pour l'affichage

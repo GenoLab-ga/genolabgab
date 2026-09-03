@@ -3,7 +3,7 @@
 # Script de vérification de l'indexation Google et Bing
 # Usage: ./scripts/check-indexation.sh
 
-URL="genolabgab.vercel.app"
+URL="genolabgab.com"
 
 echo "🔍 Vérification de l'indexation de $URL"
 echo "=========================================="
