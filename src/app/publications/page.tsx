@@ -3,7 +3,7 @@ import Link from "next/link";
 import { getAllPublications, type Publication } from "@/lib/get-publications";
 
 export const metadata: Metadata = {
-  title: "Publications & Articles — Keny Karl Mounguele",
+  title: "Publications & Articles - Keny Karl Mounguele",
   description:
     "Publications scientifiques, prépublications et articles de blog de Keny Karl Mounguele en bioinformatique, génomique et vaccinomique.",
   alternates: {

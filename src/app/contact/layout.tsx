@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 
 export const metadata: Metadata = {
-  title: "Contact — Keny Karl Mounguele",
+  title: "Contact - Keny Karl Mounguele",
   description:
   "Contactez Keny Karl Mounguele pour des collaborations en bioinformatique, analyses génomiques ou projets de recherche.",
   alternates: {

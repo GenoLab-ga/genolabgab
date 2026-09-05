@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { researchAxes } from "@/data/site";
 
 export const metadata: Metadata = {
-  title: "Recherche — Génomique, Bioinformatique structurale & Vaccinomique",
+  title: "Recherche - Génomique, Bioinformatique structurale & Vaccinomique",
   description:
     "Axes de recherche de Keny Karl Mounguele : génomique computationnelle, bioinformatique structurale et docking moléculaire, vaccinomique et immunoinformatique, biologie des plantes.",
   alternates: {
@@ -18,7 +18,7 @@ export default function ResearchPage() {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "ResearchProject",
-    name: "GenoLabGab — Recherche en bioinformatique",
+    name: "GenoLabGab - Recherche en bioinformatique",
     url: "https://genolabgab.com/research",
     description:
       "Axes de recherche en génomique computationnelle, bioinformatique structurale et vaccinomique.",

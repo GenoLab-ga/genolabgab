@@ -5,7 +5,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Blog — Bioinformatique & Génomique computationnelle",
+  title: "Blog - Bioinformatique & Génomique computationnelle",
   description:
     "Articles et analyses bioinformatiques de Keny Karl Mounguele : génomique, docking moléculaire, résistance antipaludéenne, pipelines NGS.",
   alternates: {

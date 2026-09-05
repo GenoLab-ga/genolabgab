@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { projects } from "@/data/site";
 
 export const metadata: Metadata = {
-  title: "Projets — Pipelines bioinformatiques & Recherche",
+  title: "Projets - Pipelines bioinformatiques & Recherche",
   description:
     "Projets de Keny Karl Mounguele : génomique du riz 3K-RGP, vaccin anti-paludéen TBV Pfs48/45, criblage anti-VIH p24, tolérance à la sécheresse chez Vicia faba.",
   alternates: {

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 
 export const metadata: Metadata = {
-  title: "À propos — Keny Karl Mounguele",
+  title: "À propos - Keny Karl Mounguele",
   description:
     "Ingénieur en biotechnologie et bioinformatique, fondateur de GenoLabGab. Découvrez mon parcours, mes compétences et mes centres d'intérêt en biologie computationnelle.",
   alternates: {
@@ -109,7 +109,7 @@ export default function AboutPage() {
               À propos
             </h1>
             <p className="mt-2 text-lg text-slate-600">
-              Ingénieur en biotechnologie et bioinformatique, aspirant doctorant.
+              Ingénieur en biotechnologie et bioinformatique.
             </p>
           </div>
           <div className="relative h-40 w-40 shrink-0 overflow-hidden rounded-2xl bg-slate-100 ring-2 ring-emerald-100">

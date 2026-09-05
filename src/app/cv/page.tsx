@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "CV — Keny Karl Mounguele, Ingénieur Bioinformaticien",
+  title: "CV - Keny Karl Mounguele, Ingénieur Bioinformaticien",
   description:
     "Curriculum vitae de Keny Karl Mounguele : formation, expériences en recherche, compétences bioinformatiques et publications.",
   alternates: {
