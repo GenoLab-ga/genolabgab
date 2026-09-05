@@ -43,15 +43,15 @@ export default function Hero() {
     <div className="mt-10 flex flex-wrap gap-4">
     <Link
     href="/research"
-    className="rounded-lg bg-bio-500 px-6 py-3 font-mono text-sm font-semibold text-slate-950 transition hover:bg-bio-400 hover:shadow-lg hover:shadow-bio-500/25"
+    className="rounded-lg bg-bio-500 px-6 py-3 text-sm font-semibold text-slate-950 transition hover:bg-bio-400 hover:shadow-lg hover:shadow-bio-500/25"
     >
-    ./voir_recherches
+    Mes recherches
     </Link>
     <Link
     href="/contact"
     className="rounded-lg border border-bio-500/40 bg-slate-950/40 px-6 py-3 font-mono text-sm text-slate-200 backdrop-blur-sm transition hover:border-bio-400 hover:bg-slate-950/60"
     >
-    ./me_contacter
+    Me contacter
     </Link>
     </div>
     </div>
