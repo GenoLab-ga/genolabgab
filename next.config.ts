@@ -9,12 +9,10 @@ const withMDX = createMDX({
 });
 
 const nextConfig: NextConfig = {
-  // Force Next.js à utiliser le dossier courant comme racine
   turbopack: {
     root: process.cwd(),
   },
 
-  output: "standalone",
   pageExtensions: ["ts", "tsx", "mdx"],
 
   images: {
