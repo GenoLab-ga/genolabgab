@@ -5,6 +5,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { fontDisplay, fontMono, fontSans } from "@/lib/fonts";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://genolabgab.com"),
@@ -155,7 +156,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           }}
         />
       </head>
-      <body className="min-h-screen bg-white text-slate-900 antialiased">
+      <body className={`${fontSans.variable} ${fontDisplay.variable} ${fontMono.variable} bg-white`}>
         <Navbar />
         <main>{children}</main>
         <Footer />

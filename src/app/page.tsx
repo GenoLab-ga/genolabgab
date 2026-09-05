@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Image from "next/image";
 import { getAllPublications, type Publication } from "@/lib/get-publications";
 import QcChartWrapper from "@/components/QcChartWrapper";
+import Hero from "@/components/lab/Hero";
+import Marquee from "@/components/lab/Marquee";
 
 export const metadata: Metadata = {
   title: "Keny Karl Mounguele - Ingénieur Bioinformaticien · GenoLabGab",
@@ -67,41 +68,12 @@ function ArrowRightIcon({ className = "h-4 w-4" }: { className?: string }) {
   );
 }
 
-function MailIcon({ className = "h-5 w-5" }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-    <rect width="20" height="16" x="2" y="4" rx="2" />
-    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-    </svg>
-  );
-}
-
 function ExternalLinkIcon({ className = "h-3.5 w-3.5" }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
     <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
     <path d="M15 3h6v6" />
     <path d="M10 14 21 3" />
-    </svg>
-  );
-}
-
-/* ─── Decorative DNA Helix SVG ─── */
-function DnaHelixDecor() {
-  return (
-    <svg
-    className="absolute right-0 top-1/2 -translate-y-1/2 opacity-[0.04] hidden lg:block"
-    width="600"
-    height="600"
-    viewBox="0 0 200 200"
-    fill="none"
-    aria-hidden="true"
-    >
-    <path d="M60 10 Q100 50, 140 50 Q100 90, 60 90 Q100 130, 140 130 Q100 170, 60 170 Q100 190, 120 190" stroke="#10b981" strokeWidth="2" fill="none" />
-    <path d="M140 10 Q100 50, 60 50 Q100 90, 140 90 Q100 130, 60 130 Q100 170, 140 170 Q100 190, 80 190" stroke="#06b6d4" strokeWidth="2" fill="none" />
-    {[50, 90, 130, 170].map((y) => (
-      <line key={y} x1="60" y1={y} x2="140" y2={y} stroke="#10b981" strokeWidth="0.5" opacity="0.5" />
-    ))}
     </svg>
   );
 }
@@ -142,106 +114,11 @@ export default function HomePage() {
     dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
     />
 
-    {/* ═══ HERO ═══ */}
-    <section className="relative min-h-[90vh] flex items-center overflow-hidden bg-[#0a0f1a]">
-    <div className="absolute inset-0 -z-10">
-    <div className="absolute inset-0 bg-gradient-to-br from-[#0a0f1a] via-[#0d1525] to-[#071215]" />
-    <div className="absolute -top-32 -left-32 h-[500px] w-[500px] rounded-full bg-emerald-500/[0.07] blur-[120px]" />
-    <div className="absolute -bottom-32 -right-32 h-[400px] w-[400px] rounded-full bg-cyan-500/[0.05] blur-[100px]" />
-    <div className="absolute inset-0 grid-pattern opacity-40" />
-    <div className="absolute inset-0 dot-pattern opacity-20" />
-    </div>
+    {/* ═══ HERO (nouveau) ═══ */}
+    <Hero />
 
-    <DnaHelixDecor />
-
-    <div className="mx-auto grid max-w-7xl gap-12 px-4 py-20 sm:px-6 md:grid-cols-[1fr_auto] md:items-center md:gap-16 lg:px-8">
-    <div className="animate-fade-up">
-    <div className="inline-flex items-center gap-2.5 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-4 py-1.5 text-sm font-medium text-emerald-400 backdrop-blur-sm">
-    <span className="relative flex h-2 w-2">
-    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-    <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
-    </span>
-    Disponible pour collaboration
-    </div>
-
-    <p className="mt-8 text-sm font-semibold uppercase tracking-[0.2em] text-slate-400">
-    Bonjour, je suis
-    </p>
-    <h1 className="mt-3 text-4xl font-bold tracking-tight sm:text-5xl lg:text-7xl">
-    <span className="text-white">Keny Karl</span>
-    <br />
-    <span className="text-gradient-emerald">Mounguele</span>
-    </h1>
-    <p className="mt-4 text-lg font-medium text-emerald-400 sm:text-xl">
-    Ingénieur Bioinformaticien
-    </p>
-    <p className="mt-1.5 flex items-center gap-2 text-sm text-slate-400">
-    <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-    <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
-    <circle cx="12" cy="10" r="3" />
-    </svg>
-    Diplômé de l&apos;Université Euromed de Fès · Fès, Maroc
-    </p>
-    <p className="mt-6 max-w-xl text-base leading-relaxed text-slate-300 sm:text-lg">
-    Fondateur de <span className="font-semibold text-emerald-400">GenoLabGab</span>, une initiative
-    indépendante en biologie computationnelle. Je développe des pipelines automatisés pour
-    l&apos;analyse NGS, le criblage virtuel de composés bioactifs, et la conception de vaccins par vaccinomique.
-    </p>
-
-    <div className="mt-10 flex flex-wrap gap-4">
-    <Link
-    href="/research"
-    className="group inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 px-6 py-3.5 text-sm font-semibold text-white shadow-lg shadow-emerald-500/20 transition-all duration-300 hover:shadow-emerald-500/40 hover:brightness-110"
-    >
-    Mes recherches
-    <ArrowRightIcon className="transition-transform group-hover:translate-x-1" />
-    </Link>
-    <Link
-    href="/contact"
-    className="inline-flex items-center gap-2 rounded-xl border border-slate-600/50 bg-white/5 px-6 py-3.5 text-sm font-semibold text-slate-200 backdrop-blur-sm transition-all duration-300 hover:border-emerald-500/30 hover:bg-white/10 hover:text-white"
-    >
-    <MailIcon className="h-4 w-4" />
-    Me contacter
-    </Link>
-    </div>
-    </div>
-
-    <div className="relative mx-auto md:mx-0 animate-fade-up animation-delay-300">
-    <div className="absolute -inset-6 rounded-full bg-gradient-to-br from-emerald-400/20 via-cyan-500/10 to-transparent blur-2xl" />
-    <div className="absolute -inset-3 rounded-full border-2 border-dashed border-emerald-500/20 animate-rotate-slow" />
-    <div className="absolute -inset-1.5 rounded-full border border-emerald-500/10" />
-    <div className="relative h-64 w-64 overflow-hidden rounded-full bg-slate-800 sm:h-80 sm:w-80">
-    <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/20 to-cyan-500/10" />
-    <Image
-    src="/images/avatar.svg"
-    alt="Photo de Keny Karl Mounguele - Ingénieur Bioinformaticien"
-    fill
-    sizes="(max-width: 640px) 256px, 320px"
-    className="object-cover p-2"
-    priority
-    />
-    </div>
-    <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 animate-float">
-    <div className="flex items-center gap-2 whitespace-nowrap rounded-full bg-[#0d1525] px-5 py-2 text-sm font-medium text-emerald-400 shadow-xl shadow-black/20 ring-1 ring-emerald-500/20">
-    <span className="text-base">🧬</span>
-    GenoLabGab
-    </div>
-    </div>
-    <div className="absolute -right-6 top-8 h-3 w-3 rounded-full bg-emerald-400/40 animate-pulse" />
-    <div className="absolute -left-4 bottom-20 h-2 w-2 rounded-full bg-cyan-400/30 animate-pulse animation-delay-500" />
-    <div className="absolute right-4 -top-4 h-2.5 w-2.5 rounded-full bg-emerald-300/20 animate-float animation-delay-300" />
-    </div>
-    </div>
-
-    <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
-    <div className="flex flex-col items-center gap-2">
-    <span className="text-xs font-medium tracking-wider text-slate-500 uppercase">Découvrir</span>
-    <svg className="h-5 w-5 text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-    <path d="m6 9 6 6 6-6" />
-    </svg>
-    </div>
-    </div>
-    </section>
+    {/* ═══ MARQUEE ═══ */}
+    <Marquee />
 
     {/* ═══ STATS ═══ */}
     <section className="relative -mt-1 bg-white" aria-label="Statistiques">
