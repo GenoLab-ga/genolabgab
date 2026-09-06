@@ -12,9 +12,7 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: process.cwd(),
   },
-
   pageExtensions: ["ts", "tsx", "mdx"],
-
   images: {
     formats: ["image/avif", "image/webp"],
       dangerouslyAllowSVG: false,
@@ -22,12 +20,18 @@ const nextConfig: NextConfig = {
         { protocol: "https", hostname: "avatars.githubusercontent.com" },
       ],
   },
-
   reactStrictMode: true,
-
+  async redirects() {
+    return [
+      {
+        source: "/:path(cv|publications|blog|research)/",
+        destination: "/:path",
+        permanent: true,
+      },
+    ];
+  },
   async headers() {
     const isDev = process.env.NODE_ENV === "development";
-
     return [
       {
         source: "/(.*)",
