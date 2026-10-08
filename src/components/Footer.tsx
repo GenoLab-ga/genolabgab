@@ -37,6 +37,7 @@ const footerNav = [
 { href: "/research", label: "Recherche" },
 { href: "/publications", label: "Publications" },
 { href: "/projects", label: "Projets" },
+{ href: "/tapclavier", label: "TapClavier" },
 { href: "/cv", label: "CV" },
 { href: "/contact", label: "Contact" },
 ];

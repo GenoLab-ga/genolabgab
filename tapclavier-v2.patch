@@ -1,0 +1,424 @@
+diff --git a/src/components/TapClavier.tsx b/src/components/TapClavier.tsx
+index a1a65a5..8954e5d 100644
+--- a/src/components/TapClavier.tsx
++++ b/src/components/TapClavier.tsx
+@@ -1,11 +1,13 @@
+ "use client";
+ 
+-import { Fragment, useCallback, useEffect, useRef, useState } from "react";
++import { Fragment, useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
+ 
+ /* ───────────── Corpus ───────────── */
+-type Mode = "rangee" | "mots" | "phrases" | "bio" | "adn";
++type Layout = "azerty" | "qwerty";
++type Mode = "lecons" | "rangee" | "mots" | "phrases" | "bio" | "adn";
+ 
+ const MODES: { id: Mode; label: string }[] = [
++  { id: "lecons", label: "Leçons" },
+   { id: "rangee", label: "Rangée de base" },
+   { id: "mots", label: "Mots" },
+   { id: "phrases", label: "Phrases" },
+@@ -37,17 +39,38 @@ const SENTENCES = [
+ 
+ const rnd = (n: number) => Math.floor(Math.random() * n);
+ const pick = <T,>(a: readonly T[]): T => a[rnd(a.length)];
+-const GEN: Record<Mode, () => string> = {
+-  rangee: () => Array.from({ length: 4 }, () => pick([..."qsdfghjklm"])).join(""),
++const HOME: Record<Layout, string> = { azerty: "qsdfghjklm", qwerty: "asdfghjkl" };
++// Chaque leçon introduit de nouvelles touches (progression par doigt, rangée de base puis haut puis bas)
++const LESSONS: Record<Layout, string[]> = {
++  azerty: ["fj", "dk", "sl", "qm", "gh", "ei", "ru", "ty", "zo", "ap", "vn", "bc", "xw", "éèàç"],
++  qwerty: ["fj", "dk", "sl", "a;", "gh", "ei", "ru", "ty", "wo", "qp", "vn", "bm", "cx", "z,."],
++};
++const LESSON_ACC = 95;
++const LESSON_WPM = 15;
++const lessonUnit = (layout: Layout, n: number) => {
++  const pool = [...LESSONS[layout].slice(0, n + 1).join("")];
++  const fresh = [...LESSONS[layout][n]];
++  return () => {
++    const len = 3 + rnd(3);
++    const a = Array.from({ length: len }, () => pick(pool));
++    if (rnd(10) < 8) a[rnd(len)] = pick(fresh); // 80 % des groupes contiennent une touche nouvelle
++    return a.join("");
++  };
++};
++const stripAccents = (t: string) => t.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
++
++const GEN: Record<Exclude<Mode, "lecons">, (l: Layout) => string> = {
++  rangee: (l) => Array.from({ length: 4 }, () => pick([...HOME[l]])).join(""),
+   mots: () => pick(WORDS),
+   phrases: () => pick(SENTENCES),
+   bio: () => pick(BIO),
+   adn: () => Array.from({ length: 6 }, () => pick([..."ACGT"])).join(""),
+ };
+-const buildText = (mode: Mode) => {
++const buildText = (mode: Mode, layout: Layout, lesson: number) => {
++  const unit = mode === "lecons" ? lessonUnit(layout, lesson) : () => GEN[mode](layout);
+   let s = "";
+-  while (s.length < 1200) s += (s ? " " : "") + GEN[mode]();
+-  return s;
++  while (s.length < 1200) s += (s ? " " : "") + unit();
++  return layout === "qwerty" ? stripAccents(s) : s; // pas d'accents sur un clavier QWERTY
+ };
+ 
+ /* ───────────── Clavier AZERTY ─────────────
+@@ -68,7 +91,7 @@ const key = ([b, s, f]: [string, string, number]): KeyDef => ({
+ });
+ const sp = (id: string, label: string, f: number, w: number): KeyDef => ({ id, label, f, w });
+ 
+-const ROWS: Cell[][] = [
++const AZ_ROWS: Cell[][] = [
+   [
+     ...([["²", "", 0], ["&", "1", 0], ["é", "2", 1], ['"', "3", 2], ["'", "4", 3], ["(", "5", 3], ["-", "6", 4], ["è", "7", 4], ["_", "8", 5], ["ç", "9", 6], ["à", "0", 7], [")", "°", 7], ["=", "+", 7]] as [string, string, number][]).map(key),
+     sp("Backspace", "⌫", 7, 1.6),
+@@ -85,20 +108,77 @@ const ROWS: Cell[][] = [
+   [3.5, sp(" ", "", 8, 7), 4.1],
+ ];
+ 
++const QW_ROWS: Cell[][] = [
++  [
++    ...([["`", "~", 0], ["1", "!", 0], ["2", "@", 1], ["3", "#", 2], ["4", "$", 3], ["5", "%", 3], ["6", "^", 4], ["7", "&", 4], ["8", "*", 5], ["9", "(", 6], ["0", ")", 7], ["-", "_", 7], ["=", "+", 7]] as [string, string, number][]).map(key),
++    sp("Backspace", "⌫", 7, 1.6),
++  ],
++  [1.5, ...mk("qwertyuiop", F10).map(key), key(["[", "{", 7]), key(["]", "}", 7]), key(["\\", "|", 7]), 0.1],
++  [1.8, ...mk("asdfghjkl", F10.slice(0, 9)).map(key), key([";", ":", 7]), key(["'", '"', 7]), 1.8],
++  [
++    sp("ShiftL", "⇧", 0, 2.3),
++    ...mk("zxcvbnm", [0, 1, 2, 3, 3, 4, 4]).map(key),
++    key([",", "<", 5]), key([".", ">", 6]), key(["/", "?", 7]),
++    sp("ShiftR", "⇧", 7, 2.3),
++  ],
++  [3.5, sp(" ", "", 8, 7), 4.1],
++];
++
+ // caractère -> touche (id), Maj requise, doigt
+-const LOOK: Record<string, { id: string; shift: boolean; f: number }> = {};
+-ROWS.flat().forEach((c) => {
+-  if (typeof c === "number") return;
+-  LOOK[c.id] = { id: c.id, shift: false, f: c.f };
+-});
+-ROWS.flat().forEach((c) => {
+-  if (typeof c === "number") return;
+-  if (/^[a-z]$/.test(c.id)) LOOK[c.id.toUpperCase()] = { id: c.id, shift: true, f: c.f };
+-  else if (c.sub) LOOK[c.sub] = { id: c.id, shift: true, f: c.f };
+-});
++const buildLook = (rows: Cell[][]) => {
++  const look: Record<string, { id: string; shift: boolean; f: number }> = {};
++  rows.flat().forEach((c) => {
++    if (typeof c === "number") return;
++    look[c.id] = { id: c.id, shift: false, f: c.f };
++    if (/^[a-z]$/.test(c.id)) look[c.id.toUpperCase()] = { id: c.id, shift: true, f: c.f };
++    else if (c.sub) look[c.sub] = { id: c.id, shift: true, f: c.f };
++  });
++  return look;
++};
++const LAYOUTS = {
++  azerty: { rows: AZ_ROWS, look: buildLook(AZ_ROWS) },
++  qwerty: { rows: QW_ROWS, look: buildLook(QW_ROWS) },
++};
+ 
+ const HUES = [350, 20, 42, 85, 170, 195, 225, 265, 215];
+ 
++/* ───────────── Stockage local réactif (localStorage + repli mémoire) ───────────── */
++const listeners = new Set<() => void>();
++const mem: Record<string, string> = {};
++const readKey = (k: string) => {
++  try {
++    return localStorage.getItem(k) ?? mem[k] ?? "";
++  } catch {
++    return mem[k] ?? "";
++  }
++};
++const writeKey = (k: string, v: string) => {
++  mem[k] = v;
++  try {
++    localStorage.setItem(k, v);
++  } catch {
++    /* stockage indisponible */
++  }
++  listeners.forEach((l) => l());
++};
++const subscribe = (cb: () => void) => {
++  listeners.add(cb);
++  window.addEventListener("storage", cb);
++  return () => {
++    listeners.delete(cb);
++    window.removeEventListener("storage", cb);
++  };
++};
++const useStored = (k: string) => useSyncExternalStore(subscribe, () => readKey(k), () => "");
++const parseJSON = <T,>(raw: string, fallback: T): T => {
++  try {
++    return raw ? (JSON.parse(raw) as T) : fallback;
++  } catch {
++    return fallback;
++  }
++};
++type Entry = { t: number; wpm: number; acc: number; mode: Mode; dur: number };
++
+ /* Vitesse nette (1 mot = 5 caractères corrects) et précision cumulée */
+ const computeStats = (v: string, tgt: string, total: number, errs: number, el: number) => {
+   let ok = 0;
+@@ -109,8 +189,68 @@ const computeStats = (v: string, tgt: string, total: number, errs: number, el: n
+   };
+ };
+ 
++/* ───────────── Historique des scores (SVG, sans dépendance) ───────────── */
++function Progress({ entries, onClear }: { entries: Entry[]; onClear: () => void }) {
++  if (!entries.length) return null;
++  const data = entries.slice(-30);
++  const W = 600, H = 190, L = 34, R = 34, T = 12, B = 24;
++  const yMax = Math.max(20, Math.ceil(Math.max(...data.map((d) => d.wpm)) / 10) * 10);
++  const x = (i: number) => L + (data.length === 1 ? (W - L - R) / 2 : (i * (W - L - R)) / (data.length - 1));
++  const yW = (v: number) => T + (H - T - B) * (1 - v / yMax);
++  const yA = (v: number) => T + (H - T - B) * (1 - v / 100);
++  const line = (f: (v: number) => number, k: "wpm" | "acc") => data.map((d, i) => `${x(i)},${f(d[k])}`).join(" ");
++  const avg = (a: Entry[]) => (a.length ? Math.round(a.reduce((t, d) => t + d.wpm, 0) / a.length) : 0);
++  const recent = avg(entries.slice(-5));
++  const before = entries.length >= 10 ? avg(entries.slice(-10, -5)) : null;
++  const fmt = (t: number) => new Date(t).toLocaleDateString("fr-FR", { day: "2-digit", month: "2-digit" });
++  const kpis = [
++    { v: entries.length, l: "sessions" },
++    { v: Math.max(...entries.map((d) => d.wpm)), l: "record (mots/min)" },
++    { v: before === null ? recent : `${recent} (${recent - before >= 0 ? "+" : ""}${recent - before})`, l: "moyenne des 5 dernières" },
++  ];
++  return (
++    <section className="mt-10 rounded-2xl border border-slate-200 bg-white p-6">
++      <div className="flex items-center justify-between gap-4">
++        <h2 className="text-lg font-semibold text-slate-900">Votre progression</h2>
++        <button type="button" onClick={onClear} className="text-sm text-slate-500 underline hover:text-slate-800">
++          Effacer l&apos;historique
++        </button>
++      </div>
++      <div className="mt-4 flex flex-wrap gap-8">
++        {kpis.map((k) => (
++          <div key={k.l} className="flex flex-col">
++            <span className="text-2xl font-semibold tabular-nums leading-none text-slate-900">{k.v}</span>
++            <span className="mt-1 text-sm text-slate-500">{k.l}</span>
++          </div>
++        ))}
++      </div>
++      <svg viewBox={`0 0 ${W} ${H}`} className="mt-4 w-full" role="img" aria-label="Évolution de la vitesse et de la précision">
++        {[0, 0.5, 1].map((p) => (
++          <g key={p}>
++            <line x1={L} x2={W - R} y1={yW(yMax * p)} y2={yW(yMax * p)} stroke="#e2e8f0" />
++            <text x={L - 6} y={yW(yMax * p) + 4} textAnchor="end" fontSize="11" fill="#059669">{Math.round(yMax * p)}</text>
++            <text x={W - R + 6} y={yA(100 * p) + 4} fontSize="11" fill="#94a3b8">{Math.round(100 * p)}</text>
++          </g>
++        ))}
++        <polyline points={line(yA, "acc")} fill="none" stroke="#94a3b8" strokeWidth="1.5" strokeDasharray="4 3" />
++        <polyline points={line(yW, "wpm")} fill="none" stroke="#059669" strokeWidth="2.5" strokeLinejoin="round" />
++        {data.map((d, i) => (
++          <circle key={`${d.t}-${i}`} cx={x(i)} cy={yW(d.wpm)} r="3.5" fill="#059669">
++            <title>{`${fmt(d.t)} : ${d.wpm} mots/min, ${d.acc} % (${MODES.find((m) => m.id === d.mode)?.label ?? d.mode}, ${d.dur} s)`}</title>
++          </circle>
++        ))}
++        <text x={L} y={H - 6} fontSize="11" fill="#64748b">{fmt(data[0].t)}</text>
++        <text x={W - R} y={H - 6} textAnchor="end" fontSize="11" fill="#64748b">{fmt(data[data.length - 1].t)}</text>
++      </svg>
++      <p className="mt-1 text-sm text-slate-500">
++        Trait plein : vitesse (échelle de gauche). Pointillés : précision en % (échelle de droite). Les scores restent dans votre navigateur.
++      </p>
++    </section>
++  );
++}
++
+ /* ───────────── Composant ───────────── */
+-type Result = { wpm: number; acc: number; err: number; record: string; weak: string };
++type Result = { lesson?: { passed: boolean }; wpm: number; acc: number; err: number; record: string; weak: string };
+ 
+ export default function TapClavier() {
+   const [mode, setMode] = useState<Mode>("mots");
+@@ -123,6 +263,12 @@ export default function TapClavier() {
+   const [focused, setFocused] = useState(false);
+   const [hit, setHit] = useState<string | null>(null);
+   const [counts, setCounts] = useState({ total: 0, errs: 0 });
++  const [lesson, setLesson] = useState(0);
++  const layout: Layout = useStored("tc-layout") === "qwerty" ? "qwerty" : "azerty";
++  const doneRaw = useStored(`tc-lessons-${layout}`);
++  const doneLessons = useMemo(() => parseJSON<number[]>(doneRaw, []), [doneRaw]);
++  const histRaw = useStored("tc-history");
++  const history = useMemo(() => parseJSON<Entry[]>(histRaw, []), [histRaw]);
+ 
+   const inputRef = useRef<HTMLInputElement>(null);
+   const boxRef = useRef<HTMLDivElement>(null);
+@@ -137,6 +283,8 @@ export default function TapClavier() {
+   const doneRef = useRef(false);
+   const modeRef = useRef(mode);
+   const durRef = useRef(dur);
++  const layoutRef = useRef<Layout>("azerty");
++  const lessonRef = useRef(0);
+ 
+   const finish = useCallback(() => {
+     if (doneRef.current) return;
+@@ -144,8 +292,19 @@ export default function TapClavier() {
+     if (timer.current) clearInterval(timer.current);
+     const el = Math.min((performance.now() - t0.current) / 1000, durRef.current);
+     const s = computeStats(typedRef.current, targetRef.current, total.current, errs.current, el);
++    if (total.current >= 10) {
++      const hist = parseJSON<Entry[]>(readKey("tc-history"), []);
++      const entry: Entry = { t: Date.now(), wpm: s.wpm, acc: s.acc, mode: modeRef.current, dur: durRef.current };
++      writeKey("tc-history", JSON.stringify([...hist, entry].slice(-100)));
++    }
++    const passed = modeRef.current === "lecons" && s.acc >= LESSON_ACC && s.wpm >= LESSON_WPM;
++    if (passed) {
++      const lk = `tc-lessons-${layoutRef.current}`;
++      const d = parseJSON<number[]>(readKey(lk), []);
++      if (!d.includes(lessonRef.current)) writeKey(lk, JSON.stringify([...d, lessonRef.current]));
++    }
+     let record = "";
+-    const k = `tc-best-${modeRef.current}-${durRef.current}`;
++    const k = `tc-best-${modeRef.current}${modeRef.current === "lecons" ? lessonRef.current : ""}-${durRef.current}`;
+     try {
+       const best = Number(localStorage.getItem(k)) || 0;
+       if (s.wpm > best) {
+@@ -162,6 +321,7 @@ export default function TapClavier() {
+       .join(", ");
+     setElapsed(el);
+     setResult({
++      lesson: modeRef.current === "lecons" ? { passed } : undefined,
+       wpm: s.wpm,
+       acc: s.acc,
+       err: errs.current,
+@@ -178,7 +338,7 @@ export default function TapClavier() {
+     errs.current = 0;
+     miss.current = {};
+     typedRef.current = "";
+-    const t = buildText(modeRef.current);
++    const t = buildText(modeRef.current, layoutRef.current, lessonRef.current);
+     targetRef.current = t;
+     setTarget(t);
+     setTyped("");
+@@ -194,8 +354,10 @@ export default function TapClavier() {
+   useEffect(() => {
+     modeRef.current = mode;
+     durRef.current = dur;
++    layoutRef.current = layout;
++    lessonRef.current = lesson;
+     reset();
+-  }, [mode, dur, reset]);
++  }, [mode, dur, layout, lesson, reset]);
+ 
+   useEffect(() => () => {
+     if (timer.current) clearInterval(timer.current);
+@@ -249,7 +411,7 @@ export default function TapClavier() {
+   };
+ 
+   const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+-    const id = e.key === "Backspace" ? "Backspace" : LOOK[e.key]?.id;
++    const id = e.key === "Backspace" ? "Backspace" : LAYOUTS[layout].look[e.key]?.id;
+     if (!id) return;
+     setHit(id);
+     if (hitTimer.current) clearTimeout(hitTimer.current);
+@@ -264,7 +426,7 @@ export default function TapClavier() {
+     const bad = [...typed].some((c, i) => c !== target[i]);
+     if (bad) warn = "Backspace";
+     else {
+-      const m = LOOK[target[typed.length]];
++      const m = LAYOUTS[layout].look[target[typed.length]];
+       if (m) {
+         next = new Set([m.id]);
+         if (m.shift) next.add(m.f <= 3 ? "ShiftR" : "ShiftL"); // Maj de la main opposée
+@@ -304,7 +466,10 @@ export default function TapClavier() {
+       <div className="flex flex-wrap gap-3">
+         <div className="inline-flex flex-wrap overflow-hidden rounded-xl border border-slate-200 bg-white" role="group" aria-label="Type d'exercice">
+           {MODES.map((m) => (
+-            <button key={m.id} type="button" aria-pressed={mode === m.id} className={seg(mode === m.id)} onClick={() => setMode(m.id)}>
++            <button key={m.id} type="button" aria-pressed={mode === m.id} className={seg(mode === m.id)} onClick={() => {
++                if (m.id === "lecons") setLesson(Math.max(0, LESSONS[layout].findIndex((_, i) => !doneLessons.includes(i))));
++                setMode(m.id);
++              }}>
+               {m.label}
+             </button>
+           ))}
+@@ -316,8 +481,43 @@ export default function TapClavier() {
+             </button>
+           ))}
+         </div>
++        <div className="inline-flex overflow-hidden rounded-xl border border-slate-200 bg-white" role="group" aria-label="Disposition du clavier">
++          {(["azerty", "qwerty"] as Layout[]).map((l) => (
++            <button key={l} type="button" aria-pressed={layout === l} className={seg(layout === l)} onClick={() => writeKey("tc-layout", l)}>
++              {l.toUpperCase()}
++            </button>
++          ))}
++        </div>
+       </div>
+ 
++      {mode === "lecons" && (
++        <div className="mt-4">
++          <div className="flex flex-wrap gap-1.5" role="group" aria-label="Leçons">
++            {LESSONS[layout].map((_, i) => (
++              <button
++                key={i}
++                type="button"
++                aria-label={`Leçon ${i + 1}`}
++                aria-pressed={lesson === i}
++                onClick={() => setLesson(i)}
++                className={`h-9 w-9 rounded-lg border text-sm font-medium transition ${
++                  lesson === i
++                    ? "border-emerald-600 bg-emerald-600 text-white"
++                    : doneLessons.includes(i)
++                      ? "border-emerald-200 bg-emerald-50 text-emerald-700"
++                      : "border-slate-200 bg-white text-slate-600 hover:bg-slate-50"
++                }`}
++              >
++                {doneLessons.includes(i) ? "✓" : i + 1}
++              </button>
++            ))}
++          </div>
++          <p className="mt-2 text-sm text-slate-600">
++            Leçon {lesson + 1} : touches {[...LESSONS[layout][lesson]].join(" ").toUpperCase()}. Objectif : {LESSON_ACC} % de précision et {LESSON_WPM} mots/min.
++          </p>
++        </div>
++      )}
++
+       {/* Stats */}
+       <div className="mt-7 flex gap-8 sm:gap-10">
+         {[
+@@ -393,20 +593,35 @@ export default function TapClavier() {
+           </div>
+           {result.record && <p className="mt-4 text-sm font-medium text-emerald-700">{result.record}</p>}
+           <p className="mt-1 text-sm text-slate-600">{result.weak}</p>
++          {result.lesson && (
++            <p className={`mt-3 text-sm font-medium ${result.lesson.passed ? "text-emerald-700" : "text-amber-700"}`}>
++              {result.lesson.passed ? "Leçon validée." : `Leçon non validée : il faut ${LESSON_ACC} % de précision et ${LESSON_WPM} mots/min.`}
++            </p>
++          )}
+           <button
+             type="button"
+-            autoFocus
++            autoFocus={!result.lesson?.passed}
+             onClick={reset}
+             className="mt-5 rounded-lg bg-emerald-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-700"
+           >
+             Rejouer
+           </button>
++          {result.lesson?.passed && lesson < LESSONS[layout].length - 1 && (
++            <button
++              type="button"
++              autoFocus
++              onClick={() => setLesson(lesson + 1)}
++              className="ml-3 mt-5 rounded-lg border border-emerald-600 px-5 py-2.5 text-sm font-semibold text-emerald-700 transition hover:bg-emerald-50"
++            >
++              Leçon suivante
++            </button>
++          )}
+         </section>
+       )}
+ 
+       {/* Clavier visuel (masqué sur petit écran) */}
+       <div className="mt-8 hidden select-none gap-1.5 md:grid" aria-hidden="true">
+-        {ROWS.map((row, ri) => (
++        {LAYOUTS[layout].rows.map((row, ri) => (
+           <div key={ri} className="flex gap-1.5">
+             {row.map((c, ci) => {
+               if (typeof c === "number") return <div key={ci} style={{ flex: c }} />;
+@@ -435,6 +650,8 @@ export default function TapClavier() {
+       <p className="mt-3 hidden text-sm text-slate-500 md:block">
+         Chaque couleur correspond à un doigt. Posez les index sur F et J (repères en relief), pouces sur la barre d&apos;espace.
+       </p>
++
++      <Progress entries={history} onClear={() => writeKey("tc-history", "")} />
+     </div>
+   );
+ }

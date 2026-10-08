@@ -8,8 +8,8 @@ import Marquee from "@/components/lab/Marquee";
 export const metadata: Metadata = {
   title: "Keny Karl Mounguele - Ingénieur Bioinformaticien · GenoLabGab",
   description:
-  "Fondateur de GenoLabGab, ingénieur bioinformaticien spécialisé en génomique computationnelle, bioinformatique structurale et vaccinomique. Basé à Fès, Maroc.",
-  keywords: ["Génomique", "Bio-informatique", "Gabon", "DNA", "Analyse de données"],
+  "Fondateur de GenoLabGab, ingénieur bioinformaticien spécialisé en génomique computationnelle, bioinformatique structurale et vaccinomique. Basé à Libreville, Gabon.",
+  keywords: ["Génomique", "Bio-informatique", "Gabon", "DNA", "Analyse de données", "Docking moléculaire", "Biologie computationnelle"],
   alternates: {
     canonical: "https://genolabgab.com",
   },

@@ -22,6 +22,7 @@ const STATIC_PAGES = [
   { route: "/research", modulePath: "../app/research/page", priority: 0.9, changeFrequency: "monthly" as const },
   { route: "/publications", modulePath: "../app/publications/page", priority: 0.8, changeFrequency: "weekly" as const },
   { route: "/projects", modulePath: "../app/projects/page", priority: 0.8, changeFrequency: "monthly" as const },
+  { route: "/tapclavier", modulePath: "../app/tapclavier/page", priority: 0.5, changeFrequency: "yearly" as const },
   { route: "/blog", modulePath: "../app/blog/page", priority: 0.8, changeFrequency: "weekly" as const },
   { route: "/cv", modulePath: "../app/cv/page", priority: 0.7, changeFrequency: "monthly" as const },
   { route: "/contact", modulePath: "../app/contact/layout", priority: 0.6, changeFrequency: "yearly" as const },

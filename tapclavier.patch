@@ -1,0 +1,515 @@
+diff --git a/src/app/sitemap.ts b/src/app/sitemap.ts
+index 9630179..c705deb 100755
+--- a/src/app/sitemap.ts
++++ b/src/app/sitemap.ts
+@@ -22,6 +22,7 @@ const STATIC_PAGES = [
+   { route: "/research", modulePath: "../app/research/page", priority: 0.9, changeFrequency: "monthly" as const },
+   { route: "/publications", modulePath: "../app/publications/page", priority: 0.8, changeFrequency: "weekly" as const },
+   { route: "/projects", modulePath: "../app/projects/page", priority: 0.8, changeFrequency: "monthly" as const },
++  { route: "/tapclavier", modulePath: "../app/tapclavier/page", priority: 0.5, changeFrequency: "yearly" as const },
+   { route: "/blog", modulePath: "../app/blog/page", priority: 0.8, changeFrequency: "weekly" as const },
+   { route: "/cv", modulePath: "../app/cv/page", priority: 0.7, changeFrequency: "monthly" as const },
+   { route: "/contact", modulePath: "../app/contact/layout", priority: 0.6, changeFrequency: "yearly" as const },
+diff --git a/src/app/tapclavier/page.tsx b/src/app/tapclavier/page.tsx
+new file mode 100644
+index 0000000..49f1198
+--- /dev/null
++++ b/src/app/tapclavier/page.tsx
+@@ -0,0 +1,27 @@
++import type { Metadata } from "next";
++import TapClavier from "@/components/TapClavier";
++
++export const metadata: Metadata = {
++  title: "TapClavier - Entraînement à la frappe au clavier",
++  description:
++    "TapClavier : un entraîneur de frappe gratuit pour apprendre à taper vite et sans regarder le clavier AZERTY. Mots, phrases, vocabulaire biologique et séquences ADN.",
++  alternates: {
++    canonical: "https://genolabgab.com/tapclavier",
++  },
++};
++
++export const lastModified = "2026-10-02"; // ← à bumper quand tu modifies cette page
++
++export const dynamic = "force-static";
++
++export default function TapClavierPage() {
++  return (
++    <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6 lg:px-8">
++      <h1 className="text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl">TapClavier</h1>
++      <p className="mt-3 max-w-2xl text-lg text-slate-600">
++        Entraînez-vous à taper sans regarder le clavier.
++      </p>
++      <TapClavier />
++    </div>
++  );
++}
+diff --git a/src/components/Footer.tsx b/src/components/Footer.tsx
+index 63b8d0b..dc5b572 100755
+--- a/src/components/Footer.tsx
++++ b/src/components/Footer.tsx
+@@ -37,6 +37,7 @@ const footerNav = [
+ { href: "/research", label: "Recherche" },
+ { href: "/publications", label: "Publications" },
+ { href: "/projects", label: "Projets" },
++{ href: "/tapclavier", label: "TapClavier" },
+ { href: "/cv", label: "CV" },
+ { href: "/contact", label: "Contact" },
+ ];
+diff --git a/src/components/Navbar.tsx b/src/components/Navbar.tsx
+index 792f2a3..1a0a337 100755
+--- a/src/components/Navbar.tsx
++++ b/src/components/Navbar.tsx
+@@ -11,6 +11,7 @@ const navLinks = [
+ { href: "/research", label: "Recherche" },
+ { href: "/publications", label: "Publications" },
+ { href: "/projects", label: "Projets" },
++{ href: "/tapclavier", label: "TapClavier" },
+ { href: "/cv", label: "CV" },
+ { href: "/contact", label: "Contact" },
+ ];
+diff --git a/src/components/TapClavier.tsx b/src/components/TapClavier.tsx
+new file mode 100644
+index 0000000..a1a65a5
+--- /dev/null
++++ b/src/components/TapClavier.tsx
+@@ -0,0 +1,440 @@
++"use client";
++
++import { Fragment, useCallback, useEffect, useRef, useState } from "react";
++
++/* ───────────── Corpus ───────────── */
++type Mode = "rangee" | "mots" | "phrases" | "bio" | "adn";
++
++const MODES: { id: Mode; label: string }[] = [
++  { id: "rangee", label: "Rangée de base" },
++  { id: "mots", label: "Mots" },
++  { id: "phrases", label: "Phrases" },
++  { id: "bio", label: "Biologie" },
++  { id: "adn", label: "ADN" },
++];
++const DURATIONS = [30, 60, 120];
++
++const WORDS =
++  "le la de un une il elle nous vous ils pour dans avec sans sur sous plus moins très bien mais donc car que qui quand comme chaque jour nuit temps vie monde ville maison table livre porte route mer terre eau feu vent soleil lune ciel arbre fleur chat chien oiseau poisson cheval travail projet idée clé problème solution question réponse équipe école musique image mot phrase lettre chiffre nombre petit grand rapide lent simple clair fort doux premier dernier ensemble toujours jamais souvent parfois demain hier".split(
++    " ",
++  );
++const BIO =
++  "ADN ARN gène génome exon intron allèle variant mutation protéine ribosome enzyme plasmide promoteur transcrit séquençage alignement assemblage annotation expression différentielle phylogénie métagénome microbiome biomarqueur cellule noyau reads contig pipeline FASTQ BLAST PCR CRISPR RNA-seq".split(
++    " ",
++  );
++const SENTENCES = [
++  "Un bon rythme vaut mieux qu'une vitesse irrégulière.",
++  "Gardez les yeux sur l'écran et laissez vos doigts trouver les touches.",
++  "La précision d'abord, la vitesse viendra ensuite.",
++  "Chaque séquence lue est alignée sur le génome de référence.",
++  "Taper sans regarder le clavier fait gagner un temps précieux.",
++  "Les index restent posés sur les touches F et J.",
++  "Un pipeline reproductible commence par un environnement bien décrit.",
++  "Respirez, détendez les épaules et gardez les poignets droits.",
++  "Le contrôle qualité des données précède toute analyse sérieuse.",
++  "Dix minutes par jour valent mieux qu'une heure par semaine.",
++];
++
++const rnd = (n: number) => Math.floor(Math.random() * n);
++const pick = <T,>(a: readonly T[]): T => a[rnd(a.length)];
++const GEN: Record<Mode, () => string> = {
++  rangee: () => Array.from({ length: 4 }, () => pick([..."qsdfghjklm"])).join(""),
++  mots: () => pick(WORDS),
++  phrases: () => pick(SENTENCES),
++  bio: () => pick(BIO),
++  adn: () => Array.from({ length: 6 }, () => pick([..."ACGT"])).join(""),
++};
++const buildText = (mode: Mode) => {
++  let s = "";
++  while (s.length < 1200) s += (s ? " " : "") + GEN[mode]();
++  return s;
++};
++
++/* ───────────── Clavier AZERTY ─────────────
++   Doigts : 0-3 main gauche, 4-7 main droite, 8 pouces */
++type KeyDef = { id: string; label: string; sub?: string; f: number; w: number; home?: boolean };
++type Cell = KeyDef | number; // number = espaceur (flex)
++
++const mk = (chars: string, fingers: number[]): [string, string, number][] =>
++  [...chars].map((c, i) => [c, c.toUpperCase(), fingers[i]]);
++const F10 = [0, 1, 2, 3, 3, 4, 4, 5, 6, 7];
++const key = ([b, s, f]: [string, string, number]): KeyDef => ({
++  id: b,
++  label: /[a-z]/.test(b) ? b.toUpperCase() : b,
++  sub: s && !/[A-Z]/.test(s) ? s : undefined,
++  f,
++  w: 1,
++  home: b === "f" || b === "j",
++});
++const sp = (id: string, label: string, f: number, w: number): KeyDef => ({ id, label, f, w });
++
++const ROWS: Cell[][] = [
++  [
++    ...([["²", "", 0], ["&", "1", 0], ["é", "2", 1], ['"', "3", 2], ["'", "4", 3], ["(", "5", 3], ["-", "6", 4], ["è", "7", 4], ["_", "8", 5], ["ç", "9", 6], ["à", "0", 7], [")", "°", 7], ["=", "+", 7]] as [string, string, number][]).map(key),
++    sp("Backspace", "⌫", 7, 1.6),
++  ],
++  [1.5, ...mk("azertyuiop", F10).map(key), key(["^", "¨", 7]), key(["$", "£", 7]), 1.1],
++  [1.8, ...mk("qsdfghjklm", F10).map(key), key(["ù", "%", 7]), key(["*", "µ", 7]), 0.8],
++  [
++    sp("ShiftL", "⇧", 0, 1.3),
++    key(["<", ">", 0]),
++    ...mk("wxcvbn", [0, 1, 2, 3, 3, 4]).map(key),
++    key([",", "?", 4]), key([";", ".", 5]), key([":", "/", 6]), key(["!", "§", 7]),
++    sp("ShiftR", "⇧", 7, 2.3),
++  ],
++  [3.5, sp(" ", "", 8, 7), 4.1],
++];
++
++// caractère -> touche (id), Maj requise, doigt
++const LOOK: Record<string, { id: string; shift: boolean; f: number }> = {};
++ROWS.flat().forEach((c) => {
++  if (typeof c === "number") return;
++  LOOK[c.id] = { id: c.id, shift: false, f: c.f };
++});
++ROWS.flat().forEach((c) => {
++  if (typeof c === "number") return;
++  if (/^[a-z]$/.test(c.id)) LOOK[c.id.toUpperCase()] = { id: c.id, shift: true, f: c.f };
++  else if (c.sub) LOOK[c.sub] = { id: c.id, shift: true, f: c.f };
++});
++
++const HUES = [350, 20, 42, 85, 170, 195, 225, 265, 215];
++
++/* Vitesse nette (1 mot = 5 caractères corrects) et précision cumulée */
++const computeStats = (v: string, tgt: string, total: number, errs: number, el: number) => {
++  let ok = 0;
++  for (let i = 0; i < v.length; i++) if (v[i] === tgt[i]) ok++;
++  return {
++    wpm: el > 0 ? Math.round(ok / 5 / (Math.max(el, 2) / 60)) : 0,
++    acc: total ? Math.round(((total - errs) / total) * 100) : 100,
++  };
++};
++
++/* ───────────── Composant ───────────── */
++type Result = { wpm: number; acc: number; err: number; record: string; weak: string };
++
++export default function TapClavier() {
++  const [mode, setMode] = useState<Mode>("mots");
++  const [dur, setDur] = useState(60);
++  const [target, setTarget] = useState("");
++  const [typed, setTyped] = useState("");
++  const [started, setStarted] = useState(false);
++  const [elapsed, setElapsed] = useState(0);
++  const [result, setResult] = useState<Result | null>(null);
++  const [focused, setFocused] = useState(false);
++  const [hit, setHit] = useState<string | null>(null);
++  const [counts, setCounts] = useState({ total: 0, errs: 0 });
++
++  const inputRef = useRef<HTMLInputElement>(null);
++  const boxRef = useRef<HTMLDivElement>(null);
++  const t0 = useRef(0);
++  const timer = useRef<ReturnType<typeof setInterval> | null>(null);
++  const hitTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
++  const typedRef = useRef("");
++  const targetRef = useRef("");
++  const total = useRef(0);
++  const errs = useRef(0);
++  const miss = useRef<Record<string, number>>({});
++  const doneRef = useRef(false);
++  const modeRef = useRef(mode);
++  const durRef = useRef(dur);
++
++  const finish = useCallback(() => {
++    if (doneRef.current) return;
++    doneRef.current = true;
++    if (timer.current) clearInterval(timer.current);
++    const el = Math.min((performance.now() - t0.current) / 1000, durRef.current);
++    const s = computeStats(typedRef.current, targetRef.current, total.current, errs.current, el);
++    let record = "";
++    const k = `tc-best-${modeRef.current}-${durRef.current}`;
++    try {
++      const best = Number(localStorage.getItem(k)) || 0;
++      if (s.wpm > best) {
++        localStorage.setItem(k, String(s.wpm));
++        record = best ? `Nouveau record : ${s.wpm} mots/min (précédent : ${best}).` : "Premier score enregistré pour ce mode.";
++      } else record = `Record sur ce mode : ${best} mots/min.`;
++    } catch {
++      /* stockage indisponible */
++    }
++    const top = Object.entries(miss.current)
++      .sort((a, b) => b[1] - a[1])
++      .slice(0, 4)
++      .map(([c, n]) => `« ${c === " " ? "espace" : c} » (${n})`)
++      .join(", ");
++    setElapsed(el);
++    setResult({
++      wpm: s.wpm,
++      acc: s.acc,
++      err: errs.current,
++      record,
++      weak: top ? `Touches à travailler : ${top}.` : "Aucune erreur : essayez une durée plus longue ou un autre mode.",
++    });
++    inputRef.current?.blur();
++  }, []);
++
++  const reset = useCallback(() => {
++    if (timer.current) clearInterval(timer.current);
++    doneRef.current = false;
++    total.current = 0;
++    errs.current = 0;
++    miss.current = {};
++    typedRef.current = "";
++    const t = buildText(modeRef.current);
++    targetRef.current = t;
++    setTarget(t);
++    setTyped("");
++    setCounts({ total: 0, errs: 0 });
++    setStarted(false);
++    setElapsed(0);
++    setResult(null);
++    if (boxRef.current) boxRef.current.scrollTop = 0;
++    inputRef.current?.focus();
++  }, []);
++
++  // Nouveau texte à chaque changement de mode/durée (généré côté client : pas de mismatch d'hydratation)
++  useEffect(() => {
++    modeRef.current = mode;
++    durRef.current = dur;
++    reset();
++  }, [mode, dur, reset]);
++
++  useEffect(() => () => {
++    if (timer.current) clearInterval(timer.current);
++    if (hitTimer.current) clearTimeout(hitTimer.current);
++  }, []);
++
++  // Échap = recommencer
++  useEffect(() => {
++    const onKey = (e: KeyboardEvent) => {
++      if (e.key === "Escape") reset();
++    };
++    document.addEventListener("keydown", onKey);
++    return () => document.removeEventListener("keydown", onKey);
++  }, [reset]);
++
++  // Garde le curseur sur la 2e ligne visible
++  useEffect(() => {
++    const box = boxRef.current;
++    const cur = box?.querySelector<HTMLElement>("[data-cur]");
++    if (!box || !cur) return;
++    box.scrollTop = Math.max(0, cur.offsetTop - parseFloat(getComputedStyle(box).lineHeight));
++  }, [typed, target]);
++
++  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
++    if (doneRef.current) return;
++    const tgt = targetRef.current;
++    const v = e.target.value.slice(0, tgt.length);
++    if (v !== e.target.value) e.target.value = v;
++    if (!timer.current || !started) {
++      if (v.length && !started) {
++        setStarted(true);
++        t0.current = performance.now();
++        timer.current = setInterval(() => {
++          const el = (performance.now() - t0.current) / 1000;
++          setElapsed(Math.min(el, durRef.current));
++          if (el >= durRef.current) finish();
++        }, 200);
++      }
++    }
++    for (let i = typedRef.current.length; i < v.length; i++) {
++      total.current++;
++      if (v[i] !== tgt[i]) {
++        errs.current++;
++        miss.current[tgt[i]] = (miss.current[tgt[i]] || 0) + 1;
++      }
++    }
++    typedRef.current = v;
++    setTyped(v);
++    setCounts({ total: total.current, errs: errs.current });
++    if (v === tgt) finish();
++  };
++
++  const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
++    const id = e.key === "Backspace" ? "Backspace" : LOOK[e.key]?.id;
++    if (!id) return;
++    setHit(id);
++    if (hitTimer.current) clearTimeout(hitTimer.current);
++    hitTimer.current = setTimeout(() => setHit(null), 110);
++  };
++
++  /* Touche à mettre en évidence */
++  const done = result !== null;
++  let next: Set<string> = new Set();
++  let warn = "";
++  if (target && !done) {
++    const bad = [...typed].some((c, i) => c !== target[i]);
++    if (bad) warn = "Backspace";
++    else {
++      const m = LOOK[target[typed.length]];
++      if (m) {
++        next = new Set([m.id]);
++        if (m.shift) next.add(m.f <= 3 ? "ShiftR" : "ShiftL"); // Maj de la main opposée
++      }
++    }
++  }
++
++  const live = computeStats(typed, target, counts.total, counts.errs, started ? elapsed : 0);
++  const timeLeft = started ? Math.max(0, Math.ceil(dur - elapsed)) : dur;
++
++  const charSpan = (i: number, c: string) => {
++    let cls = "text-slate-400";
++    let cur = false;
++    if (i < typed.length) cls = typed[i] === c ? "text-slate-900" : "rounded-sm bg-red-100 text-red-600";
++    else if (i === typed.length && !done) {
++      cur = true;
++      cls = "text-slate-400 shadow-[inset_2px_0_0_#10b981]";
++    }
++    return (
++      <span key={i} className={cls} {...(cur ? { "data-cur": "" } : {})}>
++        {c}
++      </span>
++    );
++  };
++
++  const words = target.split(" ");
++  const starts = words.reduce<number[]>((acc, w, i) => [...acc, i ? acc[i - 1] + words[i - 1].length + 1 : 0], []);
++
++  const seg = (active: boolean) =>
++    `px-3.5 py-2 text-sm font-medium transition ${
++      active ? "bg-emerald-600 text-white" : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
++    }`;
++
++  return (
++    <div className="mt-8">
++      {/* Réglages */}
++      <div className="flex flex-wrap gap-3">
++        <div className="inline-flex flex-wrap overflow-hidden rounded-xl border border-slate-200 bg-white" role="group" aria-label="Type d'exercice">
++          {MODES.map((m) => (
++            <button key={m.id} type="button" aria-pressed={mode === m.id} className={seg(mode === m.id)} onClick={() => setMode(m.id)}>
++              {m.label}
++            </button>
++          ))}
++        </div>
++        <div className="inline-flex overflow-hidden rounded-xl border border-slate-200 bg-white" role="group" aria-label="Durée">
++          {DURATIONS.map((d) => (
++            <button key={d} type="button" aria-pressed={dur === d} className={seg(dur === d)} onClick={() => setDur(d)}>
++              {d} s
++            </button>
++          ))}
++        </div>
++      </div>
++
++      {/* Stats */}
++      <div className="mt-7 flex gap-8 sm:gap-10">
++        {[
++          { v: live.wpm, l: "mots par minute" },
++          { v: live.acc, l: "précision (%)" },
++          { v: timeLeft, l: "secondes restantes" },
++        ].map((s) => (
++          <div key={s.l} className="flex flex-col">
++            <span className="text-3xl font-semibold tabular-nums leading-none text-slate-900 sm:text-4xl">{s.v}</span>
++            <span className="mt-1 text-sm text-slate-500">{s.l}</span>
++          </div>
++        ))}
++      </div>
++
++      {/* Zone de texte */}
++      <div
++        className="relative mt-4 cursor-text rounded-2xl border border-slate-200 bg-white px-5 py-4"
++        onClick={() => !done && inputRef.current?.focus()}
++      >
++        <div
++          ref={boxRef}
++          aria-label="Texte à recopier"
++          className={`h-[6.3em] overflow-hidden text-lg leading-[2.1] transition-opacity sm:text-[1.4rem] ${focused || done ? "opacity-100" : "opacity-50"}`}
++          style={{ fontFamily: "var(--font-ibm-plex-mono), ui-monospace, monospace" }}
++        >
++          {words.map((w, wi) => {
++            const start = starts[wi];
++            return (
++              <Fragment key={wi}>
++                <span className="inline-block whitespace-nowrap">{[...w].map((c, i) => charSpan(start + i, c))}</span>
++                {wi < words.length - 1 && charSpan(start + w.length, " ")}
++              </Fragment>
++            );
++          })}
++        </div>
++        <input
++          ref={inputRef}
++          type="text"
++          value={typed}
++          onChange={onChange}
++          onKeyDown={onKeyDown}
++          onPaste={(e) => e.preventDefault()}
++          onFocus={() => setFocused(true)}
++          onBlur={() => setFocused(false)}
++          disabled={done}
++          autoComplete="off"
++          autoCapitalize="none"
++          autoCorrect="off"
++          spellCheck={false}
++          aria-label="Zone de saisie"
++          className="pointer-events-none absolute left-0 top-0 h-px w-px opacity-0"
++        />
++      </div>
++      <p className="mt-2 min-h-6 text-sm text-slate-500">
++        Cliquez sur le texte puis tapez : le chrono démarre à la première touche. Échap pour recommencer.
++      </p>
++
++      {/* Résultat */}
++      {result && (
++        <section className="mt-4 rounded-2xl border border-slate-200 bg-white p-7" aria-live="polite">
++          <h2 className="text-lg font-semibold text-slate-900">Exercice terminé</h2>
++          <div className="mt-4 flex flex-wrap gap-8">
++            {[
++              { v: result.wpm, l: "mots par minute" },
++              { v: result.acc, l: "précision (%)" },
++              { v: result.err, l: "frappes erronées" },
++            ].map((s) => (
++              <div key={s.l} className="flex flex-col">
++                <span className="text-3xl font-semibold tabular-nums leading-none text-emerald-700">{s.v}</span>
++                <span className="mt-1 text-sm text-slate-500">{s.l}</span>
++              </div>
++            ))}
++          </div>
++          {result.record && <p className="mt-4 text-sm font-medium text-emerald-700">{result.record}</p>}
++          <p className="mt-1 text-sm text-slate-600">{result.weak}</p>
++          <button
++            type="button"
++            autoFocus
++            onClick={reset}
++            className="mt-5 rounded-lg bg-emerald-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-700"
++          >
++            Rejouer
++          </button>
++        </section>
++      )}
++
++      {/* Clavier visuel (masqué sur petit écran) */}
++      <div className="mt-8 hidden select-none gap-1.5 md:grid" aria-hidden="true">
++        {ROWS.map((row, ri) => (
++          <div key={ri} className="flex gap-1.5">
++            {row.map((c, ci) => {
++              if (typeof c === "number") return <div key={ci} style={{ flex: c }} />;
++              const isNext = next.has(c.id);
++              const isWarn = warn === c.id;
++              return (
++                <div
++                  key={ci}
++                  style={{
++                    flex: c.w,
++                    backgroundColor: isNext ? undefined : isWarn ? undefined : `hsl(${HUES[c.f]} 48% 86%)`,
++                  }}
++                  className={`relative flex h-11 min-w-0 items-center justify-center rounded-lg text-sm font-semibold text-slate-800 transition ${
++                    isNext ? "-translate-y-0.5 bg-emerald-600 text-white outline outline-[3px] outline-emerald-600" : ""
++                  } ${isWarn ? "bg-red-500 text-white" : ""} ${hit === c.id ? "translate-y-0.5 brightness-90" : ""}`}
++                >
++                  {c.sub && <i className="absolute left-1.5 top-0.5 text-[10px] font-normal not-italic opacity-60">{c.sub}</i>}
++                  {c.label}
++                  {c.home && <span className="absolute bottom-1.5 h-0.5 w-3 rounded-full bg-current opacity-60" />}
++                </div>
++              );
++            })}
++          </div>
++        ))}
++      </div>
++      <p className="mt-3 hidden text-sm text-slate-500 md:block">
++        Chaque couleur correspond à un doigt. Posez les index sur F et J (repères en relief), pouces sur la barre d&apos;espace.
++      </p>
++    </div>
++  );
++}
