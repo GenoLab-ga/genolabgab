@@ -44,8 +44,8 @@ const footerNav = [
 export default function Footer() {
   return (
     <footer className="bg-ink text-slate-400">
-      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-        <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+      <div className="mx-auto max-w-7xl px-4 py-7 sm:px-6 lg:px-8">
+        <div className="flex flex-col items-center gap-5 text-center">
           <Link href="/" className="inline-flex items-center gap-2.5">
             <Image src="/images/logo.png" alt="" width={28} height={28} className="rounded-md" />
             <span className="font-display text-base font-semibold text-white">
@@ -54,7 +54,7 @@ export default function Footer() {
           </Link>
 
           <nav aria-label="Pied de page">
-            <ul className="flex flex-wrap gap-x-5 gap-y-1 text-sm">
+            <ul className="flex flex-wrap justify-center gap-x-5 gap-y-1 text-sm">
               {footerNav.map((l) => (
                 <li key={l.href}>
                   <Link href={l.href} className="inline-flex min-h-9 cursor-pointer items-center transition-colors hover:text-white">
@@ -65,7 +65,7 @@ export default function Footer() {
             </ul>
           </nav>
 
-          <div className="flex gap-2">
+          <div className="flex justify-center gap-2">
             {socialLinks.map((s) => (
               <a
                 key={s.label}
@@ -81,7 +81,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-6 flex flex-col gap-2 border-t border-white/10 pt-5 text-xs sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-5 flex flex-col items-center gap-1 border-t border-white/10 pt-4 text-center text-xs">
           <p>
             © {new Date().getFullYear()} GenoLabGab · Keny Karl Mounguele · Libreville, Gabon
           </p>

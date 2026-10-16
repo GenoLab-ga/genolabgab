@@ -93,11 +93,11 @@ export default function HomePage() {
       <Hero />
       <Marquee />
 
-      {/* Chiffres : bande compacte */}
+      {/* Chiffres */}
       <section aria-label="Chiffres clés" className="border-b border-rule bg-white">
-        <dl className="mx-auto grid max-w-7xl grid-cols-2 gap-y-4 px-4 py-5 sm:px-6 md:grid-cols-4 lg:px-8">
+        <dl className="mx-auto grid max-w-4xl grid-cols-2 gap-y-3 px-4 py-4 text-center sm:px-6 md:grid-cols-4">
           {stats.map((s) => (
-            <div key={s.label} className="flex items-baseline gap-2.5">
+            <div key={s.label} className="flex items-baseline justify-center gap-2">
               <dd className="font-display text-2xl font-semibold text-navy-900">{s.value}</dd>
               <dt className="text-xs text-slate-500">{s.label}</dt>
             </div>
@@ -106,20 +106,20 @@ export default function HomePage() {
       </section>
 
       {/* Expertise */}
-      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-        <div className="max-w-2xl">
+      <section className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-2xl text-center">
           <Eyebrow>Expertise</Eyebrow>
-          <h2 className="mt-3 text-3xl font-semibold text-navy-900 sm:text-4xl">
+          <h2 className="mt-2 text-3xl font-semibold text-navy-900 sm:text-4xl">
             De la séquence brute à la cible thérapeutique
           </h2>
         </div>
-        <div className="mt-12 grid gap-10 md:grid-cols-3 md:gap-8">
+        <div className="mt-8 grid gap-8 text-center md:grid-cols-3">
           {expertise.map((d, i) => (
-            <article key={d.title} className="border-t-2 border-navy-700 pt-5">
+            <article key={d.title} className="border-t-2 border-navy-700 pt-4">
               <p className="text-xs font-semibold tabular-nums text-slate-400">0{i + 1}</p>
-              <h3 className="mt-2 text-xl font-semibold text-navy-900">{d.title}</h3>
-              <p className="mt-3 text-[15px] leading-relaxed text-slate-600">{d.desc}</p>
-              <p className="mt-4 text-xs text-slate-500">{d.tools}</p>
+              <h3 className="mt-1 text-xl font-semibold text-navy-900">{d.title}</h3>
+              <p className="mx-auto mt-2 max-w-sm text-[15px] leading-relaxed text-slate-600">{d.desc}</p>
+              <p className="mt-3 text-xs text-slate-500">{d.tools}</p>
             </article>
           ))}
         </div>
@@ -127,60 +127,44 @@ export default function HomePage() {
 
       {/* Contrôle qualité */}
       <section className="border-y border-rule bg-white">
-        <div className="mx-auto grid max-w-7xl gap-10 px-4 py-20 sm:px-6 md:grid-cols-[1fr_auto] md:items-center lg:px-8">
-          <div>
-            <Eyebrow>Pipeline</Eyebrow>
-            <h2 className="mt-3 text-3xl font-semibold text-navy-900 sm:text-4xl">Contrôle qualité NGS</h2>
-            <p className="mt-4 max-w-xl text-base leading-relaxed text-slate-600">
-              Évaluation de la qualité des données brutes de séquençage : les scores Phred conditionnent la
-              fiabilité de chaque analyse en aval.
-            </p>
-            <ul className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-xs text-slate-600">
-              <li className="flex items-center gap-2"><span className="h-2.5 w-2.5 rounded-full bg-emerald-500" />Q ≥ 30 · excellente</li>
-              <li className="flex items-center gap-2"><span className="h-2.5 w-2.5 rounded-full bg-amber-400" />Q ≥ 20 · acceptable</li>
-            </ul>
+        <div className="mx-auto flex max-w-3xl flex-col items-center px-4 py-12 text-center sm:px-6">
+          <Eyebrow>Pipeline</Eyebrow>
+          <h2 className="mt-2 text-3xl font-semibold text-navy-900 sm:text-4xl">Contrôle qualité NGS</h2>
+          <p className="mt-3 max-w-xl text-base leading-relaxed text-slate-600">
+            Évaluation de la qualité des données brutes de séquençage : les scores Phred conditionnent la
+            fiabilité de chaque analyse en aval.
+          </p>
+          <div className="mt-6 w-full max-w-md rounded-sm border border-rule bg-white p-5">
+            <QcChartWrapper />
           </div>
-          <div className="min-w-0 md:w-[420px]">
-            <div className="rounded-sm border border-rule bg-white p-5">
-              <QcChartWrapper />
-            </div>
-          </div>
+          <ul className="mt-4 flex flex-wrap justify-center gap-x-6 gap-y-1 text-xs text-slate-600">
+            <li className="flex items-center gap-2"><span className="h-2.5 w-2.5 rounded-full bg-emerald-500" />Q ≥ 30 · excellente</li>
+            <li className="flex items-center gap-2"><span className="h-2.5 w-2.5 rounded-full bg-amber-400" />Q ≥ 20 · acceptable</li>
+          </ul>
         </div>
       </section>
 
       {/* Publications */}
-      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-          <div>
-            <Eyebrow>Publications</Eyebrow>
-            <h2 className="mt-3 text-3xl font-semibold text-navy-900 sm:text-4xl">Articles récents</h2>
-          </div>
-          <Link
-            href="/publications"
-            className="group inline-flex min-h-11 cursor-pointer items-center gap-1.5 text-sm font-semibold text-navy-700 transition-colors hover:text-navy-900"
-          >
-            Toutes les publications
-            <ArrowRightIcon className="transition-transform duration-200 group-hover:translate-x-1" />
-          </Link>
+      <section className="mx-auto max-w-4xl px-4 py-12 sm:px-6">
+        <div className="text-center">
+          <Eyebrow>Publications</Eyebrow>
+          <h2 className="mt-2 text-3xl font-semibold text-navy-900 sm:text-4xl">Articles récents</h2>
         </div>
 
         <ul className="mt-8 divide-y divide-rule border-y border-rule">
           {recent.map((p) => (
-            <li key={p.id} className="grid gap-2 py-6 md:grid-cols-[80px_1fr_auto] md:gap-8">
-              <p className="text-sm tabular-nums text-slate-500">{p.year}</p>
-              <div>
-                <h3 className="text-lg font-semibold leading-snug text-navy-900">{p.title.fr}</h3>
-                <p className="mt-1 text-sm text-slate-500">
-                  {p.categoryLabel.fr} · {p.journal}
-                </p>
-                <p className="mt-3 line-clamp-2 max-w-3xl text-[15px] leading-relaxed text-slate-600">{p.abstract.fr}</p>
-              </div>
+            <li key={p.id} className="py-5 text-center">
+              <p className="text-xs tabular-nums text-slate-500">
+                {p.year} · {p.categoryLabel.fr} · {p.journal}
+              </p>
+              <h3 className="mx-auto mt-1.5 max-w-3xl text-lg font-semibold leading-snug text-navy-900">{p.title.fr}</h3>
+              <p className="mx-auto mt-2 line-clamp-2 max-w-2xl text-[15px] leading-relaxed text-slate-600">{p.abstract.fr}</p>
               {p.href && (
                 <a
                   href={p.href}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex min-h-11 cursor-pointer items-center gap-1.5 self-start text-sm font-semibold text-navy-700 transition-colors hover:text-navy-900"
+                  className="mt-1 inline-flex min-h-11 cursor-pointer items-center gap-1.5 text-sm font-semibold text-navy-700 transition-colors hover:text-navy-900"
                 >
                   Lire l&apos;article
                   <ExternalLinkIcon />
@@ -189,16 +173,24 @@ export default function HomePage() {
             </li>
           ))}
         </ul>
+
+        <div className="mt-4 text-center">
+          <Link
+            href="/publications"
+            className="group inline-flex min-h-11 cursor-pointer items-center gap-1.5 text-sm font-semibold text-navy-700 transition-colors hover:text-navy-900"
+          >
+            Toutes les publications
+            <ArrowRightIcon className="transition-transform duration-200 group-hover:translate-x-1" />
+          </Link>
+        </div>
       </section>
 
       {/* Contact */}
       <section className="bg-navy-900">
-        <div className="mx-auto flex max-w-7xl flex-col items-start gap-6 px-4 py-14 sm:px-6 md:flex-row md:items-center md:justify-between lg:px-8">
-          <div>
-            <h2 className="text-2xl font-semibold text-white sm:text-3xl">Collaboration, stage ou projet de recherche ?</h2>
-            <p className="mt-2 text-slate-300">Je réponds aux propositions de collaboration scientifique.</p>
-          </div>
-          <div className="flex flex-wrap gap-3">
+        <div className="mx-auto flex max-w-3xl flex-col items-center px-4 py-10 text-center sm:px-6">
+          <h2 className="text-2xl font-semibold text-white sm:text-3xl">Collaboration, stage ou projet de recherche ?</h2>
+          <p className="mt-2 text-slate-300">Je réponds aux propositions de collaboration scientifique.</p>
+          <div className="mt-5 flex flex-wrap justify-center gap-3">
             <Link
               href="/contact"
               className="inline-flex min-h-11 cursor-pointer items-center rounded-md bg-white px-6 text-sm font-semibold text-navy-900 transition-colors hover:bg-slate-100"
