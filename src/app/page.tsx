@@ -4,7 +4,6 @@ import { getAllPublications, type Publication } from "@/lib/get-publications";
 import QcChartWrapper from "@/components/QcChartWrapper";
 import Hero from "@/components/lab/Hero";
 import Marquee from "@/components/lab/Marquee";
-import SectionTag from "@/components/lab/SectionTag";
 
 export const metadata: Metadata = {
   title: "Keny Karl Mounguele - Ingénieur Bioinformaticien · GenoLabGab",
@@ -19,64 +18,27 @@ export const metadata: Metadata = {
 export const lastModified = "2026-07-28";
 export const dynamic = "force-static";
 
-/* ─── SVG Icons (inline) ─── */
-function DnaIcon({ className = "h-8 w-8" }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
-    <path d="M2 15c6.667-6 13.333 0 20-6" />
-    <path d="M9 3.15c.75.15 1.5.37 2.25.66" />
-    <path d="M12.75 3.81c.75.45 1.5 1.08 2.25 1.89" />
-    <path d="M2 9c6.667 6 13.333 0 20 6" />
-    <path d="M9 20.85c.75-.15 1.5-.37 2.25-.66" />
-    <path d="M12.75 20.19c.75-.45 1.5-1.08 2.25-1.89" />
-    <path d="M2 6c3.33-3 6.67-3 10 0s6.67 3 10 0" />
-    <path d="M2 18c3.33 3 6.67 3 10 0s6.67-3 10 0" />
-    </svg>
-  );
-}
-
-function MicroscopeIcon({ className = "h-8 w-8" }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
-    <path d="M6 18h8" />
-    <path d="M3 22h18" />
-    <path d="M14 22a7 7 0 1 0 0-14h-1" />
-    <path d="M9 14h2" />
-    <path d="M9 12a2 2 0 0 1-2-2V6h6v4a2 2 0 0 1-2 2Z" />
-    <path d="M12 6V3a1 1 0 0 0-1-1H9" />
-    </svg>
-  );
-}
-
-function SyringeIcon({ className = "h-8 w-8" }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
-    <path d="M18 11V6a2 2 0 0 0-4 0v1" />
-    <path d="M14 10V4a2 2 0 0 0-4 0v2" />
-    <path d="M10 10.5V6a2 2 0 0 0-4 0v8" />
-    <path d="M18 8a2 2 0 1 0 4 0v8a2 2 0 0 1-4 0h-4a2 2 0 0 1-4 0h-4a2 2 0 0 1-4 0V8a2 2 0 1 0 4 0" />
-    <path d="M22 16c0 4-2 6-4 6h-1" />
-    </svg>
-  );
-}
-
 function ArrowRightIcon({ className = "h-4 w-4" }: { className?: string }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-    <path d="M5 12h14" />
-    <path d="m12 5 7 7-7 7" />
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M5 12h14" />
+      <path d="m12 5 7 7-7 7" />
     </svg>
   );
 }
 
 function ExternalLinkIcon({ className = "h-3.5 w-3.5" }: { className?: string }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-    <path d="M15 3h6v6" />
-    <path d="M10 14 21 3" />
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+      <path d="M15 3h6v6" />
+      <path d="M10 14 21 3" />
     </svg>
   );
+}
+
+function Eyebrow({ children }: { children: string }) {
+  return <p className="text-xs font-semibold uppercase tracking-[0.18em] text-accent">{children}</p>;
 }
 
 export default function HomePage() {
@@ -87,10 +49,7 @@ export default function HomePage() {
     "@type": "Person",
     name: "Keny Karl Mounguele",
     jobTitle: "Ingénieur Bioinformaticien",
-    affiliation: {
-      "@type": "Organization",
-      name: "Diplômé de l'Université Euromed de Fès",
-    },
+    affiliation: { "@type": "Organization", name: "Diplômé de l'Université Euromed de Fès" },
     url: "https://genolabgab.com",
     sameAs: [
       "https://github.com/GenoLab-ga",
@@ -103,169 +62,158 @@ export default function HomePage() {
   };
 
   const stats = [
-    { value: "2+", label: "Années de recherche" },
-    { value: "4", label: "Projets actifs" },
-    { value: "6", label: "Familles d'outils" },
-    { value: "3", label: "Publications" },
+    { value: "2+", label: "années de recherche" },
+    { value: "4", label: "projets actifs" },
+    { value: "6", label: "familles d'outils" },
+    { value: "3", label: "publications" },
   ];
 
   const expertise = [
     {
-      Icon: DnaIcon,
       title: "Génomique computationnelle",
       desc: "Pipelines NGS reproductibles : contrôle qualité, alignement, détection de variants et annotation fonctionnelle.",
-      tools: ["BWA-MEM", "GATK", "SnpEff", "Snakemake"],
+      tools: "BWA-MEM · GATK · SnpEff · Snakemake",
     },
     {
-      Icon: MicroscopeIcon,
       title: "Bioinformatique structurale",
       desc: "Criblage virtuel de composés bioactifs, modélisation 3D avec AlphaFold2 et docking moléculaire sur cibles thérapeutiques.",
-      tools: ["AutoDock Vina", "AlphaFold2", "PyMOL", "ChimeraX"],
+      tools: "AutoDock Vina · AlphaFold2 · PyMOL · ChimeraX",
     },
     {
-      Icon: SyringeIcon,
       title: "Vaccinomique",
       desc: "Vaccinomique inverse : prédiction d'épitopes B et T, modélisation structurale et validation par docking immunitaire.",
-      tools: ["NetMHCpan", "IEDB", "Pfs48/45", "TBV"],
+      tools: "NetMHCpan · IEDB · Pfs48/45",
     },
   ];
 
   return (
-    <div className="bg-lab-950 text-slate-300">
+    <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
       <Hero />
       <Marquee />
 
-      {/* ═══ CHIFFRES ═══ */}
-      <section aria-label="Chiffres clés" className="border-b border-lab-700">
-        <dl className="mx-auto grid max-w-6xl grid-cols-2 divide-lab-700 px-4 sm:px-6 md:grid-cols-4 md:divide-x lg:px-8">
+      {/* Chiffres : bande compacte */}
+      <section aria-label="Chiffres clés" className="border-b border-rule bg-white">
+        <dl className="mx-auto grid max-w-7xl grid-cols-2 gap-y-4 px-4 py-5 sm:px-6 md:grid-cols-4 lg:px-8">
           {stats.map((s) => (
-            <div key={s.label} className="px-4 py-10 text-center md:py-12">
-              <dd className="font-display text-4xl font-semibold tracking-tight text-white sm:text-5xl">{s.value}</dd>
-              <dt className="mt-2 font-mono text-xs uppercase tracking-wider text-slate-400">{s.label}</dt>
+            <div key={s.label} className="flex items-baseline gap-2.5">
+              <dd className="font-display text-2xl font-semibold text-navy-900">{s.value}</dd>
+              <dt className="text-xs text-slate-500">{s.label}</dt>
             </div>
           ))}
         </dl>
       </section>
 
-      {/* ═══ EXPERTISE ═══ */}
-      <section className="mx-auto max-w-6xl px-4 py-24 sm:px-6 lg:px-8">
-        <SectionTag index="01" label="expertise" />
-        <h2 className="max-w-2xl text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-          De la séquence brute à la cible thérapeutique
-        </h2>
-        <p className="mt-4 max-w-2xl text-base leading-relaxed text-slate-400">
-          Trois piliers de pratique, avec des pipelines versionnés et reproductibles.
-        </p>
-
-        <div className="mt-12 grid gap-px overflow-hidden rounded-2xl border border-lab-700 bg-lab-700 md:grid-cols-3">
-          {expertise.map((d) => (
-            <article key={d.title} className="group bg-lab-900 p-8 transition-colors duration-200 hover:bg-lab-800">
-              <d.Icon className="h-7 w-7 text-bio-400" />
-              <h3 className="mt-6 text-lg font-semibold text-white">{d.title}</h3>
-              <p className="mt-3 text-sm leading-relaxed text-slate-400">{d.desc}</p>
-              <ul className="mt-6 flex flex-wrap gap-2">
-                {d.tools.map((t) => (
-                  <li key={t} className="rounded border border-lab-700 px-2 py-1 font-mono text-xs text-slate-300">
-                    {t}
-                  </li>
-                ))}
-              </ul>
+      {/* Expertise */}
+      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+        <div className="max-w-2xl">
+          <Eyebrow>Expertise</Eyebrow>
+          <h2 className="mt-3 text-3xl font-semibold text-navy-900 sm:text-4xl">
+            De la séquence brute à la cible thérapeutique
+          </h2>
+        </div>
+        <div className="mt-12 grid gap-10 md:grid-cols-3 md:gap-8">
+          {expertise.map((d, i) => (
+            <article key={d.title} className="border-t-2 border-navy-700 pt-5">
+              <p className="text-xs font-semibold tabular-nums text-slate-400">0{i + 1}</p>
+              <h3 className="mt-2 text-xl font-semibold text-navy-900">{d.title}</h3>
+              <p className="mt-3 text-[15px] leading-relaxed text-slate-600">{d.desc}</p>
+              <p className="mt-4 text-xs text-slate-500">{d.tools}</p>
             </article>
           ))}
         </div>
       </section>
 
-      {/* ═══ PIPELINE / QC ═══ */}
-      <section className="border-y border-lab-700 bg-lab-900/60">
-        <div className="mx-auto grid max-w-6xl gap-12 px-4 py-24 sm:px-6 md:grid-cols-[1fr_auto] md:items-center lg:px-8">
+      {/* Contrôle qualité */}
+      <section className="border-y border-rule bg-white">
+        <div className="mx-auto grid max-w-7xl gap-10 px-4 py-20 sm:px-6 md:grid-cols-[1fr_auto] md:items-center lg:px-8">
           <div>
-            <SectionTag index="02" label="pipeline" />
-            <h2 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">Contrôle qualité NGS</h2>
-            <p className="mt-4 max-w-xl text-base leading-relaxed text-slate-400">
-              Aperçu interactif de l&apos;évaluation de la qualité des données brutes de séquençage. Les scores Phred
-              conditionnent la fiabilité de chaque analyse en aval.
+            <Eyebrow>Pipeline</Eyebrow>
+            <h2 className="mt-3 text-3xl font-semibold text-navy-900 sm:text-4xl">Contrôle qualité NGS</h2>
+            <p className="mt-4 max-w-xl text-base leading-relaxed text-slate-600">
+              Évaluation de la qualité des données brutes de séquençage : les scores Phred conditionnent la
+              fiabilité de chaque analyse en aval.
             </p>
-            <ul className="mt-6 flex flex-wrap gap-x-6 gap-y-2 font-mono text-xs text-slate-300">
+            <ul className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-xs text-slate-600">
               <li className="flex items-center gap-2"><span className="h-2.5 w-2.5 rounded-full bg-emerald-500" />Q ≥ 30 · excellente</li>
               <li className="flex items-center gap-2"><span className="h-2.5 w-2.5 rounded-full bg-amber-400" />Q ≥ 20 · acceptable</li>
             </ul>
           </div>
           <div className="min-w-0 md:w-[420px]">
-            <div className="rounded-xl border border-lab-700 bg-white p-6">
+            <div className="rounded-sm border border-rule bg-white p-5">
               <QcChartWrapper />
             </div>
           </div>
         </div>
       </section>
 
-      {/* ═══ PUBLICATIONS ═══ */}
-      <section className="mx-auto max-w-6xl px-4 py-24 sm:px-6 lg:px-8">
-        <SectionTag index="03" label="publications" />
+      {/* Publications */}
+      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-          <h2 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">Articles récents</h2>
+          <div>
+            <Eyebrow>Publications</Eyebrow>
+            <h2 className="mt-3 text-3xl font-semibold text-navy-900 sm:text-4xl">Articles récents</h2>
+          </div>
           <Link
             href="/publications"
-            className="group inline-flex min-h-11 cursor-pointer items-center gap-1.5 font-mono text-sm text-bio-400 transition-colors hover:text-bio-300"
+            className="group inline-flex min-h-11 cursor-pointer items-center gap-1.5 text-sm font-semibold text-navy-700 transition-colors hover:text-navy-900"
           >
             Toutes les publications
             <ArrowRightIcon className="transition-transform duration-200 group-hover:translate-x-1" />
           </Link>
         </div>
 
-        <div className="mt-10 grid gap-4 md:grid-cols-3">
+        <ul className="mt-8 divide-y divide-rule border-y border-rule">
           {recent.map((p) => (
-            <article
-              key={p.id}
-              className="flex flex-col rounded-xl border border-lab-700 bg-lab-900 p-6 transition-colors duration-200 hover:border-bio-500/50"
-            >
-              <div className="flex items-center justify-between font-mono text-xs">
-                <span className="rounded border border-bio-500/30 px-2 py-0.5 text-bio-300">{p.categoryLabel.fr}</span>
-                <span className="text-slate-400">{p.year}</span>
+            <li key={p.id} className="grid gap-2 py-6 md:grid-cols-[80px_1fr_auto] md:gap-8">
+              <p className="text-sm tabular-nums text-slate-500">{p.year}</p>
+              <div>
+                <h3 className="text-lg font-semibold leading-snug text-navy-900">{p.title.fr}</h3>
+                <p className="mt-1 text-sm text-slate-500">
+                  {p.categoryLabel.fr} · {p.journal}
+                </p>
+                <p className="mt-3 line-clamp-2 max-w-3xl text-[15px] leading-relaxed text-slate-600">{p.abstract.fr}</p>
               </div>
-              <h3 className="mt-4 line-clamp-3 text-base font-semibold leading-snug text-white">{p.title.fr}</h3>
-              <p className="mt-2 font-mono text-xs text-slate-400">{p.journal}</p>
-              <p className="mt-3 line-clamp-3 text-sm leading-relaxed text-slate-400">{p.abstract.fr}</p>
               {p.href && (
                 <a
                   href={p.href}
                   target="_blank"
                   rel="noreferrer"
-                  className="mt-auto inline-flex min-h-11 cursor-pointer items-center gap-1.5 pt-5 text-sm font-medium text-bio-400 transition-colors hover:text-bio-300"
+                  className="inline-flex min-h-11 cursor-pointer items-center gap-1.5 self-start text-sm font-semibold text-navy-700 transition-colors hover:text-navy-900"
                 >
                   Lire l&apos;article
                   <ExternalLinkIcon />
                 </a>
               )}
-            </article>
+            </li>
           ))}
-        </div>
+        </ul>
       </section>
 
-      {/* ═══ CTA ═══ */}
-      <section className="border-t border-lab-700 bg-lab-900/60">
-        <div className="mx-auto flex max-w-6xl flex-col items-start gap-6 px-4 py-16 sm:px-6 md:flex-row md:items-center md:justify-between lg:px-8">
+      {/* Contact */}
+      <section className="bg-navy-900">
+        <div className="mx-auto flex max-w-7xl flex-col items-start gap-6 px-4 py-14 sm:px-6 md:flex-row md:items-center md:justify-between lg:px-8">
           <div>
-            <h2 className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">Une collaboration en vue ?</h2>
-            <p className="mt-2 text-slate-400">Projet de recherche, stage ou discussion scientifique.</p>
+            <h2 className="text-2xl font-semibold text-white sm:text-3xl">Collaboration, stage ou projet de recherche ?</h2>
+            <p className="mt-2 text-slate-300">Je réponds aux propositions de collaboration scientifique.</p>
           </div>
           <div className="flex flex-wrap gap-3">
             <Link
               href="/contact"
-              className="inline-flex min-h-11 cursor-pointer items-center rounded-lg bg-bio-500 px-6 text-sm font-semibold text-lab-950 transition-colors hover:bg-bio-400"
+              className="inline-flex min-h-11 cursor-pointer items-center rounded-md bg-white px-6 text-sm font-semibold text-navy-900 transition-colors hover:bg-slate-100"
             >
               Me contacter
             </Link>
             <Link
               href="/cv"
-              className="inline-flex min-h-11 cursor-pointer items-center rounded-lg border border-lab-700 px-6 font-mono text-sm text-slate-200 transition-colors hover:border-bio-400"
+              className="inline-flex min-h-11 cursor-pointer items-center rounded-md border border-navy-600 px-6 text-sm font-semibold text-white transition-colors hover:border-white"
             >
               Voir mon CV
             </Link>
           </div>
         </div>
       </section>
-    </div>
+    </>
   );
 }

@@ -104,7 +104,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="fr">
       <head>
-        <meta name="theme-color" content="#050b09" />
+        <meta name="theme-color" content="#0f1d33" />
         <link rel="icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
@@ -156,7 +156,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           }}
         />
       </head>
-      <body className={`${fontSans.variable} ${fontDisplay.variable} ${fontMono.variable} bg-white`}>
+      <body className={`${fontSans.variable} ${fontDisplay.variable} ${fontMono.variable} bg-paper`}>
         <Navbar />
         <main>{children}</main>
         <Footer />

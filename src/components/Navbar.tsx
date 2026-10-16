@@ -44,8 +44,8 @@ export default function Navbar() {
     <header
       className={`sticky top-0 z-50 w-full border-b transition-colors duration-200 ${
         scrolled || open
-          ? "border-lab-700 bg-lab-950/90 backdrop-blur-xl"
-          : "border-transparent bg-lab-950"
+          ? "border-rule bg-white/95 backdrop-blur"
+          : "border-transparent bg-white"
       }`}
     >
       <nav
@@ -61,8 +61,8 @@ export default function Navbar() {
             className="rounded-md"
             priority
           />
-          <span className="font-display text-lg font-semibold tracking-tight text-white">
-            GenoLab<span className="text-bio-400">Gab</span>
+          <span className="font-display text-lg font-semibold tracking-tight text-navy-900">
+            GenoLab<span className="text-accent">Gab</span>
           </span>
         </Link>
 
@@ -76,12 +76,12 @@ export default function Navbar() {
                   href={l.href}
                   aria-current={active ? "page" : undefined}
                   className={`relative inline-flex min-h-11 cursor-pointer items-center px-3.5 text-sm font-medium transition-colors duration-150 ${
-                    active ? "text-bio-300" : "text-slate-300 hover:text-white"
+                    active ? "text-navy-900" : "text-slate-600 hover:text-navy-900"
                   }`}
                 >
                   {l.label}
                   <span
-                    className={`absolute inset-x-3.5 bottom-1.5 h-px origin-left bg-bio-400 transition-transform duration-200 ${
+                    className={`absolute inset-x-3.5 bottom-1.5 h-px origin-left bg-navy-700 transition-transform duration-200 ${
                       active ? "scale-x-100" : "scale-x-0"
                     }`}
                   />
@@ -92,7 +92,7 @@ export default function Navbar() {
           <li className="ml-3">
             <Link
               href="/contact"
-              className="inline-flex min-h-10 cursor-pointer items-center rounded-lg bg-bio-500 px-4 text-sm font-semibold text-lab-950 transition-colors duration-150 hover:bg-bio-400"
+              className="inline-flex min-h-10 cursor-pointer items-center rounded-md bg-navy-700 px-4 text-sm font-semibold text-white transition-colors duration-150 hover:bg-navy-800"
             >
               Me contacter
             </Link>
@@ -102,7 +102,7 @@ export default function Navbar() {
         {/* Bouton menu mobile */}
         <button
           type="button"
-          className="flex h-11 w-11 cursor-pointer items-center justify-center rounded-lg text-slate-200 transition-colors hover:bg-lab-800 lg:hidden"
+          className="flex h-11 w-11 cursor-pointer items-center justify-center rounded-lg text-slate-700 transition-colors hover:bg-slate-100 lg:hidden"
           onClick={() => setOpen((v) => !v)}
           aria-label={open ? "Fermer le menu" : "Ouvrir le menu"}
           aria-expanded={open}
@@ -118,7 +118,7 @@ export default function Navbar() {
       <div
         id="mobile-menu"
         hidden={!open}
-        className="border-t border-lab-700 bg-lab-950 lg:hidden"
+        className="border-t border-rule bg-white lg:hidden"
       >
         <ul className="mx-auto flex max-w-7xl flex-col px-4 py-3 sm:px-6">
           {[...navLinks, { href: "/contact", label: "Contact" }].map((l) => {
@@ -129,11 +129,11 @@ export default function Navbar() {
                   href={l.href}
                   onClick={() => setOpen(false)}
                   aria-current={active ? "page" : undefined}
-                  className={`flex min-h-12 cursor-pointer items-center gap-3 border-b border-lab-800 text-base font-medium transition-colors ${
-                    active ? "text-bio-300" : "text-slate-200 hover:text-white"
+                  className={`flex min-h-12 cursor-pointer items-center gap-3 border-b border-slate-100 text-base font-medium transition-colors ${
+                    active ? "text-navy-900" : "text-slate-700 hover:text-navy-900"
                   }`}
                 >
-                  <span className={`h-1.5 w-1.5 rounded-full ${active ? "bg-bio-400" : "bg-transparent"}`} />
+                  <span className={`h-1.5 w-1.5 rounded-full ${active ? "bg-accent" : "bg-transparent"}`} />
                   {l.label}
                 </Link>
               </li>

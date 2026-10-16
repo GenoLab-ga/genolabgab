@@ -44,9 +44,9 @@ const footerNav = [
 
 export default function Footer() {
   return (
-    <footer className="relative mt-0 border-t border-lab-700 bg-lab-950">
+    <footer className="relative mt-0 border-t border-navy-800 bg-navy-950">
     {/* Decorative top gradient line */}
-    <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-bio-500/50 to-transparent" />
+    <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent-soft/50 to-transparent" />
 
     <div className="mx-auto max-w-7xl px-4 pt-16 pb-8 sm:px-6 lg:px-8">
     {/* Main grid */}
@@ -62,7 +62,7 @@ export default function Footer() {
     className="rounded-lg"
     />
     <span className="font-display text-lg font-semibold text-white">
-    GenoLab<span className="text-bio-400">Gab</span>
+    GenoLab<span className="text-accent-soft">Gab</span>
     </span>
     </Link>
     <p className="mt-4 max-w-xs text-sm leading-relaxed text-slate-400">
@@ -78,7 +78,7 @@ export default function Footer() {
       target="_blank"
       rel="noreferrer"
       aria-label={s.label}
-      className="flex h-11 w-11 cursor-pointer items-center justify-center rounded-lg border border-lab-700 bg-lab-900 text-slate-400 transition-all hover:border-bio-500/40 hover:bg-bio-500/10 hover:text-bio-400"
+      className="flex h-11 w-11 cursor-pointer items-center justify-center rounded-lg border border-navy-800 bg-navy-900 text-slate-400 transition-all hover:border-accent-soft/50 hover:bg-navy-800 hover:text-accent-soft"
       >
       {s.icon}
       </a>
@@ -88,13 +88,13 @@ export default function Footer() {
 
     {/* Navigation */}
     <div>
-    <h3 className="text-xs font-bold uppercase tracking-[0.15em] text-slate-400 font-mono">Navigation</h3>
+    <h3 className="text-xs font-bold uppercase tracking-[0.15em] text-slate-400">Navigation</h3>
     <ul className="mt-5 space-y-3">
     {footerNav.map((l) => (
       <li key={l.href}>
       <Link
       href={l.href}
-      className="text-sm text-slate-400 transition hover:text-bio-400"
+      className="text-sm text-slate-400 transition hover:text-accent-soft"
       >
       {l.label}
       </Link>
@@ -105,7 +105,7 @@ export default function Footer() {
 
     {/* Expertise */}
     <div>
-    <h3 className="text-xs font-bold uppercase tracking-[0.15em] text-slate-400 font-mono">Expertise</h3>
+    <h3 className="text-xs font-bold uppercase tracking-[0.15em] text-slate-400">Expertise</h3>
     <ul className="mt-5 space-y-3">
     {[
       "Génomique computationnelle",
@@ -123,12 +123,12 @@ export default function Footer() {
 
     {/* Contact */}
     <div>
-    <h3 className="text-xs font-bold uppercase tracking-[0.15em] text-slate-400 font-mono">Contact</h3>
+    <h3 className="text-xs font-bold uppercase tracking-[0.15em] text-slate-400">Contact</h3>
     <ul className="mt-5 space-y-3">
     <li>
     <a
     href="mailto:genolabgab@proton.me"
-    className="inline-flex items-center gap-2 text-sm text-slate-400 transition hover:text-bio-400"
+    className="inline-flex items-center gap-2 text-sm text-slate-400 transition hover:text-accent-soft"
     >
     <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
     <rect width="20" height="16" x="2" y="4" rx="2" />
@@ -149,7 +149,7 @@ export default function Footer() {
     </div>
 
     {/* Bottom bar */}
-    <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-lab-700 pt-8 sm:flex-row">
+    <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-navy-800 pt-8 sm:flex-row">
     <p className="text-xs text-slate-400">
     © {new Date().getFullYear()} GenoLabGab · Keny Karl Mounguele · Tous droits réservés
     </p>

@@ -8,7 +8,7 @@
    ═══════════════════════════════════════════════════════════ */
 
 @theme inline {
-  --font-display: var(--font-space-grotesk), ui-sans-serif, sans-serif;
+  --font-display: var(--font-source-serif), Georgia, "Times New Roman", serif;
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-ibm-plex-mono), ui-monospace, monospace;
 }
@@ -28,24 +28,49 @@
   /* Accent secondaire, utilisé avec parcimonie (données, liens) */
   --color-signal-400: #22d3ee;
 
+  /* Palette institutionnelle : marine + accent ambre sobre */
+  --color-navy-950: #0a1424;
+  --color-navy-900: #0f1d33;
+  --color-navy-800: #16294a;
+  --color-navy-700: #1e3a5f;
+  --color-navy-600: #2a4d7c;
+  --color-accent: #a16207;
+  --color-accent-soft: #d9a84a;
+  --color-paper: #f8fafc;
+  --color-rule: #d8dee8;
+
+  /* Les pages pas encore migrées utilisent « emerald » : on le redirige vers le marine
+     pour que tout le site reste cohérent pendant la migration. */
+  --color-emerald-50: #f1f5fa;
+  --color-emerald-100: #e2eaf3;
+  --color-emerald-200: #c5d3e5;
+  --color-emerald-300: #98b0d0;
+  --color-emerald-400: #5f84b3;
+  --color-emerald-500: #2a4d7c;
+  --color-emerald-600: #1e3a5f;
+  --color-emerald-700: #17304f;
+  --color-emerald-800: #122641;
+  --color-emerald-900: #0d1b30;
+  --color-emerald-950: #08111f;
+
   --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 @layer base {
   html { scroll-behavior: smooth; }
   body {
-    @apply bg-white font-sans text-slate-600 antialiased;
+    @apply bg-paper font-sans text-slate-700 antialiased;
     overflow-x: hidden;
   }
-  h1, h2, h3 { font-family: var(--font-display); }
+  h1, h2, h3 { font-family: var(--font-display); letter-spacing: -0.01em; }
   [id] { scroll-margin-top: 88px; }
-  ::selection { @apply bg-emerald-500/25 text-emerald-950; }
+  ::selection { @apply bg-navy-700/20 text-navy-950; }
   ::-webkit-scrollbar { width: 10px; }
   ::-webkit-scrollbar-track { background: #f8fafc; }
   ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 8px; }
-  ::-webkit-scrollbar-thumb:hover { background: var(--color-bio-500); }
+  ::-webkit-scrollbar-thumb:hover { background: var(--color-navy-700); }
   *:focus-visible {
-    outline: 2px solid var(--color-bio-500);
+    outline: 2px solid var(--color-navy-700);
     outline-offset: 3px;
     border-radius: 4px;
   }
