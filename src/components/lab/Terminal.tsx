@@ -16,7 +16,8 @@ export default function Terminal() {
 
   useEffect(() => {
     if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setTyped(CMD.length); setShown(OUT.length); return;
+      const t = setTimeout(() => { setTyped(CMD.length); setShown(OUT.length); }, 0);
+      return () => clearTimeout(t);
     }
     if (typed < CMD.length) {
       const t = setTimeout(() => setTyped(typed + 1), 45);

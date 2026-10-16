@@ -25,7 +25,7 @@ export default function Hero() {
     <div>
     <p className="mb-6 inline-flex items-center gap-2 rounded-full border border-bio-500/30 bg-slate-950/60 px-4 py-1.5 font-mono text-xs text-bio-300 backdrop-blur-sm">
     <span className="relative flex h-2 w-2">
-    <span className="absolute h-full w-full animate-ping rounded-full bg-bio-400 opacity-60" />
+    <span className="absolute h-full w-full motion-safe:animate-ping rounded-full bg-bio-400 opacity-60" />
     <span className="relative h-2 w-2 rounded-full bg-bio-400" />
     </span>
     Disponible pour une collaboration
@@ -43,13 +43,13 @@ export default function Hero() {
     <div className="mt-10 flex flex-wrap gap-4">
     <Link
     href="/research"
-    className="rounded-lg bg-bio-500 px-6 py-3 text-sm font-semibold text-slate-950 transition hover:bg-bio-400 hover:shadow-lg hover:shadow-bio-500/25"
+    className="inline-flex min-h-11 cursor-pointer items-center rounded-lg bg-bio-500 px-6 text-sm font-semibold text-slate-950 transition hover:bg-bio-400 hover:shadow-lg hover:shadow-bio-500/25"
     >
     Mes recherches
     </Link>
     <Link
     href="/contact"
-    className="rounded-lg border border-bio-500/40 bg-slate-950/40 px-6 py-3 font-mono text-sm text-slate-200 backdrop-blur-sm transition hover:border-bio-400 hover:bg-slate-950/60"
+    className="inline-flex min-h-11 cursor-pointer items-center rounded-lg border border-bio-500/40 bg-slate-950/40 px-6 font-mono text-sm text-slate-200 backdrop-blur-sm transition hover:border-bio-400 hover:bg-slate-950/60"
     >
     Me contacter
     </Link>
@@ -57,16 +57,6 @@ export default function Hero() {
     </div>
 
     <Terminal />
-    </div>
-
-    {/* Indicateur scroll */}
-    <div className="absolute bottom-8 left-1/2 z-10 -translate-x-1/2 animate-bounce">
-    <div className="flex flex-col items-center gap-2">
-    <span className="font-mono text-xs uppercase tracking-wider text-slate-400">Découvrir</span>
-    <svg className="h-5 w-5 text-bio-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
-    <path d="m6 9 6 6 6-6" />
-    </svg>
-    </div>
     </div>
     </section>
   );

@@ -4,6 +4,7 @@ import { getAllPublications, type Publication } from "@/lib/get-publications";
 import QcChartWrapper from "@/components/QcChartWrapper";
 import Hero from "@/components/lab/Hero";
 import Marquee from "@/components/lab/Marquee";
+import SectionTag from "@/components/lab/SectionTag";
 
 export const metadata: Metadata = {
   title: "Keny Karl Mounguele - Ingénieur Bioinformaticien · GenoLabGab",
@@ -96,242 +97,175 @@ export default function HomePage() {
       "https://linkedin.com/in/karl-mounguele",
       "https://orcid.org/0009-0006-6706-0069",
     ],
-    knowsAbout: [
-      "Bioinformatics",
-      "Computational Genomics",
-      "Molecular Docking",
-      "Vaccinomics",
-      "NGS Analysis",
-    ],
+    knowsAbout: ["Bioinformatics", "Computational Genomics", "Molecular Docking", "Vaccinomics", "NGS Analysis"],
     description:
-    "Fondateur de GenoLabGab, initiative indépendante en biologie computationnelle. Génomique, bioinformatique structurale, docking moléculaire.",
+      "Fondateur de GenoLabGab, initiative indépendante en biologie computationnelle. Génomique, bioinformatique structurale, docking moléculaire.",
   };
 
+  const stats = [
+    { value: "2+", label: "Années de recherche" },
+    { value: "4", label: "Projets actifs" },
+    { value: "6", label: "Familles d'outils" },
+    { value: "3", label: "Publications" },
+  ];
+
+  const expertise = [
+    {
+      Icon: DnaIcon,
+      title: "Génomique computationnelle",
+      desc: "Pipelines NGS reproductibles : contrôle qualité, alignement, détection de variants et annotation fonctionnelle.",
+      tools: ["BWA-MEM", "GATK", "SnpEff", "Snakemake"],
+    },
+    {
+      Icon: MicroscopeIcon,
+      title: "Bioinformatique structurale",
+      desc: "Criblage virtuel de composés bioactifs, modélisation 3D avec AlphaFold2 et docking moléculaire sur cibles thérapeutiques.",
+      tools: ["AutoDock Vina", "AlphaFold2", "PyMOL", "ChimeraX"],
+    },
+    {
+      Icon: SyringeIcon,
+      title: "Vaccinomique",
+      desc: "Vaccinomique inverse : prédiction d'épitopes B et T, modélisation structurale et validation par docking immunitaire.",
+      tools: ["NetMHCpan", "IEDB", "Pfs48/45", "TBV"],
+    },
+  ];
+
   return (
-    <>
-    <script
-    type="application/ld+json"
-    dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-    />
+    <div className="bg-lab-950 text-slate-300">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
-    {/* ═══ HERO (nouveau) ═══ */}
-    <Hero />
+      <Hero />
+      <Marquee />
 
-    {/* ═══ MARQUEE ═══ */}
-    <Marquee />
+      {/* ═══ CHIFFRES ═══ */}
+      <section aria-label="Chiffres clés" className="border-b border-lab-700">
+        <dl className="mx-auto grid max-w-6xl grid-cols-2 divide-lab-700 px-4 sm:px-6 md:grid-cols-4 md:divide-x lg:px-8">
+          {stats.map((s) => (
+            <div key={s.label} className="px-4 py-10 text-center md:py-12">
+              <dd className="font-display text-4xl font-semibold tracking-tight text-white sm:text-5xl">{s.value}</dd>
+              <dt className="mt-2 font-mono text-xs uppercase tracking-wider text-slate-400">{s.label}</dt>
+            </div>
+          ))}
+        </dl>
+      </section>
 
-    {/* ═══ STATS ═══ */}
-    <section className="relative -mt-1 bg-white" aria-label="Statistiques">
-    <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-    <div className="relative -mt-12 rounded-2xl border border-slate-200/80 bg-white/80 p-8 shadow-xl shadow-slate-200/50 backdrop-blur-xl sm:p-10">
-    <div className="grid grid-cols-2 gap-8 sm:grid-cols-4">
-    {[
-      { value: "2+", label: "Années de recherche", icon: "🔬" },
-      { value: "4", label: "Projets actifs", icon: "🧬" },
-      { value: "6", label: "Catégories d'outils", icon: "🛠️" },
-      { value: "3", label: "Publications", icon: "📄" },
-    ].map((stat, i) => (
-      <div
-      key={stat.label}
-      className={`animate-count-up text-center ${i === 1 ? "animation-delay-100" : ""} ${i === 2 ? "animation-delay-200" : ""} ${i === 3 ? "animation-delay-300" : ""}`}
-      >
-      <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-50 text-xl">
-      {stat.icon}
-      </div>
-      <div className="mt-3 text-3xl font-bold text-slate-900 sm:text-4xl">{stat.value}</div>
-      <div className="mt-1 text-sm font-medium text-slate-500">{stat.label}</div>
-      </div>
-    ))}
-    </div>
-    </div>
-    </div>
-    </section>
+      {/* ═══ EXPERTISE ═══ */}
+      <section className="mx-auto max-w-6xl px-4 py-24 sm:px-6 lg:px-8">
+        <SectionTag index="01" label="expertise" />
+        <h2 className="max-w-2xl text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+          De la séquence brute à la cible thérapeutique
+        </h2>
+        <p className="mt-4 max-w-2xl text-base leading-relaxed text-slate-400">
+          Trois piliers de pratique, avec des pipelines versionnés et reproductibles.
+        </p>
 
-    {/* ═══ EXPERTISE ═══ */}
-    <section className="mx-auto mt-24 max-w-6xl px-4 sm:px-6 lg:px-8">
-    <div className="text-center">
-    <p className="text-sm font-semibold uppercase tracking-[0.15em] text-emerald-600">Ce que je fais</p>
-    <h2 className="mt-2 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
-    Domaines d&apos;expertise
-    </h2>
-    <p className="mx-auto mt-4 max-w-2xl text-base text-slate-500">
-    Trois piliers de ma pratique en bioinformatique computationnelle, de la génomique à la vaccinomique.
-    </p>
-    </div>
+        <div className="mt-12 grid gap-px overflow-hidden rounded-2xl border border-lab-700 bg-lab-700 md:grid-cols-3">
+          {expertise.map((d) => (
+            <article key={d.title} className="group bg-lab-900 p-8 transition-colors duration-200 hover:bg-lab-800">
+              <d.Icon className="h-7 w-7 text-bio-400" />
+              <h3 className="mt-6 text-lg font-semibold text-white">{d.title}</h3>
+              <p className="mt-3 text-sm leading-relaxed text-slate-400">{d.desc}</p>
+              <ul className="mt-6 flex flex-wrap gap-2">
+                {d.tools.map((t) => (
+                  <li key={t} className="rounded border border-lab-700 px-2 py-1 font-mono text-xs text-slate-300">
+                    {t}
+                  </li>
+                ))}
+              </ul>
+            </article>
+          ))}
+        </div>
+      </section>
 
-    <div className="mt-12 grid gap-6 sm:grid-cols-2 md:grid-cols-3">
-    {[
-      {
-        Icon: DnaIcon,
-        title: "Génomique computationnelle",
-        desc: "Pipelines NGS automatisés pour le contrôle qualité, l'alignement, la détection de variants et l'annotation fonctionnelle. Expertise avec BWA-MEM, GATK, SnpEff et les workflows Snakemake.",
-        tools: ["BWA-MEM", "GATK", "SnpEff", "Snakemake"],
-        gradient: "from-emerald-500 to-teal-500",
-      },
-      {
-        Icon: MicroscopeIcon,
-        title: "Bioinformatique structurale",
-        desc: "Criblage virtuel de composés bioactifs contre des cibles thérapeutiques. Modélisation 3D avec AlphaFold2 et ColabFold, docking moléculaire et visualisation avec PyMOL et ChimeraX.",
-        tools: ["AutoDock Vina", "AlphaFold2", "PyMOL", "ChimeraX"],
-        gradient: "from-cyan-500 to-blue-500",
-      },
-      {
-        Icon: SyringeIcon,
-        title: "Vaccinomique",
-        desc: "Conception de candidats vaccins par vaccinomique inverse. Prédiction d'épitopes B et T cellulaire avec NetMHCpan et IEDB, modélisation structurale et validation par docking immunitaire.",
-        tools: ["NetMHCpan", "IEDB", "Pfs48/45", "TBV"],
-        gradient: "from-violet-500 to-purple-500",
-      },
-    ].map((d, i) => (
-      <div
-      key={d.title}
-      className={`card-hover card-glow gradient-border group rounded-2xl p-7 animate-fade-up ${i === 1 ? "animation-delay-200" : ""} ${i === 2 ? "animation-delay-400" : ""}`}
-      >
-      <div className={`inline-flex items-center justify-center rounded-xl bg-gradient-to-br ${d.gradient} p-2.5 text-white shadow-lg`}>
-      <d.Icon className="h-5 w-5" />
-      </div>
-      <h3 className="mt-5 text-lg font-bold text-slate-900">{d.title}</h3>
-      <p className="mt-3 text-sm leading-relaxed text-slate-500">{d.desc}</p>
-      <div className="mt-5 flex flex-wrap gap-2">
-      {d.tools.map((tool) => (
-        <span
-        key={tool}
-        className="rounded-md bg-slate-50 px-2.5 py-1 text-xs font-medium text-slate-600 ring-1 ring-slate-200/80 transition group-hover:bg-emerald-50 group-hover:text-emerald-700 group-hover:ring-emerald-200/80"
-        >
-        {tool}
-        </span>
-      ))}
-      </div>
-      </div>
-    ))}
-    </div>
-    </section>
+      {/* ═══ PIPELINE / QC ═══ */}
+      <section className="border-y border-lab-700 bg-lab-900/60">
+        <div className="mx-auto grid max-w-6xl gap-12 px-4 py-24 sm:px-6 md:grid-cols-[1fr_auto] md:items-center lg:px-8">
+          <div>
+            <SectionTag index="02" label="pipeline" />
+            <h2 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">Contrôle qualité NGS</h2>
+            <p className="mt-4 max-w-xl text-base leading-relaxed text-slate-400">
+              Aperçu interactif de l&apos;évaluation de la qualité des données brutes de séquençage. Les scores Phred
+              conditionnent la fiabilité de chaque analyse en aval.
+            </p>
+            <ul className="mt-6 flex flex-wrap gap-x-6 gap-y-2 font-mono text-xs text-slate-300">
+              <li className="flex items-center gap-2"><span className="h-2.5 w-2.5 rounded-full bg-emerald-500" />Q ≥ 30 · excellente</li>
+              <li className="flex items-center gap-2"><span className="h-2.5 w-2.5 rounded-full bg-amber-400" />Q ≥ 20 · acceptable</li>
+            </ul>
+          </div>
+          <div className="min-w-0 md:w-[420px]">
+            <div className="rounded-xl border border-lab-700 bg-white p-6">
+              <QcChartWrapper />
+            </div>
+          </div>
+        </div>
+      </section>
 
-    {/* ═══ CHART ═══ */}
-    <section className="mx-auto mt-24 max-w-6xl px-4 sm:px-6 lg:px-8">
-    <div className="grid gap-8 md:grid-cols-[1fr_auto] md:items-start">
-    <div>
-    <p className="text-sm font-semibold uppercase tracking-[0.15em] text-emerald-600">Pipeline</p>
-    <h2 className="mt-2 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
-    Contrôle Qualité NGS
-    </h2>
-    <p className="mt-4 max-w-xl text-base leading-relaxed text-slate-500">
-    Aperçu interactif des outils d&apos;évaluation de la qualité des données brutes de séquençage générés par nos pipelines bioinformatiques. Les scores Phred garantissent la fiabilité de chaque analyse.
-    </p>
-    <div className="mt-6 flex items-center gap-4">
-    <div className="flex items-center gap-2 text-sm text-slate-600">
-    <span className="h-3 w-3 rounded-full bg-emerald-500" />
-    Qualité excellente (Q ≥ 30)
-    </div>
-    <div className="flex items-center gap-2 text-sm text-slate-600">
-    <span className="h-3 w-3 rounded-full bg-amber-400" />
-    Qualité acceptable (Q ≥ 20)
-    </div>
-    </div>
-    </div>
-    <div className="min-w-0 md:w-[420px]">
-    <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-lg">
-    <QcChartWrapper />
-    </div>
-    </div>
-    </div>
-    </section>
+      {/* ═══ PUBLICATIONS ═══ */}
+      <section className="mx-auto max-w-6xl px-4 py-24 sm:px-6 lg:px-8">
+        <SectionTag index="03" label="publications" />
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+          <h2 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">Articles récents</h2>
+          <Link
+            href="/publications"
+            className="group inline-flex min-h-11 cursor-pointer items-center gap-1.5 font-mono text-sm text-bio-400 transition-colors hover:text-bio-300"
+          >
+            Toutes les publications
+            <ArrowRightIcon className="transition-transform duration-200 group-hover:translate-x-1" />
+          </Link>
+        </div>
 
-    {/* ═══ PUBLICATIONS ═══ */}
-    <section className="mx-auto mt-24 max-w-6xl px-4 sm:px-6 lg:px-8">
-    <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-    <div>
-    <p className="text-sm font-semibold uppercase tracking-[0.15em] text-emerald-600">Publications</p>
-    <h2 className="mt-2 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
-    Articles récents
-    </h2>
-    </div>
-    <Link
-    href="/publications"
-    className="group inline-flex items-center gap-1.5 text-sm font-semibold text-emerald-600 transition hover:text-emerald-700"
-    >
-    Voir tous les articles
-    <ArrowRightIcon className="transition-transform group-hover:translate-x-1" />
-    </Link>
-    </div>
+        <div className="mt-10 grid gap-4 md:grid-cols-3">
+          {recent.map((p) => (
+            <article
+              key={p.id}
+              className="flex flex-col rounded-xl border border-lab-700 bg-lab-900 p-6 transition-colors duration-200 hover:border-bio-500/50"
+            >
+              <div className="flex items-center justify-between font-mono text-xs">
+                <span className="rounded border border-bio-500/30 px-2 py-0.5 text-bio-300">{p.categoryLabel.fr}</span>
+                <span className="text-slate-400">{p.year}</span>
+              </div>
+              <h3 className="mt-4 line-clamp-3 text-base font-semibold leading-snug text-white">{p.title.fr}</h3>
+              <p className="mt-2 font-mono text-xs text-slate-400">{p.journal}</p>
+              <p className="mt-3 line-clamp-3 text-sm leading-relaxed text-slate-400">{p.abstract.fr}</p>
+              {p.href && (
+                <a
+                  href={p.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="mt-auto inline-flex min-h-11 cursor-pointer items-center gap-1.5 pt-5 text-sm font-medium text-bio-400 transition-colors hover:text-bio-300"
+                >
+                  Lire l&apos;article
+                  <ExternalLinkIcon />
+                </a>
+              )}
+            </article>
+          ))}
+        </div>
+      </section>
 
-    <div className="mt-10 grid gap-6 md:grid-cols-3">
-    {recent.map((p, i) => (
-      <article
-      key={p.id}
-      className={`card-hover group relative overflow-hidden rounded-2xl bg-white p-6 ring-1 ring-slate-200/80 animate-fade-up ${i === 1 ? "animation-delay-200" : ""} ${i === 2 ? "animation-delay-400" : ""}`}
-      >
-      <div className={`absolute left-0 top-0 h-full w-1 ${p.category === "paper" ? "bg-blue-500" : "bg-emerald-500"}`} />
-      <div className="flex items-center justify-between text-xs">
-      <span
-      className={`rounded-full px-3 py-1 font-semibold ${
-        p.category === "paper"
-        ? "bg-blue-50 text-blue-700 ring-1 ring-blue-200/60"
-        : "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200/60"
-      }`}
-      >
-      {p.categoryLabel.fr}
-      </span>
-      <span className="font-medium text-slate-400">{p.year}</span>
-      </div>
-      <h3 className="mt-4 text-base font-bold leading-snug text-slate-900 transition group-hover:text-emerald-700 line-clamp-3">
-      {p.title.fr}
-      </h3>
-      <p className="mt-2 text-xs font-medium text-slate-400">{p.journal}</p>
-      <p className="mt-3 line-clamp-3 text-sm leading-relaxed text-slate-500">{p.abstract.fr}</p>
-      {p.href && (
-        <a
-        href={p.href}
-        target="_blank"
-        rel="noreferrer"
-        className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-emerald-600 transition group-hover:text-emerald-700"
-        >
-        Lire l&apos;article
-        <ExternalLinkIcon />
-        </a>
-      )}
-      </article>
-    ))}
+      {/* ═══ CTA ═══ */}
+      <section className="border-t border-lab-700 bg-lab-900/60">
+        <div className="mx-auto flex max-w-6xl flex-col items-start gap-6 px-4 py-16 sm:px-6 md:flex-row md:items-center md:justify-between lg:px-8">
+          <div>
+            <h2 className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">Une collaboration en vue ?</h2>
+            <p className="mt-2 text-slate-400">Projet de recherche, stage ou discussion scientifique.</p>
+          </div>
+          <div className="flex flex-wrap gap-3">
+            <Link
+              href="/contact"
+              className="inline-flex min-h-11 cursor-pointer items-center rounded-lg bg-bio-500 px-6 text-sm font-semibold text-lab-950 transition-colors hover:bg-bio-400"
+            >
+              Me contacter
+            </Link>
+            <Link
+              href="/cv"
+              className="inline-flex min-h-11 cursor-pointer items-center rounded-lg border border-lab-700 px-6 font-mono text-sm text-slate-200 transition-colors hover:border-bio-400"
+            >
+              Voir mon CV
+            </Link>
+          </div>
+        </div>
+      </section>
     </div>
-    </section>
-
-    {/* ═══ CTA — Bande compacte avec texte défilant ═══ */}
-    <section className="mx-auto mt-20 max-w-6xl px-4 pb-16 sm:px-6 lg:px-8">
-    <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-emerald-600 via-emerald-700 to-teal-700 py-5 shadow-xl shadow-emerald-900/20">
-    <div className="absolute inset-0 dot-pattern opacity-10" />
-    <div className="relative z-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-between sm:px-8">
-    <div className="flex w-full overflow-hidden sm:w-auto sm:flex-1 sm:pr-8">
-    <div className="animate-marquee flex shrink-0 items-center gap-6 whitespace-nowrap text-white">
-    <span className="text-sm font-medium">Intéressé par une collaboration ?</span>
-    <span className="h-1 w-1 rounded-full bg-white/40" />
-    <span className="text-sm text-emerald-100">Projet de recherche · Stage · Discussion scientifique</span>
-    <span className="h-1 w-1 rounded-full bg-white/40" />
-    <span className="text-sm font-medium">Intéressé par une collaboration ?</span>
-    <span className="h-1 w-1 rounded-full bg-white/40" />
-    <span className="text-sm text-emerald-100">Projet de recherche · Stage · Discussion scientifique</span>
-    <span className="h-1 w-1 rounded-full bg-white/40" />
-    <span className="text-sm font-medium">Intéressé par une collaboration ?</span>
-    <span className="h-1 w-1 rounded-full bg-white/40" />
-    <span className="text-sm text-emerald-100">Projet de recherche · Stage · Discussion scientifique</span>
-    </div>
-    </div>
-    <div className="flex shrink-0 gap-3">
-    <Link
-    href="/contact"
-    className="inline-flex items-center gap-2 rounded-xl bg-white px-5 py-2.5 text-sm font-semibold text-emerald-700 shadow-lg transition hover:bg-emerald-50"
-    >
-    Me contacter
-    </Link>
-    <Link
-    href="/cv"
-    className="hidden rounded-xl border border-white/20 bg-white/10 px-5 py-2.5 text-sm font-semibold text-white backdrop-blur-sm transition hover:bg-white/20 sm:inline-flex"
-    >
-    Voir mon CV
-    </Link>
-    </div>
-    </div>
-    </div>
-    </section>
-    </>
   );
 }
