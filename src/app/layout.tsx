@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     template: "%s · GenoLabGab",
   },
   description:
-    "Site de Karl Mounguele - ingénieur bioinformaticien à Fès, Maroc. Génomique computationnelle, bioinformatique structurale, docking moléculaire, GenoLabGab.",
+    "Site de Karl Mounguele - ingénieur bioinformaticien à Libreville, Gabon. Génomique computationnelle, bioinformatique structurale, docking moléculaire, GenoLabGab.",
   keywords: [
     "génomique",
     "bioinformatique",
@@ -130,8 +130,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                 },
                 address: {
                   "@type": "PostalAddress",
-                  addressLocality: "Fès",
-                  addressCountry: "Maroc",
+                  addressLocality: "Libreville",
+                  addressCountry: "Gabon",
                 },
                 knowsAbout: [
                   "Bioinformatique",

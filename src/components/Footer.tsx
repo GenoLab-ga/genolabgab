@@ -32,129 +32,64 @@ const socialLinks = [
 ];
 
 const footerNav = [
-  { href: "/", label: "Accueil" },
-{ href: "/about", label: "À propos" },
-{ href: "/research", label: "Recherche" },
-{ href: "/publications", label: "Publications" },
-{ href: "/projects", label: "Projets" },
-{ href: "/tapclavier", label: "TapClavier" },
-{ href: "/cv", label: "CV" },
-{ href: "/contact", label: "Contact" },
+  { href: "/about", label: "À propos" },
+  { href: "/research", label: "Recherche" },
+  { href: "/publications", label: "Publications" },
+  { href: "/projects", label: "Projets" },
+  { href: "/tapclavier", label: "TapClavier" },
+  { href: "/cv", label: "CV" },
+  { href: "/contact", label: "Contact" },
 ];
 
 export default function Footer() {
   return (
-    <footer className="relative mt-0 border-t border-navy-800 bg-navy-950">
-    {/* Decorative top gradient line */}
-    <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent-soft/50 to-transparent" />
+    <footer className="bg-ink text-slate-400">
+      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+        <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+          <Link href="/" className="inline-flex items-center gap-2.5">
+            <Image src="/images/logo.png" alt="" width={28} height={28} className="rounded-md" />
+            <span className="font-display text-base font-semibold text-white">
+              GenoLab<span className="text-accent-soft">Gab</span>
+            </span>
+          </Link>
 
-    <div className="mx-auto max-w-7xl px-4 pt-16 pb-8 sm:px-6 lg:px-8">
-    {/* Main grid */}
-    <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-4">
-    {/* Brand */}
-    <div className="lg:col-span-1">
-    <Link href="/" className="inline-flex items-center gap-2.5 group">
-    <Image
-    src="/images/logo.png"
-    alt=""
-    width={36}
-    height={36}
-    className="rounded-lg"
-    />
-    <span className="font-display text-lg font-semibold text-white">
-    GenoLab<span className="text-accent-soft">Gab</span>
-    </span>
-    </Link>
-    <p className="mt-4 max-w-xs text-sm leading-relaxed text-slate-400">
-    Initiative indépendante en biologie computationnelle fondée par Keny Karl Mounguele.
-    Génomique · Bioinformatique structurale · Vaccinomique.
-    </p>
-    {/* Social links */}
-    <div className="mt-6 flex gap-3">
-    {socialLinks.map((s) => (
-      <a
-      key={s.label}
-      href={s.href}
-      target="_blank"
-      rel="noreferrer"
-      aria-label={s.label}
-      className="flex h-11 w-11 cursor-pointer items-center justify-center rounded-lg border border-navy-800 bg-navy-900 text-slate-400 transition-all hover:border-accent-soft/50 hover:bg-navy-800 hover:text-accent-soft"
-      >
-      {s.icon}
-      </a>
-    ))}
-    </div>
-    </div>
+          <nav aria-label="Pied de page">
+            <ul className="flex flex-wrap gap-x-5 gap-y-1 text-sm">
+              {footerNav.map((l) => (
+                <li key={l.href}>
+                  <Link href={l.href} className="inline-flex min-h-9 cursor-pointer items-center transition-colors hover:text-white">
+                    {l.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
 
-    {/* Navigation */}
-    <div>
-    <h3 className="text-xs font-bold uppercase tracking-[0.15em] text-slate-400">Navigation</h3>
-    <ul className="mt-5 space-y-3">
-    {footerNav.map((l) => (
-      <li key={l.href}>
-      <Link
-      href={l.href}
-      className="text-sm text-slate-400 transition hover:text-accent-soft"
-      >
-      {l.label}
-      </Link>
-      </li>
-    ))}
-    </ul>
-    </div>
+          <div className="flex gap-2">
+            {socialLinks.map((s) => (
+              <a
+                key={s.label}
+                href={s.href}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={s.label}
+                className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-md border border-white/10 text-slate-400 transition-colors hover:border-white/30 hover:text-white"
+              >
+                {s.icon}
+              </a>
+            ))}
+          </div>
+        </div>
 
-    {/* Expertise */}
-    <div>
-    <h3 className="text-xs font-bold uppercase tracking-[0.15em] text-slate-400">Expertise</h3>
-    <ul className="mt-5 space-y-3">
-    {[
-      "Génomique computationnelle",
-      "Bioinformatique structurale",
-      "Vaccinomique & Immunoinformatique",
-      "Analyse NGS",
-      "Docking moléculaire",
-    ].map((item) => (
-      <li key={item} className="text-sm text-slate-400">
-      {item}
-      </li>
-    ))}
-    </ul>
-    </div>
-
-    {/* Contact */}
-    <div>
-    <h3 className="text-xs font-bold uppercase tracking-[0.15em] text-slate-400">Contact</h3>
-    <ul className="mt-5 space-y-3">
-    <li>
-    <a
-    href="mailto:genolabgab@proton.me"
-    className="inline-flex items-center gap-2 text-sm text-slate-400 transition hover:text-accent-soft"
-    >
-    <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
-    <rect width="20" height="16" x="2" y="4" rx="2" />
-    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-    </svg>
-    genolabgab@proton.me
-    </a>
-    </li>
-    <li className="flex items-start gap-2 text-sm text-slate-400">
-    <svg className="mt-0.5 h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
-    <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
-    <circle cx="12" cy="10" r="3" />
-    </svg>
-    <span>Université Euromed de Fès<br />Fès, Maroc</span>
-    </li>
-    </ul>
-    </div>
-    </div>
-
-    {/* Bottom bar */}
-    <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-navy-800 pt-8 sm:flex-row">
-    <p className="text-xs text-slate-400">
-    © {new Date().getFullYear()} GenoLabGab · Keny Karl Mounguele · Tous droits réservés
-    </p>
-    </div>
-    </div>
+        <div className="mt-6 flex flex-col gap-2 border-t border-white/10 pt-5 text-xs sm:flex-row sm:items-center sm:justify-between">
+          <p>
+            © {new Date().getFullYear()} GenoLabGab · Keny Karl Mounguele · Libreville, Gabon
+          </p>
+          <a href="mailto:genolabgab@proton.me" className="cursor-pointer transition-colors hover:text-white">
+            genolabgab@proton.me
+          </a>
+        </div>
+      </div>
     </footer>
   );
 }
