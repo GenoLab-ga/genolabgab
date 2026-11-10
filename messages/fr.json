@@ -1,0 +1,159 @@
+{
+  "Metadata": {
+    "title": "GenoLabGab · Bioinformatique des maladies infectieuses",
+    "description": "Analyses bioinformatiques de la résistance aux antibiotiques, du paludisme et de la tuberculose."
+  },
+  "Nav": {
+    "tb": "Tuberculose",
+    "malaria": "Paludisme",
+    "amr": "Résistance aux antibiotiques",
+    "reports": "Rapports",
+    "about": "À propos",
+    "contact": "Contact",
+    "menu": "Menu principal",
+    "openMenu": "Ouvrir le menu",
+    "closeMenu": "Fermer le menu",
+    "skip": "Aller au contenu"
+  },
+  "Home": {
+    "eyebrow": "Bioinformatique · Maladies infectieuses",
+    "tagline": "Analyse bioinformatique des maladies infectieuses tropicales",
+    "heroAlt": "Poste de travail en bioinformatique : microscope et écran affichant des analyses génomiques.",
+    "heroAlt2": "Analyses génomiques interactives sur écran de laboratoire.",
+    "heroAlt3": "Données de séquençage en cours d'analyse bioinformatique."
+  },
+  "Contact": {
+  "title": "Contact",
+  "intro": "Une question, une collaboration ou une analyse à discuter ? Écrivez-nous.",
+  "name": "Nom",
+  "email": "Adresse e-mail",
+  "subject": "Objet",
+  "message": "Message",
+  "send": "Envoyer",
+  "sending": "Envoi en cours…",
+  "captchaWait": "Vérification anti-robot en cours…",
+  "fieldInvalid": "Vérifiez ce champ.",
+  "successTitle": "Message envoyé",
+  "successText": "Merci, nous vous répondrons dès que possible.",
+  "errors": {
+    "validation": "Certains champs sont invalides.",
+    "captcha": "La vérification anti-robot a échoué. Réessayez.",
+    "send": "Le message n'a pas pu être envoyé. Réessayez plus tard."
+  }
+},
+  "Sections": {
+    "soon": "Cette section est en cours de construction.",
+    "tb": {
+      "title": "Tuberculose",
+      "intro": "Analyses génomiques de Mycobacterium tuberculosis : identification des souches, mutations de résistance aux antituberculeux et surveillance épidémiologique."
+    },
+    "malaria": {
+      "title": "Paludisme",
+      "intro": "Analyses de Plasmodium falciparum : diversité génétique, marqueurs de résistance aux antipaludiques et suivi de la transmission."
+    },
+    "amr": {
+      "title": "Résistance aux antibiotiques",
+      "intro": "Détection des gènes et des mutations de résistance à partir de données de séquençage, et suivi de leur évolution."
+    },
+    "reports": {
+      "title": "Rapports",
+      "intro": "Tous les rapports d'analyse, classés par maladie et par date."
+    },
+    "about": {
+      "title": "À propos",
+      "intro": "Présentation de GenoLabGab et de sa démarche scientifique."
+    },
+    "contact": {
+      "title": "Contact",
+      "intro": "Échanger sur un projet, une collaboration ou une analyse."
+    }
+  },
+  "Footer": {
+    "tagline": "Analyse bioinformatique des maladies infectieuses tropicales.",
+    "topics": "Thèmes",
+    "explore": "Explorer",
+    "rights": "Tous droits réservés"
+  },
+  "Reports": {
+    "title": "Rapports d'analyse",
+    "intro": "Tous les rapports d'analyse bioinformatique, classés par maladie et par date.",
+    "empty": "Aucun rapport publié pour le moment.",
+    "back": "Retour aux rapports"
+  },
+  "About": {
+  "eyebrow": "À propos",
+  "title": "À propos de GenoLabGab",
+  "missionTitle": "Notre mission",
+  "missionText": "GenoLabGab est une initiative indépendante dédiée à l'analyse bioinformatique et à l'interprétation génomique des maladies infectieuses tropicales. Fondée sur la conviction que la génomique peut transformer la surveillance épidémiologique et la prise en charge clinique, notre travail vise à rendre accessible l'expertise nécessaire pour comprendre, suivre et anticiper l'évolution des pathogènes émergents et résistants.",
+  "focusTitle": "Nous nous concentrons sur trois enjeux majeurs de santé publique :",
+  "focus": {
+    "tb": "Tuberculose : détection des souches multirésistantes (MDR-TB) et ultrarésistantes (XDR-TB), suivi des lignages à haut risque (Beijing, CAS)",
+    "malaria": "Paludisme : surveillance de la résistance à l'artémisinine et aux antipaludiques partenaires, caractérisation de la diversité génétique de Plasmodium falciparum",
+    "amr": "Résistance aux antibiotiques : identification des gènes de résistance acquis et des mutations chromosomiques dans les bactéries prioritaires (ESKAPE)"
+  },
+  "founderTitle": "Fondateur",
+  "founderName": "M. MOUNGUELE K. Karl",
+  "founderRole": "Ingénieur en biotechnologie, spécialisé en bioinformatique",
+  "founderText": "Ingénieur de formation avec une expertise auto-développée en bioinformatique, Karl MOUNGUELE K. combine une compréhension approfondie de la biologie moléculaire avec la maîtrise des pipelines d'analyse génomique modernes. Son parcours l'a amené à travailler sur des projets de séquençage à haut débit, de métagénomique et d'analyse de variants, avec un focus particulier sur les applications en santé publique.",
+  "skillsTitle": "Compétences techniques",
+  "skills": {
+    "sequencing": "Séquençage : Illumina (short-read), analyse de données brutes (FASTQ, BAM, VCF)",
+    "bioinformatics": "Bioinformatique : pipelines reproductibles (Nextflow, Snakemake), conteneurisation (Docker, Singularity)",
+    "genomics": "Génomique : assemblage de novo, alignement de référence, appel de variants, annotation fonctionnelle",
+    "stats": "Statistiques : analyse de données omiques, tests d'hypothèses, visualisation scientifique",
+    "programming": "Programmation : Bash, Python, R, intégration de bases de données biologiques"
+  },
+  "approachTitle": "Approche scientifique",
+  "rigorTitle": "Rigueur et reproductibilité",
+  "rigorText": "Chaque analyse suit des standards de reproductibilité stricts :",
+  "rigorPoints": {
+    "code": "Code source ouvert : tous les pipelines sont documentés et versionnés",
+    "containers": "Conteneurisation : environnements isolés pour garantir la reproductibilité inter-plateformes",
+    "validation": "Validation : confrontation systématique des prédictions génomiques avec les données phénotypiques disponibles",
+    "traceability": "Traçabilité : enregistrement complet des paramètres et versions des outils utilisés"
+  },
+  "monitoringTitle": "Veille scientifique active",
+  "monitoringText": "GenoLabGab assure une veille continue sur :",
+  "monitoringPoints": {
+    "mutations": "Les nouvelles mutations de résistance validées (bases de données WHO, CARD, MalariaGEN)",
+    "tools": "Les outils bioinformatiques émergents et les meilleures pratiques",
+    "publications": "Les publications récentes en génomique des pathogènes",
+    "guidelines": "Les recommandations thérapeutiques internationales (OMS, IDSA, ESCMID)"
+  },
+  "applicationsTitle": "Applications concrètes",
+  "applicationsText": "Nos analyses servent directement :",
+  "applicationsPoints": {
+    "surveillance": "La surveillance épidémiologique : identification précoce de foyers de résistance, suivi de la propagation de clones à haut risque",
+    "precision": "La médecine de précision : antibiogramme prédictif à partir du génome, aide à la décision thérapeutique",
+    "research": "La recherche translationnelle : caractérisation de mécanismes de résistance émergents, validation de nouvelles cibles moléculaires"
+  },
+  "expertiseTitle": "Domaines d'expertise",
+  "expertiseTable": {
+    "headers": ["Domaine", "Techniques", "Applications"],
+    "rows": [
+      ["Génomique bactérienne", "WGS, MLST in silico, cgMLST", "Typage, phylogénie, épidémiologie moléculaire"],
+      ["Résistance aux antimicrobiens", "Détection de gènes (ResFinder, CARD), mutations chromosomiques", "Prédiction de phénotype, surveillance RAM"],
+      ["Génomique du paludisme", "Amplicon-seq, sWGA, déconvolution clonale", "MOI, haplotypes de résistance, sélection"],
+      ["Tuberculose", "WGS, typage de lignage, profil de résistance", "MDR/XDR-TB, chaînes de transmission"],
+      ["Métagénomique", "Profilage taxonomique, binning, annotation fonctionnelle", "Microbiome, environnement, One Health"]
+    ]
+  },
+  "philosophyTitle": "Philosophie",
+  "independenceTitle": "Indépendance",
+  "independenceText": "GenoLabGab opère de manière indépendante, libre de tout conflit d'intérêt commercial. Nos analyses reposent uniquement sur des données scientifiques validées et des outils open source maintenus par la communauté.",
+  "transparencyTitle": "Transparence",
+  "transparencyText": "Nous croyons en la science ouverte. Nos méthodes, nos résultats et nos limites sont documentés sans omission. Nous citons systématiquement les sources et les bases de données utilisées.",
+  "impactTitle": "Impact",
+  "impactText": "Chaque rapport que nous produisons vise un objectif concret : éclairer une décision clinique, informer une politique de santé publique, ou faire avancer la compréhension d'un mécanisme biologique. Nous ne faisons pas de la génomique pour la génomique.",
+  "collaborationsTitle": "Collaborations et partenariats",
+  "collaborationsText": "GenoLabGab est ouvert aux collaborations avec :",
+  "collaborationsPoints": {
+    "research": "Laboratoires de recherche : universités, instituts de santé publique, centres de recherche en maladies infectieuses",
+    "hospitals": "Hôpitaux et cliniques : analyse de souches cliniques, aide à l'interprétation de résultats génomiques",
+    "publicHealth": "Organisations de santé publique : surveillance épidémiologique, formation en bioinformatique",
+    "international": "Projets internationaux : consortiums de génomique, initiatives One Health"
+  },
+  "ctaText": "Pour discuter d'un projet, d'une collaboration ou d'une analyse spécifique, consultez notre page de contact.",
+  "ctaButton": "Nous contacter"
+}
+}

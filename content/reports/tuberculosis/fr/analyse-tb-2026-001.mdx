@@ -1,0 +1,49 @@
+---
+title: "Analyse de résistance aux antituberculeux - Échantillon TB-2026-001"
+date: "2026-11-10"
+disease: "tuberculosis"
+summary: "Détection de mutations de résistance à la rifampicine et à l'isoniazide par séquençage Illumina. Profil MDR-TB confirmé."
+tags: ["WGS", "résistance", "MDR-TB", "Illumina"]
+dataset: "SRA123456"
+---
+
+## Contexte
+
+Échantillon clinique prélevé en novembre 2026 dans le cadre de la surveillance nationale de la tuberculose multirésistante. Le patient présente un échec thérapeutique au régime standard 2RHZE/4RH après 2 mois de traitement.
+
+## Méthodes
+
+### Extraction et séquençage
+
+- Extraction d'ADN : protocole CTAB modifié
+- Bibliothèque : Illumina DNA Prep
+- Séquenceur : NovaSeq 6000
+- Lecture : paired-end 150 bp
+- Cible : 100x de couverture moyenne
+
+### Pipeline bioinformatique
+
+```bash
+# Contrôle qualité des lectures brutes
+fastp -i reads_R1.fastq.gz -I reads_R2.fastq.gz \
+      -o clean_R1.fastq.gz -O clean_R2.fastq.gz \
+      --detect_adapter_for_pe --correction
+
+# Alignement sur H37Rv (NC_000962.3)
+bwa mem -t 12 H37Rv.fasta clean_R1.fastq.gz clean_R2.fastq.gz | \
+  samtools sort -@ 6 -o sorted.bam
+samtools index sorted.bam
+
+# Statistiques d'alignement
+samtools flagstat sorted.bam > alignment_stats.txt
+
+# Appel de variants
+bcftools mpileup -f H37Rv.fasta --max-depth 10000 sorted.bam | \
+  bcftools call -mv --ploidy 1 -Oz -o variants.vcf.gz
+bcftools index variants.vcf.gz
+
+# Filtrage des variants
+bcftools view -i 'QUAL>=30 && DP>=20' variants.vcf.gz -Oz -o filtered.vcf.gz
+
+# Annotation avec SnpEff
+snpEff -v -classic -no-upstream -no-downstream M_tuberculosis filtered.vcf.gz > annotated.vcf

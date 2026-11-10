@@ -1,0 +1,49 @@
+---
+title: "Antituberculosis drug resistance analysis - Sample TB-2026-001"
+date: "2026-11-10"
+disease: "tuberculosis"
+summary: "Detection of rifampicin and isoniazid resistance mutations by Illumina sequencing. Confirmed MDR-TB profile."
+tags: ["WGS", "resistance", "MDR-TB", "Illumina"]
+dataset: "SRA123456"
+---
+
+## Context
+
+Clinical sample collected in November 2026 as part of the national multidrug-resistant tuberculosis surveillance program. The patient shows treatment failure after 2 months of the standard 2RHZE/4RH regimen.
+
+## Methods
+
+### DNA extraction and sequencing
+
+- DNA extraction: modified CTAB protocol
+- Library: Illumina DNA Prep
+- Sequencer: NovaSeq 6000
+- Read type: paired-end 150 bp
+- Target: 100x average coverage
+
+### Bioinformatic pipeline
+
+```bash
+# Quality control of raw reads
+fastp -i reads_R1.fastq.gz -I reads_R2.fastq.gz \
+      -o clean_R1.fastq.gz -O clean_R2.fastq.gz \
+      --detect_adapter_for_pe --correction
+
+# Alignment to H37Rv (NC_000962.3)
+bwa mem -t 12 H37Rv.fasta clean_R1.fastq.gz clean_R2.fastq.gz | \
+  samtools sort -@ 6 -o sorted.bam
+samtools index sorted.bam
+
+# Alignment statistics
+samtools flagstat sorted.bam > alignment_stats.txt
+
+# Variant calling
+bcftools mpileup -f H37Rv.fasta --max-depth 10000 sorted.bam | \
+  bcftools call -mv --ploidy 1 -Oz -o variants.vcf.gz
+bcftools index variants.vcf.gz
+
+# Variant filtering
+bcftools view -i 'QUAL>=30 && DP>=20' variants.vcf.gz -Oz -o filtered.vcf.gz
+
+# Annotation with SnpEff
+snpEff -v -classic -no-upstream -no-downstream M_tuberculosis filtered.vcf.gz > annotated.vcf

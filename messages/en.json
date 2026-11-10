@@ -1,0 +1,159 @@
+{
+  "Metadata": {
+    "title": "GenoLabGab · Bioinformatics of infectious diseases",
+    "description": "Bioinformatic analyses of antibiotic resistance, malaria and tuberculosis."
+  },
+  "Nav": {
+    "tb": "Tuberculosis",
+    "malaria": "Malaria",
+    "amr": "Antibiotic resistance",
+    "reports": "Reports",
+    "about": "About",
+    "contact": "Contact",
+    "menu": "Main menu",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "skip": "Skip to content"
+  },
+  "Home": {
+    "eyebrow": "Bioinformatics · Infectious diseases",
+    "tagline": "Bioinformatic analysis of tropical infectious diseases",
+    "heroAlt": "Bioinformatics workstation: microscope and monitor displaying genomic analyses.",
+    "heroAlt2": "Interactive genomic analyses on a laboratory screen.",
+    "heroAlt3": "Sequencing data under bioinformatic analysis."
+  },
+  "Contact": {
+  "title": "Contact",
+  "intro": "A question, a collaboration or an analysis to discuss? Write to us.",
+  "name": "Name",
+  "email": "Email address",
+  "subject": "Subject",
+  "message": "Message",
+  "send": "Send",
+  "sending": "Sending…",
+  "captchaWait": "Anti-bot check in progress…",
+  "fieldInvalid": "Please check this field.",
+  "successTitle": "Message sent",
+  "successText": "Thank you, we will get back to you as soon as possible.",
+  "errors": {
+    "validation": "Some fields are invalid.",
+    "captcha": "The anti-bot check failed. Please try again.",
+    "send": "The message could not be sent. Please try again later."
+  }
+},
+  "Sections": {
+    "soon": "This section is under construction.",
+    "tb": {
+      "title": "Tuberculosis",
+      "intro": "Genomic analyses of Mycobacterium tuberculosis: strain identification, drug-resistance mutations and epidemiological surveillance."
+    },
+    "malaria": {
+      "title": "Malaria",
+      "intro": "Plasmodium falciparum analyses: genetic diversity, antimalarial resistance markers and transmission monitoring."
+    },
+    "amr": {
+      "title": "Antibiotic resistance",
+      "intro": "Detection of resistance genes and mutations from sequencing data, and tracking of their evolution."
+    },
+    "reports": {
+      "title": "Reports",
+      "intro": "All analysis reports, sorted by disease and date."
+    },
+    "about": {
+      "title": "About",
+      "intro": "An introduction to GenoLabGab and its scientific approach."
+    },
+    "contact": {
+      "title": "Contact",
+      "intro": "Discuss a project, a collaboration or an analysis."
+    }
+  },
+  "Footer": {
+    "tagline": "Bioinformatic analysis of tropical infectious diseases.",
+    "topics": "Topics",
+    "explore": "Explore",
+    "rights": "All rights reserved"
+  },
+  "Reports": {
+    "title": "Analysis Reports",
+    "intro": "All bioinformatic analysis reports, sorted by disease and date.",
+    "empty": "No reports published yet.",
+    "back": "Back to reports"
+  },
+  "About": {
+  "eyebrow": "About",
+  "title": "About GenoLabGab",
+  "missionTitle": "Our mission",
+  "missionText": "GenoLabGab is an independent initiative dedicated to bioinformatic analysis and genomic interpretation of tropical infectious diseases. Founded on the conviction that genomics can transform epidemiological surveillance and clinical management, our work aims to make accessible the expertise needed to understand, monitor, and anticipate the evolution of emerging and drug-resistant pathogens.",
+  "focusTitle": "We focus on three major public health challenges:",
+  "focus": {
+    "tb": "Tuberculosis: detection of multidrug-resistant (MDR-TB) and extensively drug-resistant (XDR-TB) strains, monitoring of high-risk lineages (Beijing, CAS)",
+    "malaria": "Malaria: surveillance of artemisinin and partner drug resistance, characterization of Plasmodium falciparum genetic diversity",
+    "amr": "Antibiotic resistance: identification of acquired resistance genes and chromosomal mutations in priority bacteria (ESKAPE)"
+  },
+  "founderTitle": "Founder",
+  "founderName": "Mr. MOUNGUELE K. Karl",
+  "founderRole": "Biotechnology Engineer, specialized in bioinformatics",
+  "founderText": "An engineer by training with self-developed expertise in bioinformatics, Karl MOUNGUELE K. combines a deep understanding of molecular biology with mastery of modern genomic analysis pipelines. His career has led him to work on high-throughput sequencing projects, metagenomics, and variant analysis, with a particular focus on public health applications.",
+  "skillsTitle": "Technical skills",
+  "skills": {
+    "sequencing": "Sequencing: Illumina (short-read), raw data analysis (FASTQ, BAM, VCF)",
+    "bioinformatics": "Bioinformatics: reproducible pipelines (Nextflow, Snakemake), containerization (Docker, Singularity)",
+    "genomics": "Genomics: de novo assembly, reference alignment, variant calling, functional annotation",
+    "stats": "Statistics: omics data analysis, hypothesis testing, scientific visualization",
+    "programming": "Programming: Bash, Python, R, biological database integration"
+  },
+  "approachTitle": "Scientific approach",
+  "rigorTitle": "Rigor and reproducibility",
+  "rigorText": "Every analysis follows strict reproducibility standards:",
+  "rigorPoints": {
+    "code": "Open source code: all pipelines are documented and versioned",
+    "containers": "Containerization: isolated environments to guarantee cross-platform reproducibility",
+    "validation": "Validation: systematic confrontation of genomic predictions with available phenotypic data",
+    "traceability": "Traceability: complete recording of parameters and tool versions used"
+  },
+  "monitoringTitle": "Active scientific monitoring",
+  "monitoringText": "GenoLabGab maintains continuous surveillance on:",
+  "monitoringPoints": {
+    "mutations": "Newly validated resistance mutations (WHO databases, CARD, MalariaGEN)",
+    "tools": "Emerging bioinformatic tools and best practices",
+    "publications": "Recent publications in pathogen genomics",
+    "guidelines": "International therapeutic guidelines (WHO, IDSA, ESCMID)"
+  },
+  "applicationsTitle": "Concrete applications",
+  "applicationsText": "Our analyses directly serve:",
+  "applicationsPoints": {
+    "surveillance": "Epidemiological surveillance: early identification of resistance hotspots, monitoring of high-risk clone spread",
+    "precision": "Precision medicine: genome-based predictive antibiogram, therapeutic decision support",
+    "research": "Translational research: characterization of emerging resistance mechanisms, validation of new molecular targets"
+  },
+  "expertiseTitle": "Areas of expertise",
+  "expertiseTable": {
+    "headers": ["Domain", "Techniques", "Applications"],
+    "rows": [
+      ["Bacterial genomics", "WGS, in silico MLST, cgMLST", "Typing, phylogeny, molecular epidemiology"],
+      ["Antimicrobial resistance", "Gene detection (ResFinder, CARD), chromosomal mutations", "Phenotype prediction, AMR surveillance"],
+      ["Malaria genomics", "Amplicon-seq, sWGA, clonal deconvolution", "MOI, resistance haplotypes, selection"],
+      ["Tuberculosis", "WGS, lineage typing, resistance profiling", "MDR/XDR-TB, transmission chains"],
+      ["Metagenomics", "Taxonomic profiling, binning, functional annotation", "Microbiome, environment, One Health"]
+    ]
+  },
+  "philosophyTitle": "Philosophy",
+  "independenceTitle": "Independence",
+  "independenceText": "GenoLabGab operates independently, free from commercial conflicts of interest. Our analyses rely solely on validated scientific data and open source tools maintained by the community.",
+  "transparencyTitle": "Transparency",
+  "transparencyText": "We believe in open science. Our methods, results, and limitations are documented without omission. We systematically cite sources and databases used.",
+  "impactTitle": "Impact",
+  "impactText": "Every report we produce aims at a concrete objective: informing a clinical decision, guiding public health policy, or advancing understanding of a biological mechanism. We don't do genomics for genomics' sake.",
+  "collaborationsTitle": "Collaborations and partnerships",
+  "collaborationsText": "GenoLabGab is open to collaborations with:",
+  "collaborationsPoints": {
+    "research": "Research laboratories: universities, public health institutes, infectious disease research centers",
+    "hospitals": "Hospitals and clinics: clinical strain analysis, genomic result interpretation support",
+    "publicHealth": "Public health organizations: epidemiological surveillance, bioinformatics training",
+    "international": "International projects: genomics consortia, One Health initiatives"
+  },
+  "ctaText": "To discuss a project, collaboration, or specific analysis, visit our contact page.",
+  "ctaButton": "Contact us"
+}
+}

@@ -1,26 +1,104 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #0f172a;
+  --muted: #475569;
+  --surface: #f5f8fc;
+  --border: #e2e8f0;
+  --primary: #1d4ed8;
+  --primary-soft: #e8f0ff;
+  --tb: #0e7490;
+  --malaria: #dc2626;
+  --amr: #7c3aed;
+  --band: #17a9e2;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-surface: var(--surface);
+  --color-border: var(--border);
+  --color-primary: var(--primary);
+  --color-tb: var(--tb);
+  --color-malaria: var(--malaria);
+  --color-amr: var(--amr);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-band: var(--band);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), system-ui, sans-serif;
+}
+
+/* Effet Ken Burns : fondu + zoom lent sur l'image active */
+.slide {
+  opacity: 0;
+  transform: scale(1);
+  transition: opacity 1s ease, transform 6s ease-out;
+}
+.slide-active {
+  opacity: 1;
+  transform: scale(1.12);
+}
+
+.hero-glow {
+  background: radial-gradient(60% 45% at 50% 0%, var(--primary-soft), transparent);
+}
+
+/* Blocs de code : fond sombre type terminal, défilement horizontal */
+.prose pre {
+  background: #0b1220;
+  color: #e2e8f0;
+  border: 1px solid #1e293b;
+  border-radius: 0.75rem;
+  padding: 1rem 1.25rem;
+  overflow-x: auto;
+  white-space: pre;
+}
+
+.prose pre code {
+  background: transparent;
+  color: inherit;
+  padding: 0;
+  font-size: 0.875em;
+  line-height: 1.7;
+}
+
+/* Code en ligne (hors blocs) : discret, sur fond clair */
+.prose :not(pre) > code {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 0.25rem;
+  padding: 0.125rem 0.375rem;
+  font-size: 0.875em;
+  color: var(--primary);
+}
+
+/* Tableaux : bordures fines et lignes alternées */
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9em;
+}
+
+.prose th,
+.prose td {
+  border: 1px solid var(--border);
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+}
+
+.prose th {
+  background: var(--surface);
+  font-weight: 600;
+}
+
+.prose tbody tr:nth-child(even) {
+  background: var(--surface);
 }
